@@ -52,3 +52,6 @@ class PlacedBinaryBet(models.Model):
     chose_alternative = models.BooleanField()
     # Timestamp of when the bet was placed
     placed_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.placed_on.__str__() + ": " + self.placed_by.__str__()
