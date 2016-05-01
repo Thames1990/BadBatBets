@@ -1,13 +1,16 @@
-from django.http import HttpResponse
+from django.http import Http404
 from django.shortcuts import render
 from .models import BinaryBet
 
 
 def index(request):
     all_binary_bets = BinaryBet.objects.all()
-    context = {'all_binary_bets': all_binary_bets}
-    return render(request, 'bets/index.html', context)
+    return render(request, 'bets/index.html', {'all_binary_bets': all_binary_bets})
 
 
 def bets(request, prim_key):
-    return HttpResponse("<h2>Bet " + str(prim_key) + "</h2>")
+    try:
+        bet = BinaryBet.objects.get(prim_key=prim_key)
+    except BinaryBet.DoesNotExist:
+        raise Http404("Bet doesn't exist")
+    return render(request, 'bets/bets.html', {'bet': bet})
