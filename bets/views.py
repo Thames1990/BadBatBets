@@ -1,14 +1,15 @@
 from django.http import HttpResponse
+from django.template import loader
 from .models import BinaryBet
 
 
 def index(request):
     all_binary_bets = BinaryBet.objects.all()
-    html = ''
-    for binary_bet in all_binary_bets:
-        url = str(binary_bet.prim_key) + '/'
-        html += '<a href="' + url + '">' + binary_bet.name + '</a><br>'
-    return HttpResponse(html)
+    template = loader.get_template('bets/index.html')
+    context = {
+        'all_binary_bets': all_binary_bets
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def bets(request, prim_key):
