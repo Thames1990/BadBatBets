@@ -25,3 +25,24 @@
         <td>{{ bet.resolved }}</td>
     </tr>
 </table>
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+{# TODO Add check for already voted #}
+{% if not bet.resolved %}
+    <form action="{% url 'bets:binary_bet' bet.prim_key %}" method="post">
+        {% csrf_token %}
+        <input type="radio" id="null" name="choice" value="{{ bet.prim_key }}">
+        <label for="null">
+            {{ bet.null_option }}
+        </label>
+        <input type="radio" id="alternative" name="choice" value="{{ bet.prim_key }}">
+        <label for="alternative">
+            {{ bet.alternative_option }}
+        </label>
+        <input type="submit" value="Bet">
+    </form>
+
+{% endif %}
