@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     # /bets/<prim_key>
     url(r'^(?P<prim_key>[0-9]+)/$', views.binary_bet, name='binary_bet'),
-    # /bets/<prim_key>/placed/
-    url(r'^(?P<prim_key>[0-9]+)/placed/$', views.placed_binary_bet, name='placed_binary_bet'),
+    # /bets/<binary_bet_prim_key_>/<placed_binary_bet_prim_key>/
+    url(r'^(?P<binary_bet_prim_key_>[0-9]+)/(?P<placed_binary_bet_prim_key>[0-9]+)/$', views.placed_binary_bet,
+        name='placed_binary_bet'),
 ]
