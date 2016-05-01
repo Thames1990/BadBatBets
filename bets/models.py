@@ -1,7 +1,7 @@
 from django.db import models
 
+from bets.util import pkgen
 from profiles.models import Profile
-from the_platform.util import pkgen
 
 
 class Bet(models.Model):
