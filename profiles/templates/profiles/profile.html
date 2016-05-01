@@ -6,8 +6,8 @@
 </head>
 <body>
 
-Username: <br>
-Account Balance: <br>
+Username: {{ user.username }}<br>
+Account Balance: {{ profile.points }} <br>
 
 <a href="{% url 'profiles:logout' %}">Logout</a>
 </body>
