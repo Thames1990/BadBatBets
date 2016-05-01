@@ -6,7 +6,7 @@ from .util import user_authenticated
 
 def landing(request):
     if user_authenticated(request.user):
-        redirect('profiles:profile')
+        return redirect('profiles:profile')
     else:
         return render(request, 'profiles/landing.html', {})
 
