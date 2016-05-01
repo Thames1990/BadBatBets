@@ -1,0 +1,27 @@
+<h1>{{ placed_bet.placed_on.name }}</h1>
+<table>
+    <tr>
+        <th>Primary key</th>
+        <td>{{ placed_bet.prim_key }}</td>
+    </tr>
+    <tr>
+        <th>Placed by</th>
+        <td>{{ placed_bet.placed_by }}</td>
+    </tr>
+    <tr>
+        <th>Placed amount</th>
+        <td>{{ placed_bet.placed_amount }}</td>
+    </tr>
+    <tr>
+        <th>Choice</th>
+        {% if placed_bet.chose_alternative %}
+            <td>{{ placed_bet.placed_on.alternative_option }}</td>
+        {% else %}
+            <td>{{ placed_bet.placed_on.null_option }}</td>
+        {% endif %}
+    </tr>
+    <tr>
+        <th>Placed date</th>
+        <td>{{ placed_bet.placed_date }}</td>
+    </tr>
+</table>

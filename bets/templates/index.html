@@ -1,11 +1,22 @@
 <h1>Binary bets</h1>
 {% if all_binary_bets %}
-    <h2>Currently placed bets</h2>
+    <h2>Available bets</h2>
     <ul>
         {% for binary_bet in all_binary_bets %}
-            <li><a href="{% url 'bets:detail' binary_bet.prim_key %}">{{ binary_bet.name }}</a></li>
+            <li><a href="{% url 'bets:binary_bet' binary_bet.prim_key %}">{{ binary_bet.name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
     <h2>No bets are placed yet.</h2>
+{% endif %}
+
+<h1>Placed binary bets</h1>
+{% if all_placed_bets %}
+    <h2>Placed bets</h2>
+    <ul>
+        {% for placed_binary_bet in all_placed_bets %}
+            <li><a href="{% url 'bets:placed_binary_bet' placed_binary_bet.prim_key %}">{{ placed_binary_bet.placed_on.name }}</a> </li>
+        {% endfor %}
+    </ul>
+{% else %}
 {% endif %}
