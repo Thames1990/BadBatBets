@@ -2,8 +2,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    # Index
+    # /bets/
     url(r'^$', views.index, name='index'),
-    # Open specific bet by id
+    # /bets/<prim_key>
     url(r'^(?P<prim_key>[0-9]+)/$', views.bets, name='bets'),
 ]

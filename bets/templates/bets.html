@@ -1,7 +1,27 @@
-<p>Primary key: {{ bet.prim_key }}</p>
-<p>Owner: {{ bet.owner }}</p>
-<p>Name: {{ bet.name }}</p>
-<p>Description: {{ bet.description }}</p>
-<p>Created: {{ bet.created }}</p>
-<p>Published: {{ bet.pub_date }}</p>
-<p>Resolved: {{ bet.resolved }}</p>
+<h1>{{ bet.name }}</h1>
+<table>
+    <tr>
+        <th>Primary key</th>
+        <td>{{ bet.prim_key }}</td>
+    </tr>
+    <tr>
+        <th>Owner</th>
+        <td>{{ bet.owner }}</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>{{ bet.description }}</td>
+    </tr>
+    <tr>
+        <th>Created</th>
+        <td>{{ bet.created }}</td>
+    </tr>
+    <tr>
+        <th>Published</th>
+        <td>{{ bet.pub_date }}</td>
+    </tr>
+    <tr>
+        <th>Resolved</th>
+        <td>{{ bet.resolved }}</td>
+    </tr>
+</table>

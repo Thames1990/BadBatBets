@@ -3,7 +3,7 @@
     <h2>Currently placed bets</h2>
     <ul>
         {% for binary_bet in all_binary_bets %}
-            <li><a href="{{ binary_bet.prim_key }}">{{ binary_bet.name }}</a></li>
+            <li><a href="{% url 'bets' binary_bet.prim_key %}">{{ binary_bet.name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
