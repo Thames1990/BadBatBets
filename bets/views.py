@@ -1,5 +1,4 @@
-from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import BinaryBet
 
 
@@ -9,8 +8,5 @@ def index(request):
 
 
 def bets(request, prim_key):
-    try:
-        bet = BinaryBet.objects.get(prim_key=prim_key)
-    except BinaryBet.DoesNotExist:
-        raise Http404("Bet doesn't exist")
+    bet = get_object_or_404(BinaryBet, prim_key=prim_key)
     return render(request, 'bets.html', {'bet': bet})
