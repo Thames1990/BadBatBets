@@ -6,6 +6,7 @@ from the_platform.util import pkgen
 
 class Bet(models.Model):
     """Abstract superclass for fields which all bets have in common"""
+
     class Meta:
         abstract = True
 
@@ -43,9 +44,9 @@ class PlacedBinaryBet(models.Model):
     # Random key for each bet
     prim_key = models.PositiveIntegerField(primary_key=True, default=pkgen)
     # The bet it was placed on
-    placed_on = models.ForeignKey(BinaryBet)
+    placed_on = models.ForeignKey(BinaryBet, on_delete=models.CASCADE)
     # The user who placed the bet
-    placed_by = models.ForeignKey(Profile)
+    placed_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     # Amount of x placed
     placed_amount = models.PositiveIntegerField()
     # Whether the user chose the alternative and not the null option
