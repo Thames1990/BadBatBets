@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 def landing(request):
@@ -12,7 +11,7 @@ def landing(request):
 
 def profile(request):
     if request.user.is_authenticated():
-        return HttpResponse("Logged in!")
+        return render(request, 'profiles/profile.html')
     else:
         return redirect('profiles:login_page')
 
@@ -40,4 +39,11 @@ def login_user(request):
     else:
         return render(request, 'profiles/login.html', {
                 'error_message': "Unknown User"
+            })
+
+
+def logout_user(request):
+    logout(request)
+    return render(request, 'profiles/login.html', {
+                'message': "Logout Successfull"
             })
