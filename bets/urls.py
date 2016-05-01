@@ -17,11 +17,4 @@ urlpatterns = [
         views.binary_bet,
         name='binary_bet'
     ),
-
-    # /bets/<binary_bet_prim_key_>/<placed_binary_bet_prim_key>/
-    url(
-        r'^(?P<binary_bet_prim_key_>[0-9]+)/(?P<placed_binary_bet_prim_key>[0-9]+)/$',
-        views.placed_binary_bet,
-        name='placed_binary_bet'
-    ),
 ]
