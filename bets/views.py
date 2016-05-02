@@ -36,16 +36,11 @@ def binary_bet(request, prim_key):
 def bet_on_binary_bet(request, prim_key):
     if request.user.is_authenticated():
         bet = get_object_or_404(BinaryBet, prim_key=prim_key)
-        choice = request.POST['choice']
-        # TODO Add placed amount field
-        placed_amount = 9001
-        # TODO Improve choice system
-        chose_alternative = "alternative" in choice
         placed_bet = PlacedBinaryBet(
             placed_on=bet,
             placed_by=request.user.profile,
-            placed_amount=placed_amount,
-            chose_alternative=chose_alternative
+            placed_amount=9001,
+            chose_alternative="alternative" in request.POST['choice']
         )
         placed_bet.save()
         return HttpResponseRedirect(reverse('bets:index'))
