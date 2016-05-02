@@ -32,13 +32,13 @@
 
 {# TODO Add check for already voted #}
 {% if not bet.resolved %}
-    <form action="{% url 'bets:binary_bet' bet.prim_key %}" method="post">
+    <form action="{% url 'bets:bet_on_binary_bet' bet.prim_key %}" method="post">
         {% csrf_token %}
-        <input type="radio" id="null" name="choice" value="{{ bet.prim_key }}">
+        <input type="radio" id="null" name="choice" value="null{{ bet.null_option }}">
         <label for="null">
             {{ bet.null_option }}
         </label>
-        <input type="radio" id="alternative" name="choice" value="{{ bet.prim_key }}">
+        <input type="radio" id="alternative" name="choice" value="alternative{{ bet.alternative_option }}">
         <label for="alternative">
             {{ bet.alternative_option }}
         </label>
