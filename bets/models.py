@@ -41,6 +41,9 @@ class Choice(models.Model):
     # (Short) description of the choice
     description = models.CharField(max_length=64)
 
+    def __str__(self):
+        return self.belongs_to.name + ": " + self.description
+
 
 class ChoiceBet(models.Model):
     # User that placed this bet
@@ -51,3 +54,6 @@ class ChoiceBet(models.Model):
     chosen = models.ForeignKey(Choice)
     # Amount the user placed
     placed = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.placed_on.name + ": " + self.placed_by.user.username
