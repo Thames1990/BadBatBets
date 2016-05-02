@@ -13,3 +13,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.__str__()
+
+
+class ForbiddenUser(models.Model):
+    # The name that will be shown to the user making the selection
+    name = models.CharField(max_length=64)
+    # Whether this person actually has an account
+    has_account = models.BooleanField()
+    # If the person has an account, it will be linked here.
+    account = models.OneToOneField(Profile, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
