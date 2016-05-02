@@ -1,10 +1,17 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+    <title>Index</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+
+</head>
+
 <h1>Binary bets</h1>
 
-{% if bet_message %}
-    <p><strong>{{ bet_message }}</strong></p>
-{% endif %}
-
-<h2>Available bets</h2>
+<h2>Binary bets</h2>
 <ul>
     {% for binary_bet in all_binary_bets %}
         <li><a href="{% url 'bets:binary_bet' binary_bet.prim_key %}">{{ binary_bet.name }}</a></li>

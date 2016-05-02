@@ -48,17 +48,6 @@ def bet_on_binary_bet(request, prim_key):
             chose_alternative=chose_alternative
         )
         placed_bet.save()
-
-        all_binary_bets = BinaryBet.objects.all()
-        all_placed_bets = PlacedBinaryBet.objects.all()
-        bet_on = bet.alternative_option if chose_alternative else bet.null_option
-        context = {
-            'all_binary_bets': all_binary_bets,
-            'all_placed_bets': all_placed_bets,
-            'bet_message': "Successfully bet " + str(placed_amount) + " on " + bet_on + " for" + bet.name
-        }
-        return render(request, 'index.html', context)
-        # TODO Use HttpResponseRedirect
-        # return HttpResponseRedirect(reverse('index.html'))
+        return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
