@@ -13,7 +13,7 @@ def index(request):
             'all_binary_bets': all_binary_bets,
             'all_placed_bets': all_placed_bets
         }
-        return render(request, 'index.html', context)
+        return render(request, 'bets/index.html', context)
     else:
         return render(request, 'profiles/login.html')
 
@@ -27,8 +27,8 @@ def binary_bet(request, prim_key):
                 placed_bet = PlacedBinaryBet.objects.get(prim_key=prim_key)
             except PlacedBinaryBet.DoesNotExist:
                 raise Http404("Neither a binary bet nor a placed binary bet with id:" + str(prim_key) + " does exist.")
-            return render(request, 'placed_binary_bet.html', {'placed_bet': placed_bet})
-        return render(request, 'binary_bet.html', {'bet': bet})
+            return render(request, 'bets/placed_binary_bet.html', {'placed_bet': placed_bet})
+        return render(request, 'bets/binary_bet.html', {'bet': bet})
     else:
         return render(request, 'profiles/login.html')
 

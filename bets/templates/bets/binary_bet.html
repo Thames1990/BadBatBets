@@ -1,0 +1,52 @@
+{% extends 'the_platform/base.html' %}
+
+{% block content %}
+    <h1>{{ bet.name }}</h1>
+    <table>
+        <tr>
+            <th>Primary key</th>
+            <td>{{ bet.prim_key }}</td>
+        </tr>
+        <tr>
+            <th>Owner</th>
+            <td>{{ bet.owner }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ bet.description }}</td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ bet.created }}</td>
+        </tr>
+        <tr>
+            <th>Published</th>
+            <td>{{ bet.pub_date }}</td>
+        </tr>
+        <tr>
+            <th>Resolved</th>
+            <td>{{ bet.resolved }}</td>
+        </tr>
+    </table>
+
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    {# TODO Add check for already voted #}
+    {% if not bet.resolved %}
+        <form action="{% url 'bets:bet_on_binary_bet' bet.prim_key %}" method="post">
+            {% csrf_token %}
+            {# TODO Add placed amount field #}
+            <input type="radio" id="null" name="choice" value="null{{ bet.null_option }}">
+            <label for="null">
+                {{ bet.null_option }}
+            </label>
+            <input type="radio" id="alternative" name="choice" value="alternative{{ bet.alternative_option }}">
+            <label for="alternative">
+                {{ bet.alternative_option }}
+            </label>
+            <input type="submit" value="Bet">
+        </form>
+    {% endif %}
+{% endblock %}
