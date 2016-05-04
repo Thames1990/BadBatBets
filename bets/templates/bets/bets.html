@@ -3,34 +3,28 @@
 {% block content %}
     <h1>{{ bet.name }}</h1>
     <table>
-        <tr>
-            <th>Owner</th>
-            <td>{{ bet.owner }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ bet.description }}</td>
-        </tr>
-        <tr>
-            <th>Created</th>
-            <td>{{ bet.created }}</td>
-        </tr>
-        <tr>
-            <th>Published</th>
-            <td>{{ bet.pub_date }}</td>
-        </tr>
-        <tr>
-            <th>Ends on</th>
-            <td>{{ bet.end_date }}</td>
-        </tr>
-        <tr>
-            <th>Resolved</th>
-            <td>{{ bet.resolved }}</td>
-        </tr>
-        <tr>
-            <th>Type</th>
-            <td>{{ bet.type }}</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Description</th>
+                <th>Created</th>
+                <th>Published</th>
+                <th>Ends on</th>
+                <th>Resolved</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ bet.owner }}</td>
+                <td>{{ bet.description }}</td>
+                <td>{{ bet.created }}</td>
+                <td>{{ bet.pub_date }}</td>
+                <td>{{ bet.end_date }}</td>
+                <td>{{ bet.resolved }}</td>
+                <td>{{ bet.type }}</td>
+            </tr>
+        </tbody>
     </table>
 
     {% if error_message %}
@@ -41,9 +35,11 @@
     {% if not bet.resolved %}
         <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
             {% csrf_token %}
-            <label for="number">Amount</label>
+            {# TODO Add null check #}
             <input type="number" id="placed" name="placed">
+            <label for="number">Amount</label>
             <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+            {# TODO Add null check #}
             {% for choice in bet.choice_set.all %}
                 <input type="radio" id="{{ forloop.counter }}" name="choice" value="{{ choice.description }}">
                 <label for="{{ forloop.counter }}">{{ choice.description }}</label>

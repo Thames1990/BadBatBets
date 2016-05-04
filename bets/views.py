@@ -28,8 +28,8 @@ def bet_view(request, prim_key):
                 choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
             except ChoiceBet.DoesNotExist:
                 raise Http404("Neither a binary bet nor a placed binary bet with id:" + str(prim_key) + " does exist.")
-            return render(request, 'bets/choice_bet.html', {'choice_bet': choice_bet})
-        return render(request, 'bets/bet.html', {'bet': bet})
+            return render(request, 'bets/choice_bets.html', {'choice_bet': choice_bet})
+        return render(request, 'bets/bets.html', {'bet': bet})
     else:
         return render(request, 'profiles/login.html')
 
