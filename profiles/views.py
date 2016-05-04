@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
-from .util import user_authenticated
-
 
 def landing(request):
-    if user_authenticated(request.user):
+    if request.user.is_authenticated():
         return redirect('profiles:profile')
     else:
         return render(request, 'profiles/landing.html', {})
