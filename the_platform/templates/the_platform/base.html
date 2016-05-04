@@ -1,11 +1,9 @@
 {% load staticfiles %}
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Lorem Ipsum">
-    <meta name="author" content="Me, Myself and I">
 
     <title>Bad Bat Bets</title>
 
@@ -14,9 +12,22 @@
     <link rel="icon" href="{% static 'the_platform/favicon.ico' %}">
 </head>
 <body>
-{# TODO Improve base html #}
-<h1><a href="/">Bad Bat Bets</a></h1>
-{% block content %}
-{% endblock %}
+<main>
+    <nav>
+        <ul><a href="/">Test</a></ul>
+        <ul><a href="/">Test</a></ul>
+        <ul><a href="/">Test</a></ul>
+        <ul><a href="/">Test</a></ul>
+        <ul><a href="/">Test</a></ul>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- footer -->
+    <footer>
+        <p>&copy; Fusion Integrals 2016</p>
+    </footer>
+</main>
 </body>
 </html>

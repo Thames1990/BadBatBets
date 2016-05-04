@@ -2,47 +2,48 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 
-from .models import BinaryBet, PlacedBinaryBet
+from .models import Bet, ChoiceBet, Choice
 
 
-def index(request):
+def index_view(request):
     if request.user.is_authenticated():
-        all_binary_bets = BinaryBet.objects.all()
-        all_placed_bets = PlacedBinaryBet.objects.all()
+        all_bets = Bet.objects.all()
+        all_choice_bets = ChoiceBet.objects.all()
         context = {
-            'all_binary_bets': all_binary_bets,
-            'all_placed_bets': all_placed_bets
+            'all_bets': all_bets,
+            'all_choice_bets': all_choice_bets
         }
         return render(request, 'bets/index.html', context)
     else:
         return render(request, 'profiles/login.html')
 
 
-def binary_bet(request, prim_key):
+def bet_view(request, prim_key):
+    # TODO filter for forbidden users
     if request.user.is_authenticated():
         try:
-            bet = BinaryBet.objects.get(prim_key=prim_key)
-        except BinaryBet.DoesNotExist:
+            bet = Bet.objects.get(prim_key=prim_key)
+        except Bet.DoesNotExist:
             try:
-                placed_bet = PlacedBinaryBet.objects.get(prim_key=prim_key)
-            except PlacedBinaryBet.DoesNotExist:
+                choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
+            except ChoiceBet.DoesNotExist:
                 raise Http404("Neither a binary bet nor a placed binary bet with id:" + str(prim_key) + " does exist.")
-            return render(request, 'bets/placed_binary_bet.html', {'placed_bet': placed_bet})
-        return render(request, 'bets/binary_bet.html', {'bet': bet})
+            return render(request, 'bets/choice_bet.html', {'choice_bet': choice_bet})
+        return render(request, 'bets/bet.html', {'bet': bet})
     else:
         return render(request, 'profiles/login.html')
 
 
-def bet_on_binary_bet(request, prim_key):
+def choice_bet_view(request, prim_key):
     if request.user.is_authenticated():
-        bet = get_object_or_404(BinaryBet, prim_key=prim_key)
-        placed_bet = PlacedBinaryBet(
-            placed_on=bet,
+        bet = get_object_or_404(Bet, prim_key=prim_key)
+        choice_bet = ChoiceBet(
             placed_by=request.user.profile,
-            placed_amount=9001,
-            chose_alternative="alternative" in request.POST['choice']
+            placed_on=bet,
+            chosen=get_object_or_404(Choice, belongs_to=bet, description=request.POST['choice']),
+            placed=9001,
         )
-        placed_bet.save()
+        choice_bet.save()
         return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')

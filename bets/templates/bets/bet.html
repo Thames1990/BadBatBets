@@ -4,10 +4,6 @@
     <h1>{{ bet.name }}</h1>
     <table>
         <tr>
-            <th>Primary key</th>
-            <td>{{ bet.prim_key }}</td>
-        </tr>
-        <tr>
             <th>Owner</th>
             <td>{{ bet.owner }}</td>
         </tr>
@@ -24,8 +20,16 @@
             <td>{{ bet.pub_date }}</td>
         </tr>
         <tr>
+            <th>Ends on</th>
+            <td>{{ bet.end_date }}</td>
+        </tr>
+        <tr>
             <th>Resolved</th>
             <td>{{ bet.resolved }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ bet.type }}</td>
         </tr>
     </table>
 
@@ -35,17 +39,16 @@
 
     {# TODO Add check for already voted #}
     {% if not bet.resolved %}
-        <form action="{% url 'bets:bet_on_binary_bet' bet.prim_key %}" method="post">
+        <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
             {% csrf_token %}
             {# TODO Add placed amount field #}
-            <input type="radio" id="null" name="choice" value="null{{ bet.null_option }}">
-            <label for="null">
-                {{ bet.null_option }}
-            </label>
-            <input type="radio" id="alternative" name="choice" value="alternative{{ bet.alternative_option }}">
-            <label for="alternative">
-                {{ bet.alternative_option }}
-            </label>
+            {% for choice in bet.choice_set.all %}
+                <input type="radio" id="{{ forloop.counter }}" name="choice" value="{{ choice.description }}">
+                <label for="{{ forloop.counter }}">
+                    {{ choice.description }}
+                </label>
+            {% empty %}
+            {% endfor %}
             <input type="submit" value="Bet">
         </form>
     {% endif %}
