@@ -36,10 +36,9 @@
         <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
             {% csrf_token %}
             {# TODO Add null check #}
-            <input type="number" id="placed" name="placed">
             <label for="number">Amount</label>
-            <label for="{{ forloop.counter }}">{{ choice.description }}</label>
-            {# TODO Add null check #}
+            <input type="number" id="placed" name="placed">
+            {# TODO Add null and negative check #}
             {% for choice in bet.choice_set.all %}
                 <input type="radio" id="{{ forloop.counter }}" name="choice" value="{{ choice.description }}">
                 <label for="{{ forloop.counter }}">{{ choice.description }}</label>
