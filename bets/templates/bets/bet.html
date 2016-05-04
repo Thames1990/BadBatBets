@@ -41,12 +41,12 @@
     {% if not bet.resolved %}
         <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
             {% csrf_token %}
-            {# TODO Add placed amount field #}
+            <label for="number">Amount</label>
+            <input type="number" id="placed" name="placed">
+            <label for="{{ forloop.counter }}">{{ choice.description }}</label>
             {% for choice in bet.choice_set.all %}
                 <input type="radio" id="{{ forloop.counter }}" name="choice" value="{{ choice.description }}">
-                <label for="{{ forloop.counter }}">
-                    {{ choice.description }}
-                </label>
+                <label for="{{ forloop.counter }}">{{ choice.description }}</label>
             {% empty %}
             {% endfor %}
             <input type="submit" value="Bet">

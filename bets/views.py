@@ -41,7 +41,7 @@ def choice_bet_view(request, prim_key):
             placed_by=request.user.profile,
             placed_on=bet,
             chosen=get_object_or_404(Choice, belongs_to=bet, description=request.POST['choice']),
-            placed=9001,
+            placed=request.POST['placed'],
         )
         choice_bet.save()
         return HttpResponseRedirect(reverse('bets:index'))
