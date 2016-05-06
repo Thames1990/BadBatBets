@@ -1,20 +1,22 @@
 {% extends 'the_platform/base.html' %}
 
 {% block content %}
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
+    <section>
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
 
-    {% if message %}
-        <p><strong>{{ message }}</strong></p>
-    {% endif %}
+        {% if message %}
+            <p><strong>{{ message }}</strong></p>
+        {% endif %}
 
-    <form action="{% url 'profiles:login_post' %}" method="post">
-        {% csrf_token %}
-        Username:<br>
-        <input type="text" name="username"><br>
-        Password:<br>
-        <input type="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form>
+        <form action="{% url 'profiles:login_post' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" name="username"><br>
+            <label for="password">Password</label>
+            <input type="password" name="password"><br>
+            <button type="submit" value="Login">Login</button>
+        </form>
+    </section>
 {% endblock %}

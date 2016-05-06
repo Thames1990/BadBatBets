@@ -1,35 +1,9 @@
-@import url('https://cdn.rawgit.com/mblode/marx/master/css/marx.min.css');
+@import url('bare.min.css');
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+section {
+    margin-top: 2em !important;
 }
 
-nav li {
-    float: left;
-    border-right: 1px solid #bbb;
-}
-
-nav li:last-child {
-    border-right: none;
-}
-
-nav li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-nav li a:hover {
-    background-color: #111;
-}
-
-nav .active {
-    background-color: #4CAF50;
+#bets {
+    border-left: 1px solid gray;
 }

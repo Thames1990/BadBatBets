@@ -1,7 +1,9 @@
 {% extends 'the_platform/base.html' %}
 
 {% block content %}
-    <p>Username: {{ user.username }}</p>
-    <p>Account Balance: {{ profile.points }}</p>
-    <a href="{% url 'profiles:logout' %}">Logout</a>
+    <section>
+        <p>Username: {{ user.username }}</p>
+        <p>Account Balance: {{ profile.points }}</p>
+        <a href="{% url 'profiles:logout' %}">Logout</a>
+    </section>
 {% endblock %}

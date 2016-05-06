@@ -1,9 +1,10 @@
 {% extends 'the_platform/base.html' %}
 
 {% block content %}
-    <h1>{{ bet.name }}</h1>
-    <table>
-        <thead>
+    <section>
+        <h1>{{ bet.name }}</h1>
+        <table>
+            <thead>
             <tr>
                 <th>Owner</th>
                 <th>Description</th>
@@ -13,8 +14,8 @@
                 <th>Resolved</th>
                 <th>Type</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr>
                 <td>{{ bet.owner }}</td>
                 <td>{{ bet.description }}</td>
@@ -24,27 +25,35 @@
                 <td>{{ bet.resolved }}</td>
                 <td>{{ bet.type }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </section>
 
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-
-    {# TODO Add check for already voted #}
-    {% if not bet.resolved %}
-        <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
-            {% csrf_token %}
-            {# TODO Add null check #}
-            <label for="number">Amount</label>
-            <input type="number" id="placed" name="placed">
-            {# TODO Add null and negative check #}
-            {% for choice in bet.choice_set.all %}
-                <input type="radio" id="{{ forloop.counter }}" name="choice" value="{{ choice.description }}">
-                <label for="{{ forloop.counter }}">{{ choice.description }}</label>
-            {% empty %}
-            {% endfor %}
-            <input type="submit" value="Bet">
-        </form>
-    {% endif %}
+    <section>
+        {# TODO Add check for already voted #}
+        {% if not bet.resolved %}
+            <grid>
+                <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
+                    {% csrf_token %}
+                    <div col="1/4">
+                        <label for="number">Amount</label>
+                        <input type="number" id="placed" name="placed" min="0" placeholder="Amount" required>
+                    </div>
+                    <div col="1/2">
+                        <p style="display: inline;">Available choices</p>
+                        {% for choice in bet.choice_set.all %}
+                            <input type="radio" id="{{ forloop.counter }}" name="choice"
+                                   value="{{ choice.description }}" required>
+                            <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                        {% empty %}
+                            <p>No choices available</p>
+                        {% endfor %}
+                    </div>
+                    <div col="1/4">
+                        <button type="submit">Bet</button>
+                    </div>
+                </form>
+            </grid>
+        {% endif %}
+    </section>
 {% endblock %}

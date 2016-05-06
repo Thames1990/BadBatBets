@@ -1,33 +1,41 @@
 {% load staticfiles %}
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Bad Bat Bets</title>
+    <meta charset=utf-8>
+    <meta name="description" content="A classless CSS framework">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+
 
     <link rel="stylesheet" href="{% static 'the_platform/style.css' %}">
-    {# TODO Update favicon #}
     <link rel="icon" href="{% static 'the_platform/favicon.ico' %}">
 </head>
 <body>
 <main>
-    <nav>
-        <ul>
-            {# TODO Find error #}
-            {# <li><a class="active" href="{% include 'bets/index.html' %}">Home</a></li> #}
-            <li><a class="active" href="/">Home</a></li>
-            <li><a href="/">Bets</a></li>
-            <li><a href="/">Choice Bets</a></li>
-            <li style="float:right"><a href="/">Profile</a></li>
-        </ul>
+    <nav fx>
+        <label>
+            <input type="checkbox">
+            <header>
+                <a href="/"><img src="{% static 'the_platform/logo.svg' %}">Bad Bat Bets</a>
+            </header>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a>Bets</a>
+                    <menu>
+                        <menuitem><a href="/">Bets</a></menuitem>
+                        <menuitem><a href="/">Choice Bets</a></menuitem>
+                    </menu>
+                </li>
+                <li><a href="/">Profile</a></li>
+            </ul>
+        </label>
     </nav>
 
     {% block content %}
     {% endblock %}
 
-    <!-- footer -->
+    {# TODO Fix at bottom #}
     <footer>
         <p>&copy; Fusion Integrals 2016</p>
     </footer>
