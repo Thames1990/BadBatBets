@@ -1,9 +1,28 @@
 @import url('bare.min.css');
 
+body {
+    background: #f4f5f6;
+}
+
+h2 {
+    display: flex;
+    justify-content: center; /* align horizontal */
+}
+
+h5 {
+    border-bottom: 1px solid grey;
+}
+
 section {
     margin-top: 2em !important;
 }
 
-#bets {
+.bets {
     border-left: 1px solid gray;
+}
+
+.card_link {
+    display: block;
+    text-decoration: none !important;
+    margin: 1em;
 }
