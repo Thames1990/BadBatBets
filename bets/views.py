@@ -1,6 +1,8 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views import generic
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from .models import Bet, ChoiceBet, Choice
 
@@ -47,3 +49,55 @@ def choice_bet_view(request, prim_key):
         return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
+
+
+class IndexView(generic.ListView):
+    template_name = 'bets/index.html'
+
+    def get_queryset(self):
+        return Bet.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context.update({
+            'bets': Bet.objects.all(),
+            'choice_bets': ChoiceBet.objects.all()
+        })
+        return context
+
+
+class BetView(generic.DetailView):
+    model = Bet
+    template_name = 'bets/bets.html'
+
+
+class BetCreate(CreateView):
+    model = Bet
+    fields = [
+        'owner',
+        'name',
+        'description',
+        'pub_date',
+        'end_date',
+        'type',
+        'forbidden'
+    ]
+
+
+class BetUpdate(UpdateView):
+    model = Bet
+    success_url = reverse_lazy('bets:index')
+    fields = [
+        'owner',
+        'name',
+        'description',
+        'pub_date',
+        'end_date',
+        'type',
+        'forbidden'
+    ]
+
+
+class BetDelete(DeleteView):
+    model = Bet
+    success_url = reverse_lazy('bets:index')

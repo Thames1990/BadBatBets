@@ -1,14 +1,18 @@
 {% extends 'the_platform/base.html' %}
 
+{% block title %}
+    Bad Bat Bets
+{% endblock %}
+
 {% block content %}
     <section>
         <grid>
             <div col="1/2" class="bets">
                 <h2>Bets</h2>
-                {% for bet in all_bets %}
+                {% for bet in bets %}
                     <a class="card_link" href="{% url 'bets:bet' bet.prim_key %}">
                         <card>
-                            <h5>{{ bet.name }}</h5>
+                            <h4>{{ bet.name }}</h4>
                             <p>{{ bet.description }}</p>
                             {% if not bet.resolved %}
                                 <p style="display: inline">Available choices</p>
@@ -28,12 +32,24 @@
             </div>
             <div col="1/2" class="bets">
                 <h2>Choice bets</h2>
-                {% for choice_bet in all_choice_bets %}
+                {% for choice_bet in choice_bets %}
                     <a class="card_link" href="{% url 'bets:bet' choice_bet.placed_on.prim_key %}">
                         <card>
-                            <h5>{{ choice_bet.placed_on.name }}</h5>
-                            <p>Placed amount: {{ choice_bet.placed }}</p>
-                            <p>Choice: {{ choice_bet.chosen.description }}</p>
+                            <h4>{{ choice_bet.placed_on.name }}</h4>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Placed amount</th>
+                                    <th>Choice</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ choice_bet.placed }}</td>
+                                    <td>{{ choice_bet.chosen.description }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </card>
                     </a>
                 {% empty %}

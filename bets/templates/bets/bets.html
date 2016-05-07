@@ -1,8 +1,12 @@
 {% extends 'the_platform/base.html' %}
 
+{% block title %}
+    Bets
+{% endblock %}
+
 {% block content %}
     <section>
-        <h1>{{ bet.name }}</h1>
+        <h2>{{ bet.name }}</h2>
         <table>
             <thead>
             <tr>
@@ -27,6 +31,11 @@
             </tr>
             </tbody>
         </table>
+    </section>
+
+    <section>
+        <a href="{% url 'bets:update_bet' bet.prim_key %}">Update bet</a>
+        <a href="{% url 'bets:delete_bet' bet.prim_key %}">Delete bet</a>
     </section>
 
     <section>

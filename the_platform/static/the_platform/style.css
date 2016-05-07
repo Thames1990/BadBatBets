@@ -1,12 +1,12 @@
 @import url('bare.min.css');
 
-body {
+html, body {
     background: #f4f5f6;
 }
 
 h2 {
     display: flex;
-    justify-content: center; /* align horizontal */
+    justify-content: center;
 }
 
 h5 {
@@ -17,6 +17,10 @@ section {
     margin-top: 2em !important;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 .bets {
     border-left: 1px solid gray;
 }
@@ -25,4 +29,5 @@ section {
     display: block;
     text-decoration: none !important;
     margin: 1em;
+    color: black;
 }

@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 from bets.util import pkgen
@@ -5,7 +6,6 @@ from profiles.models import Profile, ForbiddenUser
 
 
 class Bet(models.Model):
-
     BET_TYPES = (
         ('choice', 'Choices'),
     )
@@ -30,6 +30,9 @@ class Bet(models.Model):
     type = models.CharField(max_length=64, choices=BET_TYPES)
     # People that are not allowed to see this bet
     forbidden = models.ManyToManyField(ForbiddenUser)
+
+    def get_absolute_url(self):
+        return reverse('bets:bet', kwargs={'prim_key': self.prim_key})
 
     def __str__(self):
         return self.name

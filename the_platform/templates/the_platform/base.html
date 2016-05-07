@@ -1,11 +1,11 @@
 {% load staticfiles %}
 <html>
 <head>
-    <title>Bad Bat Bets</title>
     <meta charset=utf-8>
     <meta name="description" content="A classless CSS framework">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
+    <title>{% block title %}Bad Bat Bets{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'the_platform/style.css' %}">
     <link rel="icon" href="{% static 'the_platform/favicon.ico' %}">
@@ -22,6 +22,7 @@
                 <li>
                     <a>Bets</a>
                     <menu>
+                        <menuitem><a href="{% url 'bets:create_bet' %}">Create Bet</a> </menuitem>
                         <menuitem><a href="/">Bets</a></menuitem>
                         <menuitem><a href="/">Choice Bets</a></menuitem>
                     </menu>
@@ -31,8 +32,10 @@
         </label>
     </nav>
 
-    {% block content %}
-    {% endblock %}
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
     {# TODO Fix at bottom #}
     <footer>
