@@ -17,10 +17,6 @@ section {
     margin-top: 2em !important;
 }
 
-table {
-    border-collapse: collapse;
-}
-
 .bets {
     border-left: 1px solid gray;
 }
@@ -29,5 +25,4 @@ table {
     display: block;
     text-decoration: none;
     margin: 1em;
-    color: black;
 }
