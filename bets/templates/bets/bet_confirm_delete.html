@@ -1,0 +1,15 @@
+{% extends 'the_platform/base.html' %}
+
+{% block title %}
+    Delete Bet
+{% endblock %}
+
+{% block content %}
+    <section>
+        <p>Are you sure, that you want to delete {{ bet.name }}?</p>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button type="submit" value="DELETE">Delete</button>
+        </form>
+    </section>
+{% endblock %}
