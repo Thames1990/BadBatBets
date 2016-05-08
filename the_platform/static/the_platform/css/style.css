@@ -23,6 +23,6 @@ section {
 
 .card_link {
     display: block;
-    text-decoration: none !important;
+    text-decoration: none;
     margin: 1em;
 }

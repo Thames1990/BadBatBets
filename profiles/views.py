@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 
 def landing(request):
     if request.user.is_authenticated():
-        return redirect('profiles:profile')
+        return redirect('bets:index')
     else:
         return render(request, 'profiles/landing.html', {})
 
@@ -34,7 +34,7 @@ def login_user(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return redirect('profiles:profile')
+            return redirect('bets:index')
         else:
             return render(request, 'profiles/login.html', {
                 'error_message': "Account inactive"

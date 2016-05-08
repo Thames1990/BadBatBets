@@ -1,14 +1,14 @@
 {% load staticfiles %}
 <html>
 <head>
-    <title>Bad Bat Bets</title>
+    <title>{% block title %}Bad Bat Bets{% endblock %}</title>
     <meta charset=utf-8>
     <meta name="description" content="A classless CSS framework">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
 
 
-    <link rel="stylesheet" href="{% static 'the_platform/style.css' %}">
-    <link rel="icon" href="{% static 'the_platform/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'the_platform/css/style.css' %}">
+    <link rel="icon" href="{% static 'the_platform/icons/favicon.ico' %}">
 </head>
 <body>
 <main>
@@ -16,17 +16,12 @@
         <label>
             <input type="checkbox">
             <header>
-                <a href="/"><img src="{% static 'the_platform/logo.svg' %}">Bad Bat Bets</a>
+                <a href="{% url 'bets:index' %}"><img src="{% static 'the_platform/icons/logo.svg' %}">Bad Bat Bets</a>
             </header>
             <ul>
-                <li>
-                    <a>Bets</a>
-                    <menu>
-                        <menuitem><a href="/">Bets</a></menuitem>
-                        <menuitem><a href="/">Choice Bets</a></menuitem>
-                    </menu>
-                </li>
-                <li><a href="/">Profile</a></li>
+                <li><a href="/">Available Bets</a></li>
+                <li><a href="/">Placed Bets</a></li>
+                <li><a href="{% url 'profiles:logout' %}">{% block login %}Logout{% endblock %}</a></li>
             </ul>
         </label>
     </nav>
