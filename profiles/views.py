@@ -41,12 +41,12 @@ def login_user(request):
             })
     else:
         return render(request, 'profiles/login.html', {
-                'error_message': "Unknown User"
-            })
+            'error_message': "Unknown User"
+        })
 
 
 def logout_user(request):
     logout(request)
     return render(request, 'profiles/login.html', {
-                'message': "Logout Successfull"
-            })
+        'message': "Logout Successfull"
+    })
