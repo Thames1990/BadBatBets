@@ -4,9 +4,13 @@
     {{ bet.name }}
 {% endblock %}
 
+{% block profile %}
+    {{ user.profile }}
+{% endblock %}
+
 {% block content %}
     <section>
-        <h1>{{ bet.name }}</h1>
+        <h1>{{ choice_bet.name }}</h1>
         <table>
             <thead>
             <tr>
@@ -15,19 +19,15 @@
                 <th>Created</th>
                 <th>Published</th>
                 <th>Ends on</th>
-                <th>Resolved</th>
-                <th>Type</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>{{ bet.owner }}</td>
-                <td>{{ bet.description }}</td>
-                <td>{{ bet.created_date }}</td>
-                <td>{{ bet.published_date }}</td>
-                <td>{{ bet.end_date }}</td>
-                <td>{{ bet.resolved }}</td>
-                <td>{{ bet.type }}</td>
+                <td>{{ choice_bet.owner }}</td>
+                <td>{{ choice_bet.description }}</td>
+                <td>{{ choice_bet.created_date }}</td>
+                <td>{{ choice_bet.published_date }}</td>
+                <td>{{ choice_bet.end_date }}</td>
             </tr>
             </tbody>
         </table>
@@ -35,7 +35,7 @@
 
     <section>
         {# TODO Exclude if user already bet #}
-        <form action="{% url 'bets:choice_bet' bet.prim_key %}" method="post">
+        <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
             {% csrf_token %}
             <grid>
                 <div col="1/2">
@@ -51,7 +51,7 @@
                 </div>
                 <div col="1/2">
                     <p style="display: inline;">Available choices: </p>
-                    {% for choice in bet.choice_set.all %}
+                    {% for choice in choice_bet.choices.all %}
                         <input
                             type="radio"
                             id="{{ forloop.counter }}"

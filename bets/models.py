@@ -6,20 +6,14 @@ from profiles.models import Profile, ForbiddenUser
 
 
 class Bet(models.Model):
-    BET_TYPES = (
-        ('choice', 'Choices'),
-    )
-
     prim_key = models.PositiveIntegerField(primary_key=True, default=pkgen)
     owner = models.ForeignKey(Profile)
     name = models.CharField(max_length=64)
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
-    published_date = models.DateField(blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-    resolved = models.BooleanField(default=False)
-    type = models.CharField(max_length=64, choices=BET_TYPES)
-    forbidden = models.ManyToManyField(ForbiddenUser)
+    forbidden_users = models.ManyToManyField(ForbiddenUser)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -30,14 +24,17 @@ class Bet(models.Model):
 
 
 class Choice(models.Model):
-    belongs_to = models.ForeignKey(Bet)
     description = models.CharField(max_length=64)
 
     def __str__(self):
-        return self.belongs_to.name + ": " + self.description
+        return self.description
 
 
-class ChoiceBet(models.Model):
+class ChoiceBet(Bet):
+    choices = models.ManyToManyField(Choice)
+
+
+class PlacedBet(models.Model):
     placed_by = models.ForeignKey(Profile)
     placed_on = models.ForeignKey(Bet)
     chosen = models.ForeignKey(Choice)
