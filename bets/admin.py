@@ -22,3 +22,4 @@ class ChoiceBetAdmin(admin.ModelAdmin):
     list_display = ('name', 'created', 'pub_date', 'end_date', 'resolved')
 
 admin.site.register(ChoiceBet, ChoiceBetAdmin)
+admin.site.register(PlacedChoiceBet)
