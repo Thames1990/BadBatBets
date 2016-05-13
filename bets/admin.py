@@ -27,6 +27,10 @@ class DateBetAdmin(admin.ModelAdmin):
         ('General', {'fields': ['name', 'description']}),
         ('People', {'fields': ['owner', 'forbidden']}),
         ('Dates', {'fields': ['pub_date', 'end_bets_date']}),
+        ('Time Period', {
+            'fields': ['time_period_start', 'time_period_end'],
+            'classes': ('collapse',)
+        }),
         ('Misc', {
             'fields': ['resolved'],
             'classes': ('collapse',),

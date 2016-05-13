@@ -27,7 +27,10 @@ class Bet(models.Model):
     # Whether or not the bet has been resolved
     resolved = models.BooleanField(default=False)
     # People that are not allowed to see this bet
-    forbidden = models.ManyToManyField(ForbiddenUser)
+    forbidden = models.ManyToManyField(ForbiddenUser, blank=True)
+
+    def __str__(self):
+        return self.name
 
     def open_to_bets(self):
         if self.end_bets is None:
@@ -74,8 +77,9 @@ class PlacedChoiceBet(PlacedBet):
 
 
 class DateBet(Bet):
-    # If don't know of any additional fields yet - but you can't have an empty Model
-    foobar = models.CharField(max_length=6, default='foobar')
+    # The date users bet on must be between start and end (if they exist)
+    time_period_start = models.DateField(blank=True, null=True)
+    time_period_end = models.DateField(blank=True, null=True)
 
 
 class PlacedDateBet(PlacedBet):
