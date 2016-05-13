@@ -23,20 +23,31 @@ class Bet(models.Model):
     # Date when the bet is published
     pub_date = models.DateField()
     # After this, no further bets may be placed
-    end_bets = models.DateField(blank=True, null=True)
+    end_bets_date = models.DateField(blank=True, null=True)
     # Whether or not the bet has been resolved
     resolved = models.BooleanField(default=False)
     # People that are not allowed to see this bet
     forbidden = models.ManyToManyField(ForbiddenUser)
-
-    def __str__(self):
-        return self.name
 
     def open_to_bets(self):
         if self.end_bets is None:
             return True
         else:
             return timezone.now() < self.end_bets
+
+
+class PlacedBet(models.Model):
+
+    class Meta:
+        abstract = True
+
+    # User that placed this bet
+    placed_by = models.ForeignKey(Profile)
+    # Amount the user placed
+    placed = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.placed_on.name + ": " + self.placed_by.user.username
 
 
 class ChoiceBet(Bet):
@@ -50,19 +61,25 @@ class Choice(models.Model):
     # (Short) description of the choice
     description = models.CharField(max_length=64)
 
-    def __str__(self):
-        return self.belongs_to.name + ": " + self.description
+    # TODO: This does not wok - and i have no idea, why!
+    # def __str__(self):
+    #    return self.belongs_to.name + ": " + self.description
 
 
-class PlacedChoiceBet(models.Model):
-    # User that placed this bet
-    placed_by = models.ForeignKey(Profile)
+class PlacedChoiceBet(PlacedBet):
     # The bet it is placed on
     placed_on = models.ForeignKey(ChoiceBet)
     # Choice that the user selected
     chosen = models.ForeignKey(Choice)
-    # Amount the user placed
-    placed = models.PositiveIntegerField()
 
-    def __str__(self):
-        return self.placed_on.name + ": " + self.placed_by.user.username
+
+class DateBet(Bet):
+    # If don't know of any additional fields yet - but you can't have an empty Model
+    foobar = models.CharField(max_length=6, default='foobar')
+
+
+class PlacedDateBet(PlacedBet):
+    # The bet it is placed on
+    placed_on = models.ForeignKey(DateBet)
+    # The date that the user bet on
+    placed_date = models.DateField()
