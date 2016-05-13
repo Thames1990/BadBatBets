@@ -10,6 +10,8 @@ class Profile(models.Model):
     verified = models.BooleanField(default=False)
     # The number of points the user has gained/lost
     points = models.IntegerField(default=0)
+    # Has the user accepted the AGBs?
+    accepted_agbs = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.__str__()
