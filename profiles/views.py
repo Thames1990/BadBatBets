@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
+from .forms import SignupForm
+
 
 def landing(request):
     if request.user.is_authenticated():
@@ -16,7 +18,7 @@ def profile(request):
             'profile': request.user.profile
         })
     else:
-        return redirect(login_page)
+        return redirect(login_user)
 
 
 def login_page(request):
@@ -55,18 +57,15 @@ def logout_user(request):
             })
 
 
-def signup_page(request):
-    if request.user.is_authenticated():
-        return redirect('profiles:profile')
-    else:
-        return render(request, 'profiles/signup.html', {})
-
-
 def signup(request):
-    if request.method == 'GET':
-        return signup_page(request)
-    elif request.method == 'POST':
-        if not (request.POST['password'] == request.POST['password_repeat']):
-            return render(request, 'profiles/signup.html', {
-                'error_message': "Passwords did not match!"
-            })
+    args = {}
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(login_user)
+    else:
+        form = SignupForm()
+
+    args['form'] = form
+    return render(request, 'profiles/signup.html', args)

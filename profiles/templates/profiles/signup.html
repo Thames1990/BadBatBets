@@ -9,23 +9,11 @@
 
 <form action="{% url 'profiles:signup' %}" method="post">
     {% csrf_token %}
-    <label for="username">Username: </label><br>
-    <input type="text" name="username"><br>
+    <table>
+        {{ form.as_table }}
+    </table>
 
-    <label for="first_name">First name: </label><br>
-    <input type="text" name="first_name"><br>
-    <label for="last_name">Last name: </label><br>
-    <input type="text" name="last_name"><br>
-
-    <label for="email">Email: </label><br>
-    <input type="text" name="email"><br>
-
-    <label for="password">Password: </label><br>
-    <input type="password" name="password"><br>
-    <label for="password_repeat">Repeat Password: </label><br>
-    <input type="password" name="password_repeat"><br>
-
-    <input type="submit" value="Login">
+    <input type="submit" value="Submit">
 </form>
 </body>
 </html>
