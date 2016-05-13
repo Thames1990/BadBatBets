@@ -61,9 +61,9 @@ class Choice(models.Model):
     # (Short) description of the choice
     description = models.CharField(max_length=64)
 
-    # TODO: This does not wok - and i have no idea, why!
-    # def __str__(self):
-    #    return self.belongs_to.name + ": " + self.description
+    def __str__(self):
+        # TODO: Find a better way to do this...
+        return str(self.id) + ". " + self.description
 
 
 class PlacedChoiceBet(PlacedBet):
