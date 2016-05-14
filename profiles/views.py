@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordChangeForm
 
 from .forms import SignupForm
 
@@ -69,3 +70,21 @@ def signup(request):
 
     args['form'] = form
     return render(request, 'profiles/signup.html', args)
+
+
+def change_password(request):
+    if not request.user.is_authenticated():
+        return redirect(login_user)
+
+    args = {}
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(login_user)
+
+    else:
+        form = PasswordChangeForm(request.user)
+
+    args['form'] = form
+    return render(request, 'profiles/change_password.html', args)

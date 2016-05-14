@@ -12,4 +12,7 @@ urlpatterns = [
 
     # Signup mechanism
     url(r'^signup/$', views.signup, name='signup'),
+
+    # Change Password
+    url(r'^chpw/$', views.change_password, name='change_password'),
 ]
