@@ -10,10 +10,10 @@
 
 <form action="{% url 'profiles:login' %}" method="POST">
     {% csrf_token %}
-    Username:<br>
-    <input type="text" name="username"><br>
-    Password:<br>
-    <input type="password" name="password"><br>
+    <table>
+        {{ form.as_table }}
+    </table>
+
     <input type="submit" value="Login">
 </form>
 </body>

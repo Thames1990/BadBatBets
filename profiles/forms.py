@@ -1,7 +1,7 @@
 from django import forms
 
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
@@ -35,3 +35,8 @@ class SignupForm(UserCreationForm):
         profile = Profile(user=user)
         profile.save(commit)
         return user
+
+
+class LoginForm(AuthenticationForm):
+    def clean_username(self):
+        return self.cleaned_data.get('username').lower()
