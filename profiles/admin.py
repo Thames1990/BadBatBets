@@ -1,5 +1,10 @@
 from django.contrib import admin
 from .models import Profile, ForbiddenUser
 
-admin.site.register(Profile)
+
+class ProfileAdmin(admin.ModelAdmin):
+    fields = ['user', 'points', 'verified', 'accepted_agb']
+
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(ForbiddenUser)

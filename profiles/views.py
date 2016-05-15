@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import PasswordChangeForm
+
+from .forms import SignupForm, LoginForm
 
 
 def landing(request):
     if request.user.is_authenticated():
-        return redirect('bets:index')
+        return redirect('profiles:profile')
     else:
         return render(request, 'profiles/landing.html', {})
 
@@ -16,33 +19,24 @@ def profile(request):
             'profile': request.user.profile
         })
     else:
-        return redirect('profiles:login_page')
-
-
-def login_page(request):
-    if request.user.is_authenticated():
-        return redirect('profiles:profile')
-    else:
-        return render(request, 'profiles/login.html')
+        return redirect(login_user)
 
 
 def login_user(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
+    if request.user.is_authenticated():
+        return redirect('profiles:profile')
 
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            return redirect('bets:index')
-        else:
-            return render(request, 'profiles/login.html', {
-                'error_message': "Account inactive"
-            })
+    args = {}
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('profiles:profile')
     else:
-        return render(request, 'profiles/login.html', {
-            'error_message': "Unknown User"
-        })
+        form = LoginForm()
+
+    args['form'] = form
+    return render(request, 'profiles/login.html', args)
 
 
 def logout_user(request):
@@ -50,3 +44,35 @@ def logout_user(request):
     return render(request, 'profiles/login.html', {
         'message': "Logout Successfull"
     })
+
+
+def signup(request):
+    args = {}
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(login_user)
+    else:
+        form = SignupForm()
+
+    args['form'] = form
+    return render(request, 'profiles/signup.html', args)
+
+
+def change_password(request):
+    if not request.user.is_authenticated():
+        return redirect(login_user)
+
+    args = {}
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(login_user)
+
+    else:
+        form = PasswordChangeForm(request.user)
+
+    args['form'] = form
+    return render(request, 'profiles/change_password.html', args)
