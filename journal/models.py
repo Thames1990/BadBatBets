@@ -4,6 +4,9 @@ from django.db import models
 class Entry(models.Model):
     """Entry in the journal"""
 
+    class Meta:
+        verbose_name_plural = "entries"
+
     # Name of the kind of event that occured
     name = models.CharField(max_length=64)
     # In-depth description of what happened
@@ -13,4 +16,4 @@ class Entry(models.Model):
     # Whether or not the problem has been resolved
     resolved = models.BooleanField(default=False)
     # What did you do to resolve the problem
-    resolve_comment = models.TextField(default="")
+    resolve_comment = models.TextField(default="", blank=True)
