@@ -7,7 +7,7 @@ def pkgen():
 
 
 def get_bet(id):
-    """Gets the bet corresponding to the id. Return None, if not bet with that id exists"""
+    """Gets the bet corresponding to the id. Returns None, if no bet with that id exists"""
     from bets.models import ChoiceBet, DateBet
 
     bet = ChoiceBet.objects.filter(prim_key=id)
