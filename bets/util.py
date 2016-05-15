@@ -6,7 +6,22 @@ def pkgen():
     return randomiser.randint(0, 2147483647)
 
 
-def find_bet_for_user(bet, user):
+def get_bet(id):
+    """Gets the bet corresponding to the id. Return None, if not bet with that id exists"""
+    from bets.models import ChoiceBet, DateBet
+
+    bet = ChoiceBet.objects.filter(prim_key=id)
+    if len(bet) > 0:
+        return bet[0]
+
+    bet = DateBet.objects.filter(prim_key=id)
+    if len(bet) > 0:
+        return bet[0]
+
+    return None
+
+
+def get_bet_for_user(bet, user):
     """Finds a placed bet made by that user on that bet"""
     from bets.models import ChoiceBet, DateBet
     from profiles.models import Profile
