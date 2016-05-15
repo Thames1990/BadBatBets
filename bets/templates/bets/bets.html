@@ -25,8 +25,8 @@
             <tr>
                 <td>{{ choice_bet.owner }}</td>
                 <td>{{ choice_bet.description }}</td>
-                <td>{{ choice_bet.created_date }}</td>
-                <td>{{ choice_bet.published_date }}</td>
+                <td>{{ choice_bet.created }}</td>
+                <td>{{ choice_bet.pub_date }}</td>
                 <td>{{ choice_bet.end_date }}</td>
             </tr>
             </tbody>
@@ -35,7 +35,7 @@
 
     <section>
         {# TODO Exclude if user already bet #}
-        <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
+        <form action="{% url 'choice_bet' choice_bet.prim_key %}" method="post">
             {% csrf_token %}
             <grid>
                 <div col="1/2">
@@ -50,8 +50,8 @@
                     >
                 </div>
                 <div col="1/2">
-                    <p style="display: inline;">Available choices: </p>
-                    {% for choice in choice_bet.choices.all %}
+                    <p>Available choices: </p>
+                    {% for choice in choice_bet.choice_set.all %}
                         <input
                             type="radio"
                             id="{{ forloop.counter }}"

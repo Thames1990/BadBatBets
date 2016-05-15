@@ -10,13 +10,13 @@
             <div col="1/2" class="bets">
                 <h2>Available bets</h2>
                 {% for choice_bet in choice_bets %}
-                    <a class="card_link" href="{% url 'bets:bet' choice_bet.prim_key %}">
+                    <a class="card_link" href="{% url 'bet' choice_bet.prim_key %}">
                         <card>
                             <h5>{{ choice_bet.name }}</h5>
                             <p>{{ choice_bet.description }}</p>
                             <p style="display: inline">Available choices</p>
                             <ul>
-                                {% for choice in choice_bet.choices.all %}
+                                {% for choice in choice_bet.choice_set.all %}
                                     <li>{{ choice.description }}</li>
                                 {% empty %}
                                     <li>No choices are available</li>
@@ -30,8 +30,8 @@
             </div>
             <div col="1/2" class="bets">
                 <h2>Placed bets</h2>
-                {% for placed_bet in placed_bets %}
-                    <a class="card_link" href="{% url 'bets:bet' placed_bet.placed_on.prim_key %}">
+                {% for placed_bet in placed_choice_bets %}
+                    <a class="card_link" href="{% url 'bet' placed_bet.placed_on.prim_key %}">
                         <card>
                             <h5>{{ placed_bet.placed_on.name }}</h5>
                             <p>Placed amount: {{ placed_bet.placed }}</p>

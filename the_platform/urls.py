@@ -18,6 +18,5 @@ urlpatterns = [
     # Landing page
     url(r'^$', landing, name='landing'),
 
-    # TODO change this to landing
     url(r'^bets/', include('bets.urls')),
 ]

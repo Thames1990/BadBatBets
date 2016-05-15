@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from .models import Bet, PlacedBet, Choice, ChoiceBet
+from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
 
 
 def index_view(request):
@@ -11,12 +11,12 @@ def index_view(request):
         # TODO exclude forbidden bets
         # TODO include self created bets without publish date
         choice_bets = ChoiceBet.objects \
-            .filter(published_date__lte=timezone.now()) \
-            .exclude(choices__placedbet__placed_on__in=request.user.profile.bet_set.all())
-        placed_bets = PlacedBet.objects.all()
+            .filter(pub_date__lte=timezone.now()) \
+            .exclude(choice__placedchoicebet__placed_on__in=request.user.profile.choicebet_set.all())
+        placed_choice_bets = PlacedChoiceBet.objects.all()
         return render(request, 'bets/index.html', {
             'choice_bets': choice_bets,
-            'placed_bets': placed_bets,
+            'placed_choice_bets': placed_choice_bets,
             'user': request.user
         })
     else:
@@ -46,17 +46,17 @@ def choice_bet_view(request, prim_key):
     if request.user.is_authenticated():
         choice_bet = get_object_or_404(ChoiceBet, prim_key=prim_key)
         try:
-            choice = choice_bet.choices.get(description=request.POST['choice'])
+            choice = choice_bet.choice_set.get(description=request.POST['choice'])
         except (KeyError, Choice.DoesNotExist):
             return render(request, 'bets/bets.html', {'choice_bet': choice_bet})
         else:
-            placed_bet = PlacedBet(
+            placed_bet = PlacedChoiceBet(
                 placed_by=request.user.profile,
                 placed_on=choice_bet,
                 chosen=choice,
                 placed=request.POST['placed'],
             )
             placed_bet.save()
-            return HttpResponseRedirect(reverse('bets:index'))
+            return HttpResponseRedirect(reverse('index'))
     else:
         return render(request, 'profiles/login.html')

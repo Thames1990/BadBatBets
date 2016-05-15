@@ -7,7 +7,7 @@ from .forms import SignupForm, LoginForm
 
 def landing(request):
     if request.user.is_authenticated():
-        return redirect('profiles:profile')
+        return redirect('profile')
     else:
         return render(request, 'profiles/landing.html', {})
 
@@ -24,14 +24,14 @@ def profile(request):
 
 def login_user(request):
     if request.user.is_authenticated():
-        return redirect('profiles:profile')
+        return redirect('profile')
 
     args = {}
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('profiles:profile')
+            return redirect('profile')
     else:
         form = LoginForm()
 
