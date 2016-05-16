@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'the_platform.apps.ThePlatformConfig',
     'profiles.apps.ProfilesConfig',
     'bets.apps.BetsConfig',
     'journal.apps.JournalConfig',
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'the_platform.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'the_platform/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

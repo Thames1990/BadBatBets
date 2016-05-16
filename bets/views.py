@@ -4,9 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-
 from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
 from .forms import DateBetCreationForm
+
 
 def index_view(request):
     if request.user.is_authenticated():
@@ -62,6 +62,7 @@ def choice_bet_view(request, prim_key):
             return HttpResponseRedirect(reverse('index'))
     else:
         return render(request, 'profiles/login.html')
+
 
 @login_required
 def create_choice_bet(request):
