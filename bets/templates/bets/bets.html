@@ -1,7 +1,7 @@
 {% extends 'the_platform/base.html' %}
 
 {% block title %}
-    {{ bet.name }}
+    {{ block.super }} | {{ bet.name }}
 {% endblock %}
 
 {% block profile %}

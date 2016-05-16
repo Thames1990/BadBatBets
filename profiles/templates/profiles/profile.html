@@ -1,5 +1,9 @@
 {% extends 'the_platform/base.html' %}
 
+{% block title %}
+    {{ block.super }} | {{ user.profile }}
+{% endblock %}
+
 {% block profile %}
     {{ user.profile }}
 {% endblock %}
