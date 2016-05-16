@@ -1,10 +1,12 @@
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
 
+from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
+from .forms import DateBetCreationForm
 
 def index_view(request):
     if request.user.is_authenticated():
@@ -60,3 +62,16 @@ def choice_bet_view(request, prim_key):
             return HttpResponseRedirect(reverse('index'))
     else:
         return render(request, 'profiles/login.html')
+
+@login_required
+def create_choice_bet(request):
+    args = {}
+    if request.method == 'POST':
+        form = DateBetCreationForm(data=request)
+        # TODO: Do stuff with it - (we first need a way to represent the forbidden users though...)
+    else:
+        form = DateBetCreationForm()
+
+    args['form'] = form
+
+    return render(request, 'bets/create_date_bet.html', args)

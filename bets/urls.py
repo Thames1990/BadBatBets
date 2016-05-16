@@ -24,4 +24,10 @@ urlpatterns = [
         views.choice_bet_view,
         name='choice_bet'
     ),
+
+    url(
+        r'^create/choice/$',
+        views.create_choice_bet,
+        name="create_choice"
+    ),
 ]

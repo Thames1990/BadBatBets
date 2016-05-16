@@ -6,6 +6,9 @@ from profiles.views import landing, login_user, signup
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
+    # Landing page
+    url(r'^$', landing, name='landing'),
+
     # When the user goes to /login
     url(r'^login/', login_user),
 
@@ -15,8 +18,6 @@ urlpatterns = [
     # Profiles sub-module
     url(r'^profile/', include('profiles.urls')),
 
-    # Landing page
-    url(r'^$', landing, name='landing'),
-
+    # Bets sub-module
     url(r'^bets/', include('bets.urls')),
 ]
