@@ -59,7 +59,7 @@ def choice_bet_view(request, prim_key):
                 placed=request.POST['placed'],
             )
             placed_bet.save()
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
 

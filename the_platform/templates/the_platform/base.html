@@ -16,12 +16,12 @@
         <label>
             <input type="checkbox">
             <header>
-                <a href="{% url 'index' %}"><img src="{% static 'the_platform/icons/logo.svg' %}">Bad Bat Bets</a>
+                <a href="{% url 'bets:index' %}"><img src="{% static 'the_platform/icons/logo.svg' %}">Bad Bat Bets</a>
             </header>
             <ul>
                 <li><a href="/">Create Bet</a></li>
-                <li><a href="{% url 'profile' %}">{% block profile %}Profile{% endblock %}</a></li>
-                <li><a href="{% url 'logout' %}">{% block login %}Logout{% endblock %}</a></li>
+                <li><a href="{% url 'profiles:profile' %}">{% block profile %}Profile{% endblock %}</a></li>
+                <li><a href="{% url 'profiles:logout' %}">{% block login %}Logout{% endblock %}</a></li>
             </ul>
         </label>
     </nav>

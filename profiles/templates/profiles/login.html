@@ -18,7 +18,7 @@
             <p><strong>{{ message }}</strong></p>
         {% endif %}
 
-        <form action="{% url 'login' %}" method="POST">
+        <form action="{% url 'profiles:login' %}" method="POST">
             {% csrf_token %}
             <table>
                 {{ form.as_table }}

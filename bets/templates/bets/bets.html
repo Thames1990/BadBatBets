@@ -35,7 +35,7 @@
 
     <section>
         {# TODO Exclude if user already bet #}
-        <form action="{% url 'choice_bet' choice_bet.prim_key %}" method="post">
+        <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
             {% csrf_token %}
             <grid>
                 <div col="1/2">
