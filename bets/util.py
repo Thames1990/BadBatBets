@@ -41,7 +41,8 @@ def get_bet_for_user(bet, user):
     elif len(bets) > 1:
         # Put an entry into the journal so that we know, that there's a problem
         name = "Multiple PlacedBets for User"
-        content = "User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(user.username) + "\nBet: " + str(bet.prim_key)
+        content = "User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
+            user.username) + "\nBet: " + str(bet.prim_key)
         raised_by = "get_bet_for_users"
 
         journal_entry = Entry(name=name, content=content, raised_by=raised_by)
@@ -61,14 +62,12 @@ def bet_is_visible_to_user(bet, user):
     :return: True, if the user is not forbidden in the bet and the bet isn't resolved and active
     (already published and still available for bets); False otherwise
     """
-    from profiles.models import Profile
     from django.utils import timezone
 
-    profile = Profile.objects.get(pk=user)
-
-    return profile.user not in bet.forbidden and \
-           bet.resolved is not False and \
-           bet.pub_date <= timezone.now() < bet.end_bets_date
+    if bet.end_bets_date:
+        return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date() < bet.end_bets_date
+    else:
+        return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date()
 
 
 def user_can_bet_on_bet(user, bet):
@@ -85,3 +84,17 @@ def user_can_bet_on_bet(user, bet):
     return bet_is_visible_to_user(bet, user) and \
            bet not in profile.placedchoicebet_set and \
            bet not in profile.placeddatebet_set
+
+
+def filter_visible_bets(bets, user):
+    """
+    Filters a list of bets for user visible bets.
+    :param bets: Bets to check
+    :param user: User to check
+    :return: Filtered list with user visible bets
+    """
+    filtered_bets = []
+    for bet in bets:
+        if bet_is_visible_to_user(bet, user):
+            filtered_bets.append(bet)
+    return filtered_bets

@@ -2,22 +2,20 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.utils import timezone
 
 from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
 from .forms import DateBetCreationForm
+from .util import filter_visible_bets
 
 
 def index_view(request):
     if request.user.is_authenticated():
         # TODO exclude forbidden bets
         # TODO include self created bets without publish date
-        choice_bets = ChoiceBet.objects \
-            .filter(pub_date__lte=timezone.now()) \
-            .exclude(choice__placedchoicebet__placed_on__in=request.user.profile.choicebet_set.all())
+        choice_bets = ChoiceBet.objects.all()
         placed_choice_bets = PlacedChoiceBet.objects.all()
         return render(request, 'bets/index.html', {
-            'choice_bets': choice_bets,
+            'choice_bets': filter_visible_bets(choice_bets, request.user.profile),
             'placed_choice_bets': placed_choice_bets,
             'user': request.user
         })
