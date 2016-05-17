@@ -19,15 +19,24 @@
                 <a href="{% url 'bets:index' %}"><img src="{% static 'the_platform/icons/logo.svg' %}">Bad Bat Bets</a>
             </header>
             <ul>
-                <li><a href="/">Create Bet</a></li>
+                <li>
+                    <a>Create Bet</a>
+                    <menu>
+                        <menuitem><a href="/">Choice Bet</a></menuitem>
+                        <menuitem><a href="/">Date Bet</a></menuitem>
+                    </menu>
+                </li>
                 <li><a href="{% url 'profiles:profile' %}">{% block profile %}Profile{% endblock %}</a></li>
                 <li><a href="{% url 'profiles:logout' %}">{% block login %}Logout{% endblock %}</a></li>
             </ul>
         </label>
     </nav>
 
-    {% block content %}
-    {% endblock %}
+    <section>
+        {% block content %}
+            <p>No content yet.</p>
+        {% endblock %}
+    </section>
 
     {# TODO Fix at bottom #}
     <footer>

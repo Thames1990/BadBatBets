@@ -9,63 +9,60 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <h1>{{ choice_bet.name }}</h1>
-        <table>
-            <thead>
-            <tr>
-                <th>Owner</th>
-                <th>Description</th>
-                <th>Created</th>
-                <th>Published</th>
-                <th>Ends on</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ choice_bet.owner }}</td>
-                <td>{{ choice_bet.description }}</td>
-                <td>{{ choice_bet.created }}</td>
-                <td>{{ choice_bet.pub_date }}</td>
-                <td>{{ choice_bet.end_date }}</td>
-            </tr>
-            </tbody>
-        </table>
+    <h1>{{ choice_bet.name }}</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Published</th>
+            <th>Ends on</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ choice_bet.owner }}</td>
+            <td>{{ choice_bet.description }}</td>
+            <td>{{ choice_bet.created }}</td>
+            <td>{{ choice_bet.pub_date }}</td>
+            <td>{{ choice_bet.end_date }}</td>
+        </tr>
+        </tbody>
+    </table>
     </section>
 
     <section>
-        {# TODO Exclude if user already bet #}
-        <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
-            {% csrf_token %}
-            <grid>
-                <div col="1/2">
-                    <label for="number">Amount</label>
+    <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
+        {% csrf_token %}
+        <grid>
+            <div col="1/2">
+                <label for="number">Amount</label>
+                <input
+                    type="number"
+                    id="placed"
+                    name="placed"
+                    min="0"
+                    placeholder="Amount"
+                    required
+                >
+            </div>
+            <div col="1/2">
+                <p>Available choices: </p>
+                {% for choice in choice_bet.choice_set.all %}
                     <input
-                        type="number"
-                        id="placed"
-                        name="placed"
-                        min="0"
-                        placeholder="Amount"
+                        type="radio"
+                        id="{{ forloop.counter }}"
+                        name="choice"
+                        value="{{ choice.description }}"
                         required
                     >
-                </div>
-                <div col="1/2">
-                    <p>Available choices: </p>
-                    {% for choice in choice_bet.choice_set.all %}
-                        <input
-                            type="radio"
-                            id="{{ forloop.counter }}"
-                            name="choice"
-                            value="{{ choice.description }}"
-                            required
-                        >
-                        <label for="{{ forloop.counter }}">{{ choice.description }}</label>
-                    {% empty %}
-                        <p style="display: inline">No choices available</p>
-                    {% endfor %}
-                    <button style="float: right" type="submit">Bet</button>
-                </div>
-            </grid>
-        </form>
-    </section>
+                    <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                {% empty %}
+                    <p style="display: inline">No choices available</p>
+                {% endfor %}
+                <button style="float: right" type="submit">Bet</button>
+            </div>
+        </grid>
+    </form>
 {% endblock %}

@@ -5,43 +5,41 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <grid>
-            <div col="1/2" class="bets">
-                <h2>Available bets</h2>
-                {% for choice_bet in choice_bets %}
-                    <a class="card_link" href="{% url 'bets:bet' choice_bet.prim_key %}">
-                        <card>
-                            <h5>{{ choice_bet.name }}</h5>
-                            <p>{{ choice_bet.description }}</p>
-                            <p style="display: inline">Available choices</p>
-                            <ul>
-                                {% for choice in choice_bet.choice_set.all %}
-                                    <li>{{ choice.description }}</li>
-                                {% empty %}
-                                    <li>No choices are available</li>
-                                {% endfor %}
-                            </ul>
-                        </card>
-                    </a>
-                {% empty %}
-                    <h5 style="text-align: center">No bets have been created yet.</h5>
-                {% endfor %}
-            </div>
-            <div col="1/2" class="bets">
-                <h2>Placed bets</h2>
-                {% for placed_bet in placed_choice_bets %}
-                    <a class="card_link" href="{% url 'bets:bet' placed_bet.placed_on.prim_key %}">
-                        <card>
-                            <h5>{{ placed_bet.placed_on.name }}</h5>
-                            <p>Placed amount: {{ placed_bet.placed }}</p>
-                            <p>Choice: {{ placed_bet.chosen.description }}</p>
-                        </card>
-                    </a>
-                {% empty %}
-                    <h5 style="text-align: center">You placed no bets yet.</h5>
-                {% endfor %}
-            </div>
-        </grid>
-    </section>
+    <grid>
+        <div col="1/2" class="bets">
+            <h2>Available bets</h2>
+            {% for choice_bet in choice_bets %}
+                <a class="card_link" href="{% url 'bets:bet' choice_bet.prim_key %}">
+                    <card>
+                        <h5>{{ choice_bet.name }}</h5>
+                        <p>{{ choice_bet.description }}</p>
+                        <p style="display: inline">Available choices</p>
+                        <ul>
+                            {% for choice in choice_bet.choice_set.all %}
+                                <li>{{ choice.description }}</li>
+                            {% empty %}
+                                <li>No choices are available</li>
+                            {% endfor %}
+                        </ul>
+                    </card>
+                </a>
+            {% empty %}
+                <h5 style="text-align: center">No bets have been created yet.</h5>
+            {% endfor %}
+        </div>
+        <div col="1/2" class="bets">
+            <h2>Placed bets</h2>
+            {% for placed_bet in placed_choice_bets %}
+                <a class="card_link" href="{% url 'bets:bet' placed_bet.placed_on.prim_key %}">
+                    <card>
+                        <h5>{{ placed_bet.placed_on.name }}</h5>
+                        <p>Placed amount: {{ placed_bet.placed }}</p>
+                        <p>Choice: {{ placed_bet.chosen.description }}</p>
+                    </card>
+                </a>
+            {% empty %}
+                <h5 style="text-align: center">You placed no bets yet.</h5>
+            {% endfor %}
+        </div>
+    </grid>
 {% endblock %}

@@ -9,22 +9,20 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
-        {% endif %}
+    {% if error_message %}
+        <strong>{{ error_message }}</strong>
+    {% endif %}
 
-        {% if message %}
-            <p><strong>{{ message }}</strong></p>
-        {% endif %}
+    {% if message %}
+        <strong>{{ message }}</strong>
+    {% endif %}
 
-        <form action="{% url 'profiles:login' %}" method="POST">
-            {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
+    <form action="{% url 'profiles:login' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
 
-            <input type="submit" value="Login">
-        </form>
-    </section>
+        <input type="submit" value="Login">
+    </form>
 {% endblock %}
