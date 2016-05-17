@@ -24,15 +24,12 @@ def get_bet(id):
 def get_bet_for_user(bet, user):
     """Finds a placed bet made by that user on that bet"""
     from bets.models import ChoiceBet, DateBet
-    from profiles.models import Profile
     from journal.models import Entry
 
-    profile = Profile.objects.get(pk=user)
-
     if type(bet) == ChoiceBet:
-        bets = bet.placedchoicebet_set.filter(placed_by__exact=profile)
+        bets = bet.placedchoicebet_set.filter(placed_by__exact=user.profile)
     elif type(bet) == DateBet:
-        bets = bet.placeddatebet_set.filter(placed_by__exact=profile)
+        bets = bet.placeddatebet_set.filter(placed_by__exact=user.profile)
     else:
         return None
 
@@ -70,22 +67,6 @@ def bet_is_visible_to_user(bet, user):
         return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date()
 
 
-def user_can_bet_on_bet(user, bet):
-    """
-    Check if a user can bet on a bet.
-    :param user: User to check
-    :param bet: Bet to check
-    :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
-    """
-    from profiles.models import Profile
-
-    profile = Profile.objects.get(pk=user)
-
-    return bet_is_visible_to_user(bet, user) and \
-           bet not in profile.placedchoicebet_set and \
-           bet not in profile.placeddatebet_set
-
-
 def filter_visible_bets(bets, user):
     """
     Filters a list of bets for user visible bets.
@@ -98,3 +79,24 @@ def filter_visible_bets(bets, user):
         if bet_is_visible_to_user(bet, user):
             filtered_bets.append(bet)
     return filtered_bets
+
+
+def user_can_bet_on_bet(user, bet):
+    """
+    Check if a user can bet on a bet.
+    :param user: User to check
+    :param bet: Bet to check
+    :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
+    """
+    print("this: " + bet.name)
+    print("bet is visible to user: " + str(bet_is_visible_to_user(bet, user)))
+    print("already bet on this: " + str(bet in user.profile.placedchoicebet_set.all()))
+
+    print("Content of placedchoicebet_set:")
+    for choice_bet in user.profile.placedchoicebet_set.all():
+        print(choice_bet)
+
+    # TODO fix didn't bet on this yet
+    return bet_is_visible_to_user(bet, user) and \
+           bet not in user.profile.placedchoicebet_set.all() and \
+           bet not in user.profile.placeddatebet_set.all()

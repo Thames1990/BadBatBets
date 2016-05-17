@@ -5,15 +5,13 @@ from django.core.urlresolvers import reverse
 
 from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
 from .forms import DateBetCreationForm
-from .util import filter_visible_bets
+from .util import filter_visible_bets, user_can_bet_on_bet
 
 
 def index_view(request):
     if request.user.is_authenticated():
-        # TODO exclude forbidden bets
-        # TODO include self created bets without publish date
         choice_bets = ChoiceBet.objects.all()
-        placed_choice_bets = PlacedChoiceBet.objects.all()
+        placed_choice_bets = request.user.profile.placedchoicebet_set.all()
         return render(request, 'bets/index.html', {
             'choice_bets': filter_visible_bets(choice_bets, request.user.profile),
             'placed_choice_bets': placed_choice_bets,
@@ -24,7 +22,6 @@ def index_view(request):
 
 
 def bet_view(request, prim_key):
-    # TODO Filter for forbidden bets
     # TODO Exclude already bet on
     if request.user.is_authenticated():
         try:
@@ -35,9 +32,16 @@ def bet_view(request, prim_key):
             except PlacedBet.DoesNotExist:
                 raise Http404("Neither a binary bet nor a placed binary bet with id:" + str(prim_key) + " does exist.")
             else:
-                return render(request, 'bets/bets.html', {'placed_bet': placed_bet})
+                return render(
+                    request,
+                    'bets/bets.html',
+                    {'placed_bet': placed_bet}
+                )
         else:
-            return render(request, 'bets/bets.html', {'choice_bet': choice_bet})
+            return render(request, 'bets/bets.html', {
+                'choice_bet': choice_bet,
+                'user_can_bet': user_can_bet_on_bet(request.user, choice_bet)
+            })
     else:
         return render(request, 'profiles/login.html')
 

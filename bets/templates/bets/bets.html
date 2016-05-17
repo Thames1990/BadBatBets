@@ -19,6 +19,7 @@
             <th>Published</th>
             <th>Ends on</th>
             <th>Resolved</th>
+            <th>Test</th>
         </tr>
         </thead>
         <tbody>
@@ -29,12 +30,11 @@
             <td>{{ choice_bet.pub_date }}</td>
             <td>{{ choice_bet.end_date }}</td>
             <td>{{ choice_bet.resolved }}</td>
+            <td>{{ user_can_bet }}</td>
         </tr>
         </tbody>
     </table>
-    </section>
 
-    <section>
     <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
         {% csrf_token %}
         <grid>
