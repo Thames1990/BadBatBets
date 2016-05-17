@@ -21,7 +21,7 @@ class Bet(models.Model):
     # Date+Time when the bet was created (timestamped automatically)
     created = models.DateTimeField(auto_now_add=True)
     # Date when the bet is published
-    pub_date = models.DateField(blank=True, null=True)
+    pub_date = models.DateField(default=timezone.now)
     # After this, no further bets may be placed
     end_bets_date = models.DateField(blank=True, null=True)
     # Whether or not the bet has been resolved
