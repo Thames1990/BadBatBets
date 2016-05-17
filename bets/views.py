@@ -68,8 +68,9 @@ def choice_bet_view(request, prim_key):
 def create_choice_bet(request):
     args = {}
     if request.method == 'POST':
-        form = DateBetCreationForm(data=request)
-        # TODO: Do stuff with it - (we first need a way to represent the forbidden users though...)
+        form = DateBetCreationForm(data=request.POST)
+        if form.is_valid():
+            form.save(request.user.profile)
     else:
         form = DateBetCreationForm()
 
