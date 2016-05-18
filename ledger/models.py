@@ -1,5 +1,6 @@
 from django.db import models
 
+from .util import sum_credit_debit
 from bets.util import pkgen
 
 
@@ -13,6 +14,11 @@ class Account(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=64)
     balance = models.IntegerField(default=0)
+
+    def compute_balance(self):
+        credits = self.credit_set.all()
+        debits = self.debit_set.all()
+        self.balance = sum_credit_debit(credits, debits)
 
 
 class Transaction(models.Model):
