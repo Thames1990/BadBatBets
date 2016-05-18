@@ -7,7 +7,7 @@ from .forms import SignupForm, LoginForm
 
 def landing(request):
     if request.user.is_authenticated():
-        return redirect('profiles:profile')
+        return redirect('bets:index')
     else:
         return render(request, 'profiles/landing.html', {})
 
