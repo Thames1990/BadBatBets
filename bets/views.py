@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-from .models import PlacedBet, PlacedChoiceBet, Choice, ChoiceBet
+from .models import Bet, PlacedBet, PlacedChoiceBet, PlacedDateBet, Choice, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
 from .util import filter_visible_bets, user_can_bet_on_bet
 
@@ -12,15 +12,20 @@ def index_view(request):
     if request.user.is_authenticated():
         choice_bets = ChoiceBet.objects.all()
         placed_choice_bets = request.user.profile.placedchoicebet_set.all()
+        date_bets = DateBet.objects.all()
+        placed_date_bets = request.user.profile.placeddatebet_set.all()
         return render(request, 'bets/index.html', {
             'choice_bets': filter_visible_bets(choice_bets, request.user.profile),
             'placed_choice_bets': placed_choice_bets,
+            'date_bets': filter_visible_bets(date_bets, request.user.profile),
+            'placed_date_bets': placed_date_bets,
             'user': request.user
         })
     else:
         return render(request, 'profiles/login.html')
 
 
+@login_required
 def bet_view(request, prim_key):
     # TODO Exclude already bet on
     if request.user.is_authenticated():
@@ -28,15 +33,32 @@ def bet_view(request, prim_key):
             choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
         except ChoiceBet.DoesNotExist:
             try:
-                placed_bet = PlacedBet.objects.get(prim_key=prim_key)
-            except PlacedBet.DoesNotExist:
-                raise Http404("Neither a binary bet nor a placed binary bet with id:" + str(prim_key) + " does exist.")
+                date_bet = DateBet.objects.get(prim_key=prim_key)
+            except DateBet.DoesNotExist:
+                try:
+                    placed_choice_bet = PlacedChoiceBet.objects.get(prim_key=prim_key)
+                except PlacedChoiceBet.DoesNotExist:
+                    try:
+                        placed_date_bet = PlacedDateBet.objects.get(prim_key=prim_key)
+                    except:
+                        raise Http404(
+                            "Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist."
+                        )
+                    else:
+                        return render(request, 'bets/bets.html', {
+                            'placed_date_bet': placed_date_bet.placed_on,
+                            'user_can_bet': False
+                        })
+                else:
+                    return render(request, 'bets/bets.html', {
+                        'choice_bet': placed_choice_bet.placed_on,
+                        'user_can_bet': False
+                    })
             else:
-                return render(
-                    request,
-                    'bets/bets.html',
-                    {'placed_bet': placed_bet}
-                )
+                return render(request, 'bets/bets.html', {
+                    'date_bet': date_bet,
+                    'user_can_bet': user_can_bet_on_bet(request.user, date_bet)
+                })
         else:
             return render(request, 'bets/bets.html', {
                 'choice_bet': choice_bet,
@@ -46,33 +68,49 @@ def bet_view(request, prim_key):
         return render(request, 'profiles/login.html')
 
 
-def choice_bet_view(request, prim_key):
+@login_required
+def bet_on_bet_view(request, prim_key):
     if request.user.is_authenticated():
-        choice_bet = get_object_or_404(ChoiceBet, prim_key=prim_key)
         try:
+            choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
             choice = choice_bet.choice_set.get(description=request.POST['choice'])
-        except (KeyError, Choice.DoesNotExist):
-            return render(request, 'bets/bets.html', {'choice_bet': choice_bet})
+        except ChoiceBet.DoesNotExist:
+            try:
+                date_bet = DateBet.objects.get(prim_key=prim_key)
+            except DateBet.DoesNotExist:
+                raise Http404(
+                    "Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist."
+                )
+            else:
+                placed_date_bet = PlacedDateBet(
+                    placed_by=request.user.profile,
+                    placed_on=date_bet,
+                    placed_date=request.POST['date'],
+                    placed=request.POST['placed'],
+                )
+                placed_date_bet.save()
+                return HttpResponseRedirect(reverse('bets:index'))
         else:
-            placed_bet = PlacedChoiceBet(
+            placed_choice_bet = PlacedChoiceBet(
                 placed_by=request.user.profile,
                 placed_on=choice_bet,
                 chosen=choice,
                 placed=request.POST['placed'],
             )
-            placed_bet.save()
+            placed_choice_bet.save()
             return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
 
 
 @login_required
-def create_choice_bet(request):
+def create_date_bet(request):
     args = {}
     if request.method == 'POST':
         form = DateBetCreationForm(data=request.POST)
         if form.is_valid():
             form.save(request.user.profile)
+            # TODO redirect to bet page
     else:
         form = DateBetCreationForm()
 

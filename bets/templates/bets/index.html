@@ -7,7 +7,7 @@
 {% block content %}
     <grid>
         <div col="1/2" class="bets">
-            <h2>Available bets</h2>
+            <h2>Available Choice Bets</h2>
             {% for choice_bet in choice_bets %}
                 <a class="card_link" href="{% url 'bets:bet' choice_bet.prim_key %}">
                     <card>
@@ -24,21 +24,53 @@
                     </card>
                 </a>
             {% empty %}
-                <h5 style="text-align: center">No bets have been created yet.</h5>
+                <h5 style="text-align: center">No choice bets have been created yet.</h5>
             {% endfor %}
-        </div>
-        <div col="1/2" class="bets">
-            <h2>Placed bets</h2>
-            {% for placed_bet in placed_choice_bets %}
-                <a class="card_link" href="{% url 'bets:bet' placed_bet.placed_on.prim_key %}">
+
+            <h2>Available Date Bets</h2>
+            {% for date_bet in date_bets %}
+                <a class="card_link" href="{% url 'bets:bet' date_bet.prim_key %}">
                     <card>
-                        <h5>{{ placed_bet.placed_on.name }}</h5>
-                        <p>Placed amount: {{ placed_bet.placed }}</p>
-                        <p>Choice: {{ placed_bet.chosen.description }}</p>
+                        <h5>{{ date_bet.name }}</h5>
+                        <p>{{ date_bet.description }}</p>
+                        {% if date_bet.time_period_start %}
+                            <p>Time period start: {{ date_bet.time_period_start }}</p>
+                        {% endif %}
+                        {% if date_bet.time_period_end %}
+                            <p>Time period end: {{ date_bet.time_period_end }}</p>
+                        {% endif %}
                     </card>
                 </a>
             {% empty %}
-                <h5 style="text-align: center">You placed no bets yet.</h5>
+                <h5 style="text-align: center">No date bets have been created yet.</h5>
+            {% endfor %}
+        </div>
+
+        <div col="1/2" class="bets">
+            <h2>Placed Choice Bets</h2>
+            {% for placed_choice_bet in placed_choice_bets %}
+                <a class="card_link" href="{% url 'bets:bet' placed_choice_bet.placed_on.prim_key %}">
+                    <card>
+                        <h5>{{ placed_choice_bet.placed_on.name }}</h5>
+                        <p>Placed amount: {{ placed_choice_bet.placed }}</p>
+                        <p>Choice: {{ placed_choice_bet.chosen.description }}</p>
+                    </card>
+                </a>
+            {% empty %}
+                <h5 style="text-align: center">You placed no choice bets yet.</h5>
+            {% endfor %}
+
+            <h2>Placed Date Bets</h2>
+            {% for placed_date_bet in placed_date_bets %}
+                <a class="card_link" href="{% url 'bets:bet' placed_date_bet.placed_on.prim_key %}">
+                    <card>
+                        <h5>{{ placed_date_bet.placed_on.name }}</h5>
+                        <p>Placed amount: {{ placed_date_bet.placed }}</p>
+                        <p>Placed date: {{ placed_date_bet.placed_date }}</p>
+                    </card>
+                </a>
+            {% empty %}
+                <h5 style="text-align: center">You placed no date bets yet.</h5>
             {% endfor %}
         </div>
     </grid>

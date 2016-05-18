@@ -21,14 +21,14 @@ urlpatterns = [
 
     # /bets/<prim_key>/voted
     url(
-        r'^(?P<prim_key>[0-9]+)/voted$',
-        views.choice_bet_view,
-        name='choice_bet'
+        r'^(?P<prim_key>[0-9]+)/bet$',
+        views.bet_on_bet_view,
+        name='bet_on_bet'
     ),
 
     url(
-        r'^create/choice/$',
-        views.create_choice_bet,
-        name="create_choice"
+        r'^create/date/$',
+        views.create_date_bet,
+        name="create_date_bet"
     ),
 ]

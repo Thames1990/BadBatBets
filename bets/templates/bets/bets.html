@@ -9,36 +9,42 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ choice_bet.name }}</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Owner</th>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Published</th>
-            <th>Ends on</th>
-            <th>Resolved</th>
-            <th>Test</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ choice_bet.owner }}</td>
-            <td>{{ choice_bet.description }}</td>
-            <td>{{ choice_bet.created }}</td>
-            <td>{{ choice_bet.pub_date }}</td>
-            <td>{{ choice_bet.end_date }}</td>
-            <td>{{ choice_bet.resolved }}</td>
-            <td>{{ user_can_bet }}</td>
-        </tr>
-        </tbody>
-    </table>
+    {% if choice_bet %}
+        <h1>{{ choice_bet.name }}</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Owner</th>
+                <td>{{ choice_bet.owner }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>Description</th>
+                <td>{{ choice_bet.description }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ choice_bet.created }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ choice_bet.pub_date }}</td>
+            </tr>
+            <tr>
+                <th>Ends on</th>
+                <td>{{ choice_bet.end_date }}</td>
+            </tr>
+            <tr>
+                <th>Resolved</th>
+                <td>{{ choice_bet.resolved }}</td>
+            </tr>
+            </tbody>
+        </table>
 
-    <form action="{% url 'bets:choice_bet' choice_bet.prim_key %}" method="post">
-        {% csrf_token %}
-        <grid>
-            <div col="1/2">
+        {% if user_can_bet %}
+            <form action="{% url 'bets:bet_on_bet' choice_bet.prim_key %}" method="post">
+                {% csrf_token %}
                 <label for="number">Amount</label>
                 <input
                     type="number"
@@ -48,9 +54,7 @@
                     placeholder="Amount"
                     required
                 >
-            </div>
-            <div col="1/2">
-                <p>Available choices: </p>
+                <p style="display: inline;">Available choices: </p>
                 {% for choice in choice_bet.choice_set.all %}
                     <input
                         type="radio"
@@ -64,7 +68,68 @@
                     <p style="display: inline">No choices available</p>
                 {% endfor %}
                 <button style="float: right" type="submit">Bet</button>
-            </div>
-        </grid>
-    </form>
+            </form>
+        {% endif %}
+    {% elif date_bet %}
+        <h1>{{ date_bet.name }}</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Owner</th>
+                <td>{{ date_bet.owner }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>Description</th>
+                <td>{{ date_bet.description }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ date_bet.created }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ date_bet.pub_date }}</td>
+            </tr>
+            <tr>
+                <th>Period starts on</th>
+                <td>{{ date_bet.time_period_start }}</td>
+            </tr>
+            <tr>
+                <th>Period ends on</th>
+                <td>{{ date_bet.time_period_end }}</td>
+            </tr>
+            <tr>
+                <th>Resolved</th>
+                <td>{{ date_bet.resolved }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        {% if user_can_bet %}
+            <form action="{% url 'bets:bet_on_bet' date_bet.prim_key %}" method="post">
+                {% csrf_token %}
+                <label for="number">Amount</label>
+                <input
+                    type="number"
+                    id="placed"
+                    name="placed"
+                    min="0"
+                    placeholder="Amount"
+                    required
+                >
+                <input
+                    type="date"
+                    id="placed"
+                    name="date"
+                    min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
+                    max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
+                    placeholder="Date"
+                    required
+                >
+                <button style="float: right" type="submit">Bet</button>
+            </form>
+        {% endif %}
+    {% endif %}
 {% endblock %}

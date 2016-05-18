@@ -9,7 +9,7 @@
         <strong>{{ error_message }}</strong>
     {% endif %}
 
-    <form action="{% url 'bets:create_choice' %}" method="post">
+    <form action="{% url 'bets:create_date_bet' %}" method="post">
         {% csrf_token %}
         <table>
             {{ form.as_table }}

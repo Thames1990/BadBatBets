@@ -64,10 +64,12 @@ def bet_is_visible_to_user(bet, user):
     """
     from django.utils import timezone
 
-    if bet.end_bets_date:
+    if bet.pub_date and bet.end_bets_date:
         return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date() < bet.end_bets_date
-    else:
+    elif bet.pub_date:
         return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date()
+    else:
+        logging.error("Neither a publish date nor a end bets date were set.")
 
 
 def filter_visible_bets(bets, user):

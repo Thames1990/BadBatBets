@@ -23,7 +23,7 @@
                     <a>Create Bet</a>
                     <menu>
                         <menuitem><a href="/">Choice Bet</a></menuitem>
-                        <menuitem><a href="/">Date Bet</a></menuitem>
+                        <menuitem><a href="{% url 'bets:create_date_bet' %}">Date Bet</a></menuitem>
                     </menu>
                 </li>
                 <li><a href="{% url 'profiles:profile' %}">{% block profile %}Profile{% endblock %}</a></li>
