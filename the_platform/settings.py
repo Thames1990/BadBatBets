@@ -153,10 +153,11 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'filters': ['require_debug_true'],
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'bbb.log',
             'formatter': 'verbose',
             'maxBytes': 1024 * 1024 * 5,
+            'backupCount': 1,
         },
         'mail_admins': {
             'level': 'ERROR',
