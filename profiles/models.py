@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from ledger.models import Account
+
 
 class Profile(models.Model):
     # The user that this profile is associated with
@@ -8,10 +10,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # Whether or not the users true identity has been verified
     verified = models.BooleanField(default=False)
-    # The number of points the user has gained/lost
-    points = models.IntegerField(default=0)
     # Has the user accepted the AGB?
     accepted_agb = models.BooleanField(default=False)
+    # Each user has an account
+    account = models.OneToOneField(Account)
 
     def __str__(self):
         return self.user.__str__()

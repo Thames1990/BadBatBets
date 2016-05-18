@@ -3,6 +3,7 @@ from django.db import models
 
 from bets.util import pkgen
 from profiles.models import Profile, ForbiddenUser
+from ledger.models import Account
 
 
 class Bet(models.Model):
@@ -30,6 +31,8 @@ class Bet(models.Model):
     forbidden = models.ManyToManyField(ForbiddenUser, blank=True)
     # Size of the pot
     pot = models.PositiveIntegerField(default=0)
+    # Each bet also has an account
+    account = models.OneToOneField(Account)
 
     def __str__(self):
         return self.name

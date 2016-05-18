@@ -14,6 +14,7 @@ class Account(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=64)
     balance = models.IntegerField(default=0)
+    type = models.CharField(max_length=1, choices=types)
 
     def compute_balance(self):
         credits = self.credit_set.all()
