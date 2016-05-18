@@ -21,6 +21,9 @@ class Account(models.Model):
         debits = self.debit_set.all()
         self.balance = sum_credit_debit(credits, debits)
 
+    def __str__(self):
+        return self.get_type_display() + ": " + self.name
+
 
 class Transaction(models.Model):
 
