@@ -1,5 +1,7 @@
 from django.db import models
 
+from bets.util import pkgen
+
 
 class Account(models.Model):
     types = [
@@ -10,16 +12,25 @@ class Account(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=64)
+    balance = models.IntegerField(default=0)
 
 
 class Transaction(models.Model):
-    types = [
-        ('c', 'Credit'),
-        ('d', 'Debit'),
-    ]
 
+    transaction_id = models.PositiveIntegerField(default=pkgen, primary_key=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=64)
     description = models.TextField()
-    type = models.CharField(max_length=1, choices=types)
+
+
+class Credit(models.Model):
+
+    transaction = models.ForeignKey(Transaction)
     account = models.ForeignKey(Account)
+    amount = models.PositiveIntegerField()
+
+
+class Debit(models.Model):
+
+    transaction = models.ForeignKey(Transaction)
+    account = models.ForeignKey(Account)
+    amount = models.PositiveIntegerField()
