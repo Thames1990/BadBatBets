@@ -9,6 +9,7 @@ from .util import filter_visible_bets, user_can_bet_on_bet
 
 
 def index_view(request):
+    # TODO improve check
     if request.method == 'POST':
         request.user.profile.accepted_agb = True
         request.user.profile.save()
@@ -29,7 +30,7 @@ def index_view(request):
         else:
             return render(request, 'profiles/login.html')
     else:
-        return render(request, 'profiles/agb.html')
+        return render(request, 'profiles/agb.html', {'accepted': True})
 
 
 @login_required

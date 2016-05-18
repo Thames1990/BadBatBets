@@ -332,10 +332,12 @@
         <li><a name="dokumente">Weitere Dokumente hinzufügen</a></li>
     </ol>
 
-    <form action="{% url 'bets:index' %}" method="post">
-        {% csrf_token %}
-        <div style="text-align: center">
-            <input type="submit" value="agree to agb">
-        </div>
-    </form>
+    {% if not accepted %}
+        <form action="{% url 'bets:index' %}" method="post">
+            {% csrf_token %}
+            <div style="text-align: center">
+                <input type="submit" value="agree to agb">
+            </div>
+        </form>
+    {% endif %}
 {% endblock %}
