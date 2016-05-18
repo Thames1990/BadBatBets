@@ -1,3 +1,6 @@
+import logging
+
+
 def pkgen():
     from random import SystemRandom
 
@@ -88,13 +91,11 @@ def user_can_bet_on_bet(user, bet):
     :param bet: Bet to check
     :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
     """
-    print("this: " + bet.name)
-    print("bet is visible to user: " + str(bet_is_visible_to_user(bet, user)))
-    print("already bet on this: " + str(bet in user.profile.placedchoicebet_set.all()))
+    logger = logging.getLogger(__name__)
 
-    print("Content of placedchoicebet_set:")
-    for choice_bet in user.profile.placedchoicebet_set.all():
-        print(choice_bet)
+    logger.debug("Bet name: " + bet.name)
+    logger.debug("Is visible: " + str(bet_is_visible_to_user(bet, user)))
+    logger.debug("Already bet on bet: " + str(bet in user.profile.placedchoicebet_set.all()))
 
     # TODO fix didn't bet on this yet
     return bet_is_visible_to_user(bet, user) and \
