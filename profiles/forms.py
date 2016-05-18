@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
+from ledger.models import Account
 
 
 class SignupForm(UserCreationForm):
@@ -32,7 +33,10 @@ class SignupForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-        profile = Profile(user=user)
+
+        account = Account(name=user.username, type='p')
+        account.save(commit)
+        profile = Profile(user=user, account=account)
         profile.save(commit)
         return user
 
