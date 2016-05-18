@@ -14,5 +14,8 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
 
     # Change Password
-    url(r'^chpw/$', views.change_password, name='change_password'),
+    url(r'^change_password/$', views.change_password, name='change_password'),
+
+    # View transactions
+    url(r'^transactions/$', views.transactions, name='transactions'),
 ]

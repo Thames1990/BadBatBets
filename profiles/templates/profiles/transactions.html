@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transactions</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Credit</th>
+            <th>Debit</th>
+        </tr>
+        {% for entry in table %}
+            <tr>
+                <th>{{ entry.0 }}</th>
+                <th>{{ entry.1 }}</th>
+                <th>{{ entry.2 }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

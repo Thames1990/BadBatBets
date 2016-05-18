@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 
 from .forms import SignupForm, LoginForm
+from ledger.util import create_table
 
 
 def landing(request):
@@ -76,3 +77,15 @@ def change_password(request):
 
     args['form'] = form
     return render(request, 'profiles/change_password.html', args)
+
+
+def transactions(request):
+    if not request.user.is_authenticated():
+        return redirect(login_user)
+
+    cre = request.user.profile.account.credit_set.all()
+    deb = request.user.profile.account.debit_set.all()
+
+    args = {'table': create_table(cre, deb)}
+
+    return render(request, 'profiles/transactions.html', args)

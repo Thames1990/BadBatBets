@@ -31,6 +31,9 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
 
+    def __str__(self):
+        return str(self.transaction_id)
+
 
 class Credit(models.Model):
 
@@ -38,9 +41,21 @@ class Credit(models.Model):
     account = models.ForeignKey(Account)
     amount = models.PositiveIntegerField()
 
+    def __lt__(self, other):
+        return self.transaction.timestamp < other.transaction.timestamp
+
+    def __str__(self):
+        return self.transaction.__str__()
+
 
 class Debit(models.Model):
 
     transaction = models.ForeignKey(Transaction)
     account = models.ForeignKey(Account)
     amount = models.PositiveIntegerField()
+
+    def __lt__(self, other):
+        return self.transaction.timestamp < other.transaction.timestamp
+
+    def __str__(self):
+        return self.transaction.__str__()
