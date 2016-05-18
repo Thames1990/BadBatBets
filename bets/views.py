@@ -1,9 +1,9 @@
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-from .models import Bet, PlacedBet, PlacedChoiceBet, PlacedDateBet, Choice, ChoiceBet, DateBet
+from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
 from .util import filter_visible_bets, user_can_bet_on_bet
 

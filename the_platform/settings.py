@@ -155,7 +155,8 @@ LOGGING = {
             'filters': ['require_debug_true'],
             'class': 'logging.FileHandler',
             'filename': 'bbb.log',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'maxBytes': 1024 * 1024 * 5,
         },
         'mail_admins': {
             'level': 'ERROR',
