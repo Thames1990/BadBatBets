@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'profiles.apps.ProfilesConfig',
     'bets.apps.BetsConfig',
-    'journal.apps.JournalConfig',
+    'ledger.apps.LedgerConfig',
 ]
 
 MIDDLEWARE_CLASSES = [

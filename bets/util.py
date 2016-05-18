@@ -25,7 +25,6 @@ def get_bet_for_user(bet, user):
     """Finds a placed bet made by that user on that bet"""
     from bets.models import ChoiceBet, DateBet
     from profiles.models import Profile
-    from journal.models import Entry
 
     profile = Profile.objects.get(pk=user)
 
@@ -39,13 +38,7 @@ def get_bet_for_user(bet, user):
     if len(bets) == 1:
         return bets[0]
     elif len(bets) > 1:
-        # Put an entry into the journal so that we know, that there's a problem
-        name = "Multiple PlacedBets for User"
-        content = "User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(user.username) + "\nBet: " + str(bet.prim_key)
-        raised_by = "get_bet_for_users"
-
-        journal_entry = Entry(name=name, content=content, raised_by=raised_by)
-        journal_entry.save()
+        # TODO: log shit
 
         # Still return the first element of the list, so that we have something to work with
         return bets[0]

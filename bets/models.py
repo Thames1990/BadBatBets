@@ -28,6 +28,8 @@ class Bet(models.Model):
     resolved = models.BooleanField(default=False)
     # People that are not allowed to see this bet
     forbidden = models.ManyToManyField(ForbiddenUser, blank=True)
+    # Size of the pot
+    pot = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -44,6 +46,8 @@ class PlacedBet(models.Model):
     class Meta:
         abstract = True
 
+    # When the user made his bet
+    created = models.DateTimeField(auto_now_add=True)
     # User that placed this bet
     placed_by = models.ForeignKey(Profile)
     # Amount the user placed
