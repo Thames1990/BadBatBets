@@ -40,7 +40,18 @@
 
     {# TODO Fix at bottom #}
     <footer>
-        <p>&copy; Fusion Integrals 2016</p>
+        <grid>
+            <div col="1/2">
+                <p style="display: inline">&copy; Fusion Integrals 2016</p>
+            </div>
+            <div col="1/2">
+                {# TODO Change paragraph anchor style? #}
+                <p style="float: right">
+                    <a href="{% url 'profiles:general_terms_and_conditions' %}">General terms and conditions</a>
+                    <a href="{% url 'profiles:privacy_policy' %}">Privacy policy</a>
+                </p>
+            </div>
+        </grid>
     </footer>
 </main>
 </body>

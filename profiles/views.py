@@ -76,3 +76,13 @@ def change_password(request):
 
     args['form'] = form
     return render(request, 'profiles/change_password.html', args)
+
+
+def general_terms_and_conditions_view(request):
+    return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': request.user.profile.accepted_agb})
+
+
+def privacy_policy_view(request):
+    return render(request, 'profiles/privacy_policy.html', {
+        'accepted': request.user.profile.accepted_privacy_policy
+    })

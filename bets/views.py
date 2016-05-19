@@ -32,9 +32,9 @@ def index_view(request):
         else:
             return render(request, 'profiles/login.html')
     elif not request.user.profile.accepted_agb:
-        return render(request, 'profiles/agb.html', {'accepted': False})
+        return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
     elif not request.user.profile.accepted_privacy_policy:
-        return render(request, 'profiles/datenschutzerklärung.html', {'accepted': False})
+        return render(request, 'profiles/privacy_policy.html', {'accepted': False})
 
 
 @login_required

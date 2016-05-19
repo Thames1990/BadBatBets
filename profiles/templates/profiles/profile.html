@@ -9,6 +9,16 @@
 {% endblock %}
 
 {% block content %}
-    <p>Username: {{ user.username }}</p>
-    <p>Account Balance: {{ profile.points }}</p>
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Account Balance</th>
+            <td>{{ profile.points }}</td>
+        </tr>
+        </tbody>
+    </table>
 {% endblock %}
