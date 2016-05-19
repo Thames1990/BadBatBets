@@ -9,15 +9,15 @@ from .util import filter_visible_bets, user_can_bet_on_bet
 
 
 def index_view(request):
-    if request.method == 'POST' and request.POST.get('agb'):
-        request.user.profile.accepted_agb = True
-        request.user.profile.save()
-    elif request.method == 'POST' and request.POST.get('privacy_policy'):
-        request.user.profile.accepted_privacy_policy = True
-        request.user.profile.save()
+    if request.user.is_authenticated():
+        if request.method == 'POST' and request.POST.get('agb'):
+            request.user.profile.accepted_agb = True
+            request.user.profile.save()
+        elif request.method == 'POST' and request.POST.get('privacy_policy'):
+            request.user.profile.accepted_privacy_policy = True
+            request.user.profile.save()
 
-    if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
-        if request.user.is_authenticated():
+        if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
             choice_bets = ChoiceBet.objects.all()
             placed_choice_bets = request.user.profile.placedchoicebet_set.all()
             date_bets = DateBet.objects.all()
@@ -29,12 +29,12 @@ def index_view(request):
                 'placed_date_bets': placed_date_bets,
                 'user': request.user
             })
-        else:
-            return render(request, 'profiles/login.html')
-    elif not request.user.profile.accepted_agb:
-        return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
-    elif not request.user.profile.accepted_privacy_policy:
-        return render(request, 'profiles/privacy_policy.html', {'accepted': False})
+        elif not request.user.profile.accepted_agb:
+            return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
+        elif not request.user.profile.accepted_privacy_policy:
+            return render(request, 'profiles/privacy_policy.html', {'accepted': False})
+    else:
+        return render(request, 'profiles/login.html')
 
 
 @login_required

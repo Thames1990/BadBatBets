@@ -24,15 +24,18 @@ def profile(request):
 
 def login_user(request):
     if request.user.is_authenticated():
-        return redirect('profiles:profile')
+        return redirect('bets:index')
 
     args = {}
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
+        # TODO fix "This field is required" even if data is available
+        # TODO /login and /profile/login differ
         if form.is_valid():
             login(request, form.get_user())
-            return redirect('profiles:profile')
+            return redirect('bets:index')
     else:
+        # TODO Fix "blank" login button step
         form = LoginForm()
 
     args['form'] = form
@@ -79,7 +82,8 @@ def change_password(request):
 
 
 def general_terms_and_conditions_view(request):
-    return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': request.user.profile.accepted_agb})
+    return render(request, 'profiles/general_terms_and_conditions.html',
+                  {'accepted': request.user.profile.accepted_agb})
 
 
 def privacy_policy_view(request):

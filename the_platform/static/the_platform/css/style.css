@@ -9,19 +9,16 @@ h2 {
     justify-content: center;
 }
 
-h5 {
-    border-bottom: 1px solid grey;
-}
-
 section {
     margin-top: 2em !important;
 }
 
-.bets {
-    border-left: 1px solid gray;
+.border_right {
+    border-right: 1px solid gray;
 }
 
 .card_link {
+    color: inherit;
     display: block;
     text-decoration: none;
     margin: 1em;
