@@ -9,12 +9,14 @@ from .util import filter_visible_bets, user_can_bet_on_bet
 
 
 def index_view(request):
-    # TODO improve check
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST.get('agb'):
         request.user.profile.accepted_agb = True
         request.user.profile.save()
+    elif request.method == 'POST' and request.POST.get('privacy_policy'):
+        request.user.profile.accepted_privacy_policy = True
+        request.user.profile.save()
 
-    if request.user.profile.accepted_agb:
+    if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
         if request.user.is_authenticated():
             choice_bets = ChoiceBet.objects.all()
             placed_choice_bets = request.user.profile.placedchoicebet_set.all()
@@ -29,8 +31,10 @@ def index_view(request):
             })
         else:
             return render(request, 'profiles/login.html')
-    else:
-        return render(request, 'profiles/agb.html', {'accepted': True})
+    elif not request.user.profile.accepted_agb:
+        return render(request, 'profiles/agb.html', {'accepted': False})
+    elif not request.user.profile.accepted_privacy_policy:
+        return render(request, 'profiles/datenschutzerklärung.html', {'accepted': False})
 
 
 @login_required

@@ -17,7 +17,7 @@
 ## <a name="präambel">Präambel</a>
 
 1. Bad Bat Bets (Betreiber<sup>[1](#synonym)</sup>) ist Betreiber der Internetplattform
-bad-bat-bets.de<sup>[2](#web)</sup> (Internetplattform) und der dort angebotenen
+dev.splork.de<sup>[2](#web)</sup> (Internetplattform) und der dort angebotenen
 Glücksspiele<sup>[3](#glücksspiele)</sup>.
 2. Die Bahnhofstraße 33a, 35037 Marburg<sup>[4](#adresse)</sup> (Hauptzentrale) ist der feste Sitz des Betreibers.
 
@@ -29,7 +29,7 @@ Verträge.
     1. Die AGB umfassen auch die Inhalte, die der Betreiber und der Spieler im Zusammenhang mit dieser
     Internetplattform erstellt, zur Verfügung stellt und/oder versendet.
     2. Die AGB umfassen auch die Modalitäten zur Ein- und Auszahlung von Punkten durch den Spieler und den Betreiber.
-2. Der Spieler akzeptiert mit seiner Nutzung die vorliegenden Allgemeinen Geschäftsbedingungen (AGB) in der jeweils
+2. Der Spieler akzeptiert mit seiner Nutzung die vorliegenden AGB in der jeweils
 gültigen Fassung zum Zeitpunkt der Nutzung.
 3. Entgegenstehende oder von diesen AGB abweichende Bedingungen des Nutzers erkennt der Betreiber nicht an, soweit er
 ihrer Geltung nicht ausdrücklich schriftlich zugestimmt hat.

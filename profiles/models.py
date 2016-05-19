@@ -12,6 +12,8 @@ class Profile(models.Model):
     points = models.IntegerField(default=0)
     # Has the user accepted the AGB?
     accepted_agb = models.BooleanField(default=False)
+    # Has the user accepted the privacy policy?
+    accepted_privacy_policy = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.__str__()
