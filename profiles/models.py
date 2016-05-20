@@ -8,8 +8,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     # Whether or not the users true identity has been verified
     verified = models.BooleanField(default=False)
-    # The number of points the user has gained/lost
-    points = models.IntegerField(default=0)
+    # Each user has an account
+    account = models.OneToOneField(Account)
     # Has the user accepted the AGB?
     accepted_agb = models.BooleanField(default=False)
     # Has the user accepted the privacy policy?

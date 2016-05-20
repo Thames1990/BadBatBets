@@ -80,6 +80,16 @@ def change_password(request):
     args['form'] = form
     return render(request, 'profiles/change_password.html', args)
 
+def transactions(request):
+    if not request.user.is_authenticated():
+        return redirect(login_user)
+
+    cre = request.user.profile.account.credit_set.all()
+    deb = request.user.profile.account.debit_set.all()
+
+    args = {'table': create_table(cre, deb)}
+
+    return render(request, 'profiles/transactions.html', args)
 
 def general_terms_and_conditions_view(request):
     return render(request, 'profiles/general_terms_and_conditions.html',

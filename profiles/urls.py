@@ -3,7 +3,6 @@ from django.conf.urls import url
 from . import views
 
 app_name = 'profiles'
-
 urlpatterns = [
     url(
         r'^$',
@@ -32,9 +31,16 @@ urlpatterns = [
 
     # Change Password
     url(
-        r'^chpw/$',
+        r'^change_password/$',
         views.change_password,
         name='change_password'
+    ),
+
+    # View transactions
+    url(
+        r'^transactions/$',
+        views.transactions,
+        name='transactions'
     ),
 
     # General terms and conditions, privacy policy

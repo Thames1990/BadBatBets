@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'the_platform.apps.ThePlatformConfig',
     'profiles.apps.ProfilesConfig',
     'bets.apps.BetsConfig',
-    'journal.apps.JournalConfig',
+    'ledger.apps.LedgerConfig',
 ]
 
 MIDDLEWARE_CLASSES = [

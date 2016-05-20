@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from .models import DateBet
+from ledger.models import Account
 
 from profiles.models import ForbiddenUser
 
@@ -117,7 +118,8 @@ class DateBetCreationForm(forms.ModelForm):
         time_period_end = self.cleaned_data['time_period_end']
         forbidden = self.cleaned_data['forbidden']
 
-        print(forbidden)
+        account = Account(name=name, type='b')
+        account.save()
 
         new_bet = DateBet(
             owner=user,
@@ -127,6 +129,7 @@ class DateBetCreationForm(forms.ModelForm):
             end_bets_date=end_bets_date,
             time_period_start=time_period_start,
             time_period_end=time_period_end,
+            account=account
         )
         new_bet.save()
 
