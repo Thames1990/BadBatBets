@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpResponseNotFound
 
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, DepositForm
 from ledger.util import create_table
 
 
@@ -89,3 +90,22 @@ def transactions(request):
     args = {'table': create_table(cre, deb)}
 
     return render(request, 'profiles/transactions.html', args)
+
+
+def deposit(request):
+    if not request.user.is_authenticated() or not request.user.is_superuser:
+        return HttpResponseNotFound()
+
+    args = {}
+
+    if request.method == 'POST':
+        form = DepositForm(request.POST)
+        if form.is_valid():
+            form.save(authorised=request.user)
+    else:
+        form = DepositForm()
+
+    args['form'] = form
+
+    return render(request, 'profiles/deposit.html', args)
+

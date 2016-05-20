@@ -18,4 +18,7 @@ urlpatterns = [
 
     # View transactions
     url(r'^transactions/$', views.transactions, name='transactions'),
+
+    # Deposit funds in account
+    url(r'^deposit/$', views.deposit, name='deposit'),
 ]

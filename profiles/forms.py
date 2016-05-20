@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
-from ledger.models import Account
+from ledger.models import Account, Transaction, Credit, Debit
 
 
 class SignupForm(UserCreationForm):
@@ -44,3 +44,42 @@ class SignupForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     def clean_username(self):
         return self.cleaned_data.get('username').lower()
+
+
+class DepositForm(forms.Form):
+    account = forms.ModelChoiceField(queryset=User.objects.all())
+    amount = forms.IntegerField()
+
+    def clean_account(self):
+        account = self.cleaned_data['account'].profile.account
+
+        if not account.type == 'p':
+            raise forms.ValidationError(
+                _("Funds can only be deposited in personal accounts."),
+                code='deposit_account_not_personal',
+            )
+
+        return account
+
+    def clean_amount(self):
+        if self.cleaned_data['amount'] <= 0:
+            raise forms.ValidationError(
+                _("This email address is already in use. Please supply a different email address."),
+                code='deposit_amount_not_positive',
+            )
+
+        return self.cleaned_data['amount']
+
+    def save(self, authorised, commit=True):
+        deposit_account = Account.objects.get(name='deposit')
+        user_account = self.cleaned_data['account']
+        description = "Deposit authorised by: " + str(authorised)
+
+        transaction = Transaction(description=description)
+        transaction.save(commit)
+        credit = Credit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+        debit = Debit(transaction=transaction, account=deposit_account, amount=self.cleaned_data['amount'])
+        credit.save(commit)
+        debit.save(commit)
+
+        return transaction
