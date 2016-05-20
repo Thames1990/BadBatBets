@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^transactions/$', views.transactions, name='transactions'),
 
     # Deposit funds in account
-    url(r'^deposit/$', views.deposit, name='deposit'),
+    url(r'^payment/$', views.payment, name='payment'),
 ]

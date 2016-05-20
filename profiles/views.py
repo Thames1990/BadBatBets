@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseNotFound
 
-from .forms import SignupForm, LoginForm, DepositForm
+from .forms import SignupForm, LoginForm, PaymentForm
 from ledger.util import create_table
 
 
@@ -92,20 +92,20 @@ def transactions(request):
     return render(request, 'profiles/transactions.html', args)
 
 
-def deposit(request):
+def payment(request):
     if not request.user.is_authenticated() or not request.user.is_superuser:
         return HttpResponseNotFound()
 
     args = {}
 
     if request.method == 'POST':
-        form = DepositForm(request.POST)
+        form = PaymentForm(request.POST)
         if form.is_valid():
             form.save(authorised=request.user)
     else:
-        form = DepositForm()
+        form = PaymentForm()
 
     args['form'] = form
 
-    return render(request, 'profiles/deposit.html', args)
+    return render(request, 'profiles/payment.html', args)
 

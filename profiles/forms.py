@@ -25,7 +25,9 @@ class SignupForm(UserCreationForm):
         username = self.cleaned_data.get('username')
 
         if email and User.objects.filter(email=email).exclude(username=username).count():
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+            raise forms.ValidationError(
+                _("This email address is already in use. Please supply a different email address.")
+            )
         return email
 
     def save(self, commit=True):
@@ -46,7 +48,8 @@ class LoginForm(AuthenticationForm):
         return self.cleaned_data.get('username').lower()
 
 
-class DepositForm(forms.Form):
+class PaymentForm(forms.Form):
+    type = forms.ChoiceField(choices=[('d', 'Deposit'), ('w', 'Withdrawal')])
     account = forms.ModelChoiceField(queryset=User.objects.all())
     amount = forms.IntegerField()
 
@@ -62,23 +65,43 @@ class DepositForm(forms.Form):
         return account
 
     def clean_amount(self):
-        if self.cleaned_data['amount'] <= 0:
+        amount = self.cleaned_data['amount']
+
+        if amount <= 0:
             raise forms.ValidationError(
                 _("This email address is already in use. Please supply a different email address."),
                 code='deposit_amount_not_positive',
             )
 
+        if self.cleaned_data['type'] == 'w':
+            account = self.cleaned_data['account']
+            if account.compute_balance() < amount:
+                raise forms.ValidationError(
+                    _("Insufficient funds."),
+                    code='insuficcient_funds'
+                )
+
         return self.cleaned_data['amount']
 
     def save(self, authorised, commit=True):
-        deposit_account = Account.objects.get(name='deposit')
         user_account = self.cleaned_data['account']
-        description = "Deposit authorised by: " + str(authorised)
 
-        transaction = Transaction(description=description)
+        if self.cleaned_data['type'] == 'w':
+            system_account = Account.objects.get(name='withdrawal')
+            description = "Withdrawal authorised by: " + str(authorised)
+
+            transaction = Transaction(description=description)
+            credit = Credit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
+            debit = Debit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+        else:
+            system_account = Account.objects.get(name='deposit')
+            description = "Deposit authorised by: " + str(authorised)
+
+            transaction = Transaction(description=description)
+            credit = Credit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+            debit = Debit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
+
         transaction.save(commit)
-        credit = Credit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
-        debit = Debit(transaction=transaction, account=deposit_account, amount=self.cleaned_data['amount'])
         credit.save(commit)
         debit.save(commit)
 

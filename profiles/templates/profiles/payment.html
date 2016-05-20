@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Deposit</title>
+    <title>Payment</title>
 </head>
 <body>
-<form action="{% url 'profiles:deposit' %}" method="POST">
+<form action="{% url 'profiles:payment' %}" method="POST">
     {% csrf_token %}
     <table>
         {{ form.as_table }}
