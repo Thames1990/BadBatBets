@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.db import models
 
-from bets.util import pkgen
+from bets.util import key_gen
 from profiles.models import Profile, ForbiddenUser
 from ledger.models import Account
 
@@ -12,7 +12,7 @@ class Bet(models.Model):
         abstract = True
 
     # Random key for each bet
-    prim_key = models.PositiveIntegerField(primary_key=True, default=pkgen)
+    prim_key = models.PositiveIntegerField(primary_key=True, default=key_gen)
     # Each bet has a user who owns it (usually the user that created it)
     owner = models.ForeignKey(Profile)
     # Name to be shown in the index

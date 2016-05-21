@@ -19,7 +19,7 @@ urlpatterns = [
         name='bet'
     ),
 
-    # /bets/<prim_key>/voted
+    # /bets/<prim_key>/bet
     url(
         r'^(?P<prim_key>[0-9]+)/bet$',
         views.bet_on_bet_view,

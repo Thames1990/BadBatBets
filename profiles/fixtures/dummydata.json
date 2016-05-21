@@ -1,1 +1,1083 @@
-[{"model": "contenttypes.contenttype", "pk": 1, "fields": {"app_label": "admin", "model": "logentry"}}, {"model": "contenttypes.contenttype", "pk": 2, "fields": {"app_label": "auth", "model": "permission"}}, {"model": "contenttypes.contenttype", "pk": 3, "fields": {"app_label": "auth", "model": "group"}}, {"model": "contenttypes.contenttype", "pk": 4, "fields": {"app_label": "auth", "model": "user"}}, {"model": "contenttypes.contenttype", "pk": 5, "fields": {"app_label": "contenttypes", "model": "contenttype"}}, {"model": "contenttypes.contenttype", "pk": 6, "fields": {"app_label": "sessions", "model": "session"}}, {"model": "contenttypes.contenttype", "pk": 7, "fields": {"app_label": "profiles", "model": "profile"}}, {"model": "contenttypes.contenttype", "pk": 8, "fields": {"app_label": "profiles", "model": "forbiddenuser"}}, {"model": "contenttypes.contenttype", "pk": 9, "fields": {"app_label": "bets", "model": "choicebet"}}, {"model": "contenttypes.contenttype", "pk": 10, "fields": {"app_label": "bets", "model": "choice"}}, {"model": "contenttypes.contenttype", "pk": 11, "fields": {"app_label": "bets", "model": "placedchoicebet"}}, {"model": "contenttypes.contenttype", "pk": 12, "fields": {"app_label": "bets", "model": "datebet"}}, {"model": "contenttypes.contenttype", "pk": 13, "fields": {"app_label": "bets", "model": "placeddatebet"}}, {"model": "contenttypes.contenttype", "pk": 14, "fields": {"app_label": "ledger", "model": "account"}}, {"model": "contenttypes.contenttype", "pk": 15, "fields": {"app_label": "ledger", "model": "transaction"}}, {"model": "contenttypes.contenttype", "pk": 16, "fields": {"app_label": "ledger", "model": "credit"}}, {"model": "contenttypes.contenttype", "pk": 17, "fields": {"app_label": "ledger", "model": "debit"}}, {"model": "sessions.session", "pk": "qv91m9ak930rb0ggpwvtotxg6rs569wf", "fields": {"session_data": "YzBkNjAwMjUzOWIxMDk2ODM4MjM1Y2YyY2I0MzYyZDhlZWFhMTM2MDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIwZDg2ZTY0OWQxNGNmN2JhODgyODIwM2VkNTMyOTdhYWFmMGE1ZTlmIn0=", "expire_date": "2016-06-01T13:55:31.603Z"}}, {"model": "profiles.forbiddenuser", "pk": 1, "fields": {"name": "Test User", "has_account": true, "account": 2}}, {"model": "profiles.forbiddenuser", "pk": 2, "fields": {"name": "Another User", "has_account": true, "account": 3}}, {"model": "profiles.forbiddenuser", "pk": 3, "fields": {"name": "Some Dude", "has_account": false, "account": null}}, {"model": "bets.datebet", "pk": 1382033528, "fields": {"owner": 2, "name": "Test Date invisible to some", "description": "Foobar", "created": "2016-05-18T13:59:13.073Z", "pub_date": "2016-05-19", "end_bets_date": null, "resolved": false, "pot": 0, "account": 8, "time_period_start": null, "time_period_end": null, "forbidden": [2, 3]}}, {"model": "bets.datebet", "pk": 1595388399, "fields": {"owner": 2, "name": "Test Date Visible to all", "description": "Foobar", "created": "2016-05-18T13:58:58.773Z", "pub_date": "2016-05-19", "end_bets_date": null, "resolved": false, "pot": 0, "account": 7, "time_period_start": null, "time_period_end": null, "forbidden": []}}, {"model": "bets.datebet", "pk": 1651290822, "fields": {"owner": 1, "name": "Resolved Bet", "description": "Foobar", "created": "2016-05-18T13:59:57.001Z", "pub_date": "2016-05-19", "end_bets_date": null, "resolved": true, "pot": 0, "account": 9, "time_period_start": null, "time_period_end": null, "forbidden": []}}, {"model": "ledger.account", "pk": 1, "fields": {"created": "2016-05-18T13:50:56.934Z", "name": "Admin", "type": "p", "balance": 0}}, {"model": "ledger.account", "pk": 2, "fields": {"created": "2016-05-18T13:54:00.698Z", "name": "testuser", "type": "p", "balance": 0}}, {"model": "ledger.account", "pk": 3, "fields": {"created": "2016-05-18T13:54:33.895Z", "name": "anotheruser", "type": "p", "balance": 0}}, {"model": "ledger.account", "pk": 4, "fields": {"created": "2016-05-18T13:55:01.082Z", "name": "unverifieduser", "type": "p", "balance": 0}}, {"model": "ledger.account", "pk": 5, "fields": {"created": "2016-05-18T13:55:22.969Z", "name": "noagbuser", "type": "p", "balance": 0}}, {"model": "ledger.account", "pk": 6, "fields": {"created": "2016-05-18T13:58:18.258Z", "name": "Test Date Visible to all", "type": "b", "balance": 0}}, {"model": "ledger.account", "pk": 7, "fields": {"created": "2016-05-18T13:58:58.758Z", "name": "Test Date Visible to all", "type": "b", "balance": 0}}, {"model": "ledger.account", "pk": 8, "fields": {"created": "2016-05-18T13:59:13.059Z", "name": "Test Date invisible to some", "type": "b", "balance": 0}}, {"model": "ledger.account", "pk": 9, "fields": {"created": "2016-05-18T13:59:56.986Z", "name": "Resolved Bet", "type": "b", "balance": 0}}, {"model": "auth.permission", "pk": 1, "fields": {"name": "Can add log entry", "content_type": 1, "codename": "add_logentry"}}, {"model": "auth.permission", "pk": 2, "fields": {"name": "Can change log entry", "content_type": 1, "codename": "change_logentry"}}, {"model": "auth.permission", "pk": 3, "fields": {"name": "Can delete log entry", "content_type": 1, "codename": "delete_logentry"}}, {"model": "auth.permission", "pk": 4, "fields": {"name": "Can add permission", "content_type": 2, "codename": "add_permission"}}, {"model": "auth.permission", "pk": 5, "fields": {"name": "Can change permission", "content_type": 2, "codename": "change_permission"}}, {"model": "auth.permission", "pk": 6, "fields": {"name": "Can delete permission", "content_type": 2, "codename": "delete_permission"}}, {"model": "auth.permission", "pk": 7, "fields": {"name": "Can add group", "content_type": 3, "codename": "add_group"}}, {"model": "auth.permission", "pk": 8, "fields": {"name": "Can change group", "content_type": 3, "codename": "change_group"}}, {"model": "auth.permission", "pk": 9, "fields": {"name": "Can delete group", "content_type": 3, "codename": "delete_group"}}, {"model": "auth.permission", "pk": 10, "fields": {"name": "Can add user", "content_type": 4, "codename": "add_user"}}, {"model": "auth.permission", "pk": 11, "fields": {"name": "Can change user", "content_type": 4, "codename": "change_user"}}, {"model": "auth.permission", "pk": 12, "fields": {"name": "Can delete user", "content_type": 4, "codename": "delete_user"}}, {"model": "auth.permission", "pk": 13, "fields": {"name": "Can add content type", "content_type": 5, "codename": "add_contenttype"}}, {"model": "auth.permission", "pk": 14, "fields": {"name": "Can change content type", "content_type": 5, "codename": "change_contenttype"}}, {"model": "auth.permission", "pk": 15, "fields": {"name": "Can delete content type", "content_type": 5, "codename": "delete_contenttype"}}, {"model": "auth.permission", "pk": 16, "fields": {"name": "Can add session", "content_type": 6, "codename": "add_session"}}, {"model": "auth.permission", "pk": 17, "fields": {"name": "Can change session", "content_type": 6, "codename": "change_session"}}, {"model": "auth.permission", "pk": 18, "fields": {"name": "Can delete session", "content_type": 6, "codename": "delete_session"}}, {"model": "auth.permission", "pk": 19, "fields": {"name": "Can add profile", "content_type": 7, "codename": "add_profile"}}, {"model": "auth.permission", "pk": 20, "fields": {"name": "Can change profile", "content_type": 7, "codename": "change_profile"}}, {"model": "auth.permission", "pk": 21, "fields": {"name": "Can delete profile", "content_type": 7, "codename": "delete_profile"}}, {"model": "auth.permission", "pk": 22, "fields": {"name": "Can add forbidden user", "content_type": 8, "codename": "add_forbiddenuser"}}, {"model": "auth.permission", "pk": 23, "fields": {"name": "Can change forbidden user", "content_type": 8, "codename": "change_forbiddenuser"}}, {"model": "auth.permission", "pk": 24, "fields": {"name": "Can delete forbidden user", "content_type": 8, "codename": "delete_forbiddenuser"}}, {"model": "auth.permission", "pk": 25, "fields": {"name": "Can add choice bet", "content_type": 9, "codename": "add_choicebet"}}, {"model": "auth.permission", "pk": 26, "fields": {"name": "Can change choice bet", "content_type": 9, "codename": "change_choicebet"}}, {"model": "auth.permission", "pk": 27, "fields": {"name": "Can delete choice bet", "content_type": 9, "codename": "delete_choicebet"}}, {"model": "auth.permission", "pk": 28, "fields": {"name": "Can add choice", "content_type": 10, "codename": "add_choice"}}, {"model": "auth.permission", "pk": 29, "fields": {"name": "Can change choice", "content_type": 10, "codename": "change_choice"}}, {"model": "auth.permission", "pk": 30, "fields": {"name": "Can delete choice", "content_type": 10, "codename": "delete_choice"}}, {"model": "auth.permission", "pk": 31, "fields": {"name": "Can add placed choice bet", "content_type": 11, "codename": "add_placedchoicebet"}}, {"model": "auth.permission", "pk": 32, "fields": {"name": "Can change placed choice bet", "content_type": 11, "codename": "change_placedchoicebet"}}, {"model": "auth.permission", "pk": 33, "fields": {"name": "Can delete placed choice bet", "content_type": 11, "codename": "delete_placedchoicebet"}}, {"model": "auth.permission", "pk": 34, "fields": {"name": "Can add date bet", "content_type": 12, "codename": "add_datebet"}}, {"model": "auth.permission", "pk": 35, "fields": {"name": "Can change date bet", "content_type": 12, "codename": "change_datebet"}}, {"model": "auth.permission", "pk": 36, "fields": {"name": "Can delete date bet", "content_type": 12, "codename": "delete_datebet"}}, {"model": "auth.permission", "pk": 37, "fields": {"name": "Can add placed date bet", "content_type": 13, "codename": "add_placeddatebet"}}, {"model": "auth.permission", "pk": 38, "fields": {"name": "Can change placed date bet", "content_type": 13, "codename": "change_placeddatebet"}}, {"model": "auth.permission", "pk": 39, "fields": {"name": "Can delete placed date bet", "content_type": 13, "codename": "delete_placeddatebet"}}, {"model": "auth.permission", "pk": 40, "fields": {"name": "Can add account", "content_type": 14, "codename": "add_account"}}, {"model": "auth.permission", "pk": 41, "fields": {"name": "Can change account", "content_type": 14, "codename": "change_account"}}, {"model": "auth.permission", "pk": 42, "fields": {"name": "Can delete account", "content_type": 14, "codename": "delete_account"}}, {"model": "auth.permission", "pk": 43, "fields": {"name": "Can add transaction", "content_type": 15, "codename": "add_transaction"}}, {"model": "auth.permission", "pk": 44, "fields": {"name": "Can change transaction", "content_type": 15, "codename": "change_transaction"}}, {"model": "auth.permission", "pk": 45, "fields": {"name": "Can delete transaction", "content_type": 15, "codename": "delete_transaction"}}, {"model": "auth.permission", "pk": 46, "fields": {"name": "Can add credit", "content_type": 16, "codename": "add_credit"}}, {"model": "auth.permission", "pk": 47, "fields": {"name": "Can change credit", "content_type": 16, "codename": "change_credit"}}, {"model": "auth.permission", "pk": 48, "fields": {"name": "Can delete credit", "content_type": 16, "codename": "delete_credit"}}, {"model": "auth.permission", "pk": 49, "fields": {"name": "Can add debit", "content_type": 17, "codename": "add_debit"}}, {"model": "auth.permission", "pk": 50, "fields": {"name": "Can change debit", "content_type": 17, "codename": "change_debit"}}, {"model": "auth.permission", "pk": 51, "fields": {"name": "Can delete debit", "content_type": 17, "codename": "delete_debit"}}, {"model": "auth.user", "pk": 1, "fields": {"password": "pbkdf2_sha256$24000$1l57X7eEqFCr$Dhb3NE2CqFScs/SsHnU/oWiOICKgCp+R4HscBcia+Pg=", "last_login": "2016-05-18T13:55:31.597Z", "is_superuser": true, "username": "admin", "first_name": "", "last_name": "", "email": "admin@example.org", "is_staff": true, "is_active": true, "date_joined": "2016-05-18T13:48:29.763Z", "groups": [], "user_permissions": []}}, {"model": "auth.user", "pk": 2, "fields": {"password": "pbkdf2_sha256$24000$PiF8Q3gOyOB0$wGTCHAOKZBlv8jKoVW9DODXjW8KyPIDop9/hiLc3rxk=", "last_login": null, "is_superuser": false, "username": "testuser", "first_name": "Test", "last_name": "User", "email": "test@user.com", "is_staff": false, "is_active": true, "date_joined": "2016-05-18T13:54:00.655Z", "groups": [], "user_permissions": []}}, {"model": "auth.user", "pk": 3, "fields": {"password": "pbkdf2_sha256$24000$adzv0YsuqgNQ$PzqsuDZVWSKcgF0WMq82sX6ImK7yRb8yEItHD5XJFvQ=", "last_login": null, "is_superuser": false, "username": "anotheruser", "first_name": "Another", "last_name": "User", "email": "another@user.org", "is_staff": false, "is_active": true, "date_joined": "2016-05-18T13:54:33.862Z", "groups": [], "user_permissions": []}}, {"model": "auth.user", "pk": 4, "fields": {"password": "pbkdf2_sha256$24000$zISzklhuWykZ$RYxJQIpO2sodw42Kc0rtEWIBbp9wXVDCswCwT6/yquw=", "last_login": null, "is_superuser": false, "username": "unverifieduser", "first_name": "Unverified", "last_name": "User", "email": "unverified@user.org", "is_staff": false, "is_active": true, "date_joined": "2016-05-18T13:55:01.048Z", "groups": [], "user_permissions": []}}, {"model": "auth.user", "pk": 5, "fields": {"password": "pbkdf2_sha256$24000$uLQ3cK9cLnHz$eo4y3WlYMVEEjOACy+KtWWWSnRwdmRGPJTIleLf8zDM=", "last_login": null, "is_superuser": false, "username": "noagbuser", "first_name": "NoAGB", "last_name": "User", "email": "noagb@user.org", "is_staff": false, "is_active": true, "date_joined": "2016-05-18T13:55:22.925Z", "groups": [], "user_permissions": []}}, {"model": "profiles.profile", "pk": 1, "fields": {"verified": true, "accepted_agb": true, "account": 1}}, {"model": "profiles.profile", "pk": 2, "fields": {"verified": true, "accepted_agb": true, "account": 2}}, {"model": "profiles.profile", "pk": 3, "fields": {"verified": true, "accepted_agb": true, "account": 3}}, {"model": "profiles.profile", "pk": 4, "fields": {"verified": false, "accepted_agb": false, "account": 4}}, {"model": "profiles.profile", "pk": 5, "fields": {"verified": true, "accepted_agb": false, "account": 5}}, {"model": "admin.logentry", "pk": 1, "fields": {"action_time": "2016-05-18T13:50:56.934Z", "user": 1, "content_type": 14, "object_id": "1", "object_repr": "Account object", "action_flag": 1, "change_message": "Added."}}, {"model": "admin.logentry", "pk": 2, "fields": {"action_time": "2016-05-18T13:53:09.700Z", "user": 1, "content_type": 7, "object_id": "1", "object_repr": "admin", "action_flag": 1, "change_message": "Added."}}, {"model": "admin.logentry", "pk": 3, "fields": {"action_time": "2016-05-18T13:55:51.726Z", "user": 1, "content_type": 7, "object_id": "2", "object_repr": "testuser", "action_flag": 2, "change_message": "Changed verified and accepted_agb."}}, {"model": "admin.logentry", "pk": 4, "fields": {"action_time": "2016-05-18T13:56:02.250Z", "user": 1, "content_type": 7, "object_id": "3", "object_repr": "anotheruser", "action_flag": 2, "change_message": "Changed verified and accepted_agb."}}, {"model": "admin.logentry", "pk": 5, "fields": {"action_time": "2016-05-18T13:56:15.450Z", "user": 1, "content_type": 7, "object_id": "4", "object_repr": "unverifieduser", "action_flag": 2, "change_message": "Changed accepted_agb."}}, {"model": "admin.logentry", "pk": 6, "fields": {"action_time": "2016-05-18T13:56:25.199Z", "user": 1, "content_type": 7, "object_id": "4", "object_repr": "unverifieduser", "action_flag": 2, "change_message": "Changed accepted_agb."}}, {"model": "admin.logentry", "pk": 7, "fields": {"action_time": "2016-05-18T13:56:31.020Z", "user": 1, "content_type": 7, "object_id": "5", "object_repr": "noagbuser", "action_flag": 2, "change_message": "Changed verified."}}, {"model": "admin.logentry", "pk": 8, "fields": {"action_time": "2016-05-18T13:57:17.169Z", "user": 1, "content_type": 8, "object_id": "1", "object_repr": "Test User", "action_flag": 1, "change_message": "Added."}}, {"model": "admin.logentry", "pk": 9, "fields": {"action_time": "2016-05-18T13:57:35.616Z", "user": 1, "content_type": 8, "object_id": "2", "object_repr": "Another User", "action_flag": 1, "change_message": "Added."}}, {"model": "admin.logentry", "pk": 10, "fields": {"action_time": "2016-05-18T13:57:52.527Z", "user": 1, "content_type": 8, "object_id": "3", "object_repr": "Some Dude", "action_flag": 1, "change_message": "Added."}}, {"model": "admin.logentry", "pk": 11, "fields": {"action_time": "2016-05-18T13:59:27.108Z", "user": 1, "content_type": 12, "object_id": "1595388399", "object_repr": "Test Date Visible to all", "action_flag": 2, "change_message": "Changed owner."}}, {"model": "admin.logentry", "pk": 12, "fields": {"action_time": "2016-05-18T13:59:34.078Z", "user": 1, "content_type": 12, "object_id": "1382033528", "object_repr": "Test Date invisible to some", "action_flag": 2, "change_message": "Changed owner."}}, {"model": "admin.logentry", "pk": 13, "fields": {"action_time": "2016-05-18T14:00:08.817Z", "user": 1, "content_type": 12, "object_id": "1651290822", "object_repr": "Resolved Bet", "action_flag": 2, "change_message": "Changed resolved."}}]
+[
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 1,
+        "fields": {
+            "app_label": "admin",
+            "model": "logentry"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 2,
+        "fields": {
+            "app_label": "auth",
+            "model": "permission"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 3,
+        "fields": {
+            "app_label": "auth",
+            "model": "group"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 4,
+        "fields": {
+            "app_label": "auth",
+            "model": "user"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 5,
+        "fields": {
+            "app_label": "contenttypes",
+            "model": "contenttype"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 6,
+        "fields": {
+            "app_label": "sessions",
+            "model": "session"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 7,
+        "fields": {
+            "app_label": "profiles",
+            "model": "profile"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 8,
+        "fields": {
+            "app_label": "profiles",
+            "model": "forbiddenuser"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 9,
+        "fields": {
+            "app_label": "bets",
+            "model": "choicebet"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 10,
+        "fields": {
+            "app_label": "bets",
+            "model": "choice"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 11,
+        "fields": {
+            "app_label": "bets",
+            "model": "placedchoicebet"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 12,
+        "fields": {
+            "app_label": "bets",
+            "model": "datebet"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 13,
+        "fields": {
+            "app_label": "bets",
+            "model": "placeddatebet"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 14,
+        "fields": {
+            "app_label": "ledger",
+            "model": "account"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 15,
+        "fields": {
+            "app_label": "ledger",
+            "model": "transaction"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 16,
+        "fields": {
+            "app_label": "ledger",
+            "model": "credit"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 17,
+        "fields": {
+            "app_label": "ledger",
+            "model": "debit"
+        }
+    },
+    {
+        "model": "sessions.session",
+        "pk": "qv91m9ak930rb0ggpwvtotxg6rs569wf",
+        "fields": {
+            "session_data": "YzBkNjAwMjUzOWIxMDk2ODM4MjM1Y2YyY2I0MzYyZDhlZWFhMTM2MDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIwZDg2ZTY0OWQxNGNmN2JhODgyODIwM2VkNTMyOTdhYWFmMGE1ZTlmIn0=",
+            "expire_date": "2016-06-01T13:55:31.603Z"
+        }
+    },
+    {
+        "model": "profiles.forbiddenuser",
+        "pk": 1,
+        "fields": {
+            "name": "Test User",
+            "has_account": true,
+            "account": 2
+        }
+    },
+    {
+        "model": "profiles.forbiddenuser",
+        "pk": 2,
+        "fields": {
+            "name": "Another User",
+            "has_account": true,
+            "account": 3
+        }
+    },
+    {
+        "model": "profiles.forbiddenuser",
+        "pk": 3,
+        "fields": {
+            "name": "Some Dude",
+            "has_account": false,
+            "account": null
+        }
+    },
+    {
+        "model": "bets.datebet",
+        "pk": 1382033528,
+        "fields": {
+            "owner": 2,
+            "name": "Test Date invisible to some",
+            "description": "Foobar",
+            "created": "2016-05-18T13:59:13.073Z",
+            "pub_date": "2016-05-19",
+            "end_bets_date": null,
+            "resolved": false,
+            "pot": 0,
+            "account": 8,
+            "time_period_start": null,
+            "time_period_end": null,
+            "forbidden": [
+                2,
+                3
+            ]
+        }
+    },
+    {
+        "model": "bets.datebet",
+        "pk": 1595388399,
+        "fields": {
+            "owner": 2,
+            "name": "Test Date Visible to all",
+            "description": "Foobar",
+            "created": "2016-05-18T13:58:58.773Z",
+            "pub_date": "2016-05-19",
+            "end_bets_date": null,
+            "resolved": false,
+            "pot": 0,
+            "account": 7,
+            "time_period_start": null,
+            "time_period_end": null,
+            "forbidden": []
+        }
+    },
+    {
+        "model": "bets.datebet",
+        "pk": 1651290822,
+        "fields": {
+            "owner": 1,
+            "name": "Resolved Bet",
+            "description": "Foobar",
+            "created": "2016-05-18T13:59:57.001Z",
+            "pub_date": "2016-05-19",
+            "end_bets_date": null,
+            "resolved": true,
+            "pot": 0,
+            "account": 9,
+            "time_period_start": null,
+            "time_period_end": null,
+            "forbidden": []
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 1,
+        "fields": {
+            "created": "2016-05-18T13:50:56.934Z",
+            "name": "Admin",
+            "type": "p",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 2,
+        "fields": {
+            "created": "2016-05-18T13:54:00.698Z",
+            "name": "testuser",
+            "type": "p",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 3,
+        "fields": {
+            "created": "2016-05-18T13:54:33.895Z",
+            "name": "anotheruser",
+            "type": "p",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 4,
+        "fields": {
+            "created": "2016-05-18T13:55:01.082Z",
+            "name": "unverifieduser",
+            "type": "p",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 5,
+        "fields": {
+            "created": "2016-05-18T13:55:22.969Z",
+            "name": "noagbuser",
+            "type": "p",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 6,
+        "fields": {
+            "created": "2016-05-18T13:58:18.258Z",
+            "name": "Test Date Visible to all",
+            "type": "b",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 7,
+        "fields": {
+            "created": "2016-05-18T13:58:58.758Z",
+            "name": "Test Date Visible to all",
+            "type": "b",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 8,
+        "fields": {
+            "created": "2016-05-18T13:59:13.059Z",
+            "name": "Test Date invisible to some",
+            "type": "b",
+            "balance": 0
+        }
+    },
+    {
+        "model": "ledger.account",
+        "pk": 9,
+        "fields": {
+            "created": "2016-05-18T13:59:56.986Z",
+            "name": "Resolved Bet",
+            "type": "b",
+            "balance": 0
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 1,
+        "fields": {
+            "name": "Can add log entry",
+            "content_type": 1,
+            "codename": "add_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 2,
+        "fields": {
+            "name": "Can change log entry",
+            "content_type": 1,
+            "codename": "change_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 3,
+        "fields": {
+            "name": "Can delete log entry",
+            "content_type": 1,
+            "codename": "delete_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 4,
+        "fields": {
+            "name": "Can add permission",
+            "content_type": 2,
+            "codename": "add_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 5,
+        "fields": {
+            "name": "Can change permission",
+            "content_type": 2,
+            "codename": "change_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 6,
+        "fields": {
+            "name": "Can delete permission",
+            "content_type": 2,
+            "codename": "delete_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 7,
+        "fields": {
+            "name": "Can add group",
+            "content_type": 3,
+            "codename": "add_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 8,
+        "fields": {
+            "name": "Can change group",
+            "content_type": 3,
+            "codename": "change_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 9,
+        "fields": {
+            "name": "Can delete group",
+            "content_type": 3,
+            "codename": "delete_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 10,
+        "fields": {
+            "name": "Can add user",
+            "content_type": 4,
+            "codename": "add_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 11,
+        "fields": {
+            "name": "Can change user",
+            "content_type": 4,
+            "codename": "change_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 12,
+        "fields": {
+            "name": "Can delete user",
+            "content_type": 4,
+            "codename": "delete_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 13,
+        "fields": {
+            "name": "Can add content type",
+            "content_type": 5,
+            "codename": "add_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 14,
+        "fields": {
+            "name": "Can change content type",
+            "content_type": 5,
+            "codename": "change_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 15,
+        "fields": {
+            "name": "Can delete content type",
+            "content_type": 5,
+            "codename": "delete_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 16,
+        "fields": {
+            "name": "Can add session",
+            "content_type": 6,
+            "codename": "add_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 17,
+        "fields": {
+            "name": "Can change session",
+            "content_type": 6,
+            "codename": "change_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 18,
+        "fields": {
+            "name": "Can delete session",
+            "content_type": 6,
+            "codename": "delete_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 19,
+        "fields": {
+            "name": "Can add profile",
+            "content_type": 7,
+            "codename": "add_profile"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 20,
+        "fields": {
+            "name": "Can change profile",
+            "content_type": 7,
+            "codename": "change_profile"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 21,
+        "fields": {
+            "name": "Can delete profile",
+            "content_type": 7,
+            "codename": "delete_profile"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 22,
+        "fields": {
+            "name": "Can add forbidden user",
+            "content_type": 8,
+            "codename": "add_forbiddenuser"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 23,
+        "fields": {
+            "name": "Can change forbidden user",
+            "content_type": 8,
+            "codename": "change_forbiddenuser"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 24,
+        "fields": {
+            "name": "Can delete forbidden user",
+            "content_type": 8,
+            "codename": "delete_forbiddenuser"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 25,
+        "fields": {
+            "name": "Can add choice bet",
+            "content_type": 9,
+            "codename": "add_choicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 26,
+        "fields": {
+            "name": "Can change choice bet",
+            "content_type": 9,
+            "codename": "change_choicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 27,
+        "fields": {
+            "name": "Can delete choice bet",
+            "content_type": 9,
+            "codename": "delete_choicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 28,
+        "fields": {
+            "name": "Can add choice",
+            "content_type": 10,
+            "codename": "add_choice"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 29,
+        "fields": {
+            "name": "Can change choice",
+            "content_type": 10,
+            "codename": "change_choice"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 30,
+        "fields": {
+            "name": "Can delete choice",
+            "content_type": 10,
+            "codename": "delete_choice"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 31,
+        "fields": {
+            "name": "Can add placed choice bet",
+            "content_type": 11,
+            "codename": "add_placedchoicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 32,
+        "fields": {
+            "name": "Can change placed choice bet",
+            "content_type": 11,
+            "codename": "change_placedchoicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 33,
+        "fields": {
+            "name": "Can delete placed choice bet",
+            "content_type": 11,
+            "codename": "delete_placedchoicebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 34,
+        "fields": {
+            "name": "Can add date bet",
+            "content_type": 12,
+            "codename": "add_datebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 35,
+        "fields": {
+            "name": "Can change date bet",
+            "content_type": 12,
+            "codename": "change_datebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 36,
+        "fields": {
+            "name": "Can delete date bet",
+            "content_type": 12,
+            "codename": "delete_datebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 37,
+        "fields": {
+            "name": "Can add placed date bet",
+            "content_type": 13,
+            "codename": "add_placeddatebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 38,
+        "fields": {
+            "name": "Can change placed date bet",
+            "content_type": 13,
+            "codename": "change_placeddatebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 39,
+        "fields": {
+            "name": "Can delete placed date bet",
+            "content_type": 13,
+            "codename": "delete_placeddatebet"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 40,
+        "fields": {
+            "name": "Can add account",
+            "content_type": 14,
+            "codename": "add_account"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 41,
+        "fields": {
+            "name": "Can change account",
+            "content_type": 14,
+            "codename": "change_account"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 42,
+        "fields": {
+            "name": "Can delete account",
+            "content_type": 14,
+            "codename": "delete_account"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 43,
+        "fields": {
+            "name": "Can add transaction",
+            "content_type": 15,
+            "codename": "add_transaction"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 44,
+        "fields": {
+            "name": "Can change transaction",
+            "content_type": 15,
+            "codename": "change_transaction"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 45,
+        "fields": {
+            "name": "Can delete transaction",
+            "content_type": 15,
+            "codename": "delete_transaction"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 46,
+        "fields": {
+            "name": "Can add credit",
+            "content_type": 16,
+            "codename": "add_credit"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 47,
+        "fields": {
+            "name": "Can change credit",
+            "content_type": 16,
+            "codename": "change_credit"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 48,
+        "fields": {
+            "name": "Can delete credit",
+            "content_type": 16,
+            "codename": "delete_credit"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 49,
+        "fields": {
+            "name": "Can add debit",
+            "content_type": 17,
+            "codename": "add_debit"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 50,
+        "fields": {
+            "name": "Can change debit",
+            "content_type": 17,
+            "codename": "change_debit"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 51,
+        "fields": {
+            "name": "Can delete debit",
+            "content_type": 17,
+            "codename": "delete_debit"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$24000$1l57X7eEqFCr$Dhb3NE2CqFScs/SsHnU/oWiOICKgCp+R4HscBcia+Pg=",
+            "last_login": "2016-05-18T13:55:31.597Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@example.org",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2016-05-18T13:48:29.763Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$24000$PiF8Q3gOyOB0$wGTCHAOKZBlv8jKoVW9DODXjW8KyPIDop9/hiLc3rxk=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "testuser",
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "test@user.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2016-05-18T13:54:00.655Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$24000$adzv0YsuqgNQ$PzqsuDZVWSKcgF0WMq82sX6ImK7yRb8yEItHD5XJFvQ=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "anotheruser",
+            "first_name": "Another",
+            "last_name": "User",
+            "email": "another@user.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2016-05-18T13:54:33.862Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$24000$zISzklhuWykZ$RYxJQIpO2sodw42Kc0rtEWIBbp9wXVDCswCwT6/yquw=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "unverifieduser",
+            "first_name": "Unverified",
+            "last_name": "User",
+            "email": "unverified@user.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2016-05-18T13:55:01.048Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$24000$uLQ3cK9cLnHz$eo4y3WlYMVEEjOACy+KtWWWSnRwdmRGPJTIleLf8zDM=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "noagbuser",
+            "first_name": "NoAGB",
+            "last_name": "User",
+            "email": "noagb@user.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2016-05-18T13:55:22.925Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "profiles.profile",
+        "pk": 1,
+        "fields": {
+            "verified": true,
+            "accepted_agb": true,
+            "account": 1
+        }
+    },
+    {
+        "model": "profiles.profile",
+        "pk": 2,
+        "fields": {
+            "verified": true,
+            "accepted_agb": true,
+            "account": 2
+        }
+    },
+    {
+        "model": "profiles.profile",
+        "pk": 3,
+        "fields": {
+            "verified": true,
+            "accepted_agb": true,
+            "account": 3
+        }
+    },
+    {
+        "model": "profiles.profile",
+        "pk": 4,
+        "fields": {
+            "verified": false,
+            "accepted_agb": false,
+            "account": 4
+        }
+    },
+    {
+        "model": "profiles.profile",
+        "pk": 5,
+        "fields": {
+            "verified": true,
+            "accepted_agb": false,
+            "account": 5
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 1,
+        "fields": {
+            "action_time": "2016-05-18T13:50:56.934Z",
+            "user": 1,
+            "content_type": 14,
+            "object_id": "1",
+            "object_repr": "Account object",
+            "action_flag": 1,
+            "change_message": "Added."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 2,
+        "fields": {
+            "action_time": "2016-05-18T13:53:09.700Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "1",
+            "object_repr": "admin",
+            "action_flag": 1,
+            "change_message": "Added."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 3,
+        "fields": {
+            "action_time": "2016-05-18T13:55:51.726Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "2",
+            "object_repr": "testuser",
+            "action_flag": 2,
+            "change_message": "Changed verified and accepted_agb."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 4,
+        "fields": {
+            "action_time": "2016-05-18T13:56:02.250Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "3",
+            "object_repr": "anotheruser",
+            "action_flag": 2,
+            "change_message": "Changed verified and accepted_agb."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 5,
+        "fields": {
+            "action_time": "2016-05-18T13:56:15.450Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "4",
+            "object_repr": "unverifieduser",
+            "action_flag": 2,
+            "change_message": "Changed accepted_agb."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 6,
+        "fields": {
+            "action_time": "2016-05-18T13:56:25.199Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "4",
+            "object_repr": "unverifieduser",
+            "action_flag": 2,
+            "change_message": "Changed accepted_agb."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 7,
+        "fields": {
+            "action_time": "2016-05-18T13:56:31.020Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "5",
+            "object_repr": "noagbuser",
+            "action_flag": 2,
+            "change_message": "Changed verified."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 8,
+        "fields": {
+            "action_time": "2016-05-18T13:57:17.169Z",
+            "user": 1,
+            "content_type": 8,
+            "object_id": "1",
+            "object_repr": "Test User",
+            "action_flag": 1,
+            "change_message": "Added."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 9,
+        "fields": {
+            "action_time": "2016-05-18T13:57:35.616Z",
+            "user": 1,
+            "content_type": 8,
+            "object_id": "2",
+            "object_repr": "Another User",
+            "action_flag": 1,
+            "change_message": "Added."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 10,
+        "fields": {
+            "action_time": "2016-05-18T13:57:52.527Z",
+            "user": 1,
+            "content_type": 8,
+            "object_id": "3",
+            "object_repr": "Some Dude",
+            "action_flag": 1,
+            "change_message": "Added."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 11,
+        "fields": {
+            "action_time": "2016-05-18T13:59:27.108Z",
+            "user": 1,
+            "content_type": 12,
+            "object_id": "1595388399",
+            "object_repr": "Test Date Visible to all",
+            "action_flag": 2,
+            "change_message": "Changed owner."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 12,
+        "fields": {
+            "action_time": "2016-05-18T13:59:34.078Z",
+            "user": 1,
+            "content_type": 12,
+            "object_id": "1382033528",
+            "object_repr": "Test Date invisible to some",
+            "action_flag": 2,
+            "change_message": "Changed owner."
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 13,
+        "fields": {
+            "action_time": "2016-05-18T14:00:08.817Z",
+            "user": 1,
+            "content_type": 12,
+            "object_id": "1651290822",
+            "object_repr": "Resolved Bet",
+            "action_flag": 2,
+            "change_message": "Changed resolved."
+        }
+    }
+]

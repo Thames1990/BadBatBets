@@ -4,17 +4,46 @@ html, body {
     background: #f4f5f6;
 }
 
+/* TODO Rewrite custom classes */
 h2 {
-    display: flex;
-    justify-content: center;
+    display: flex !important;
+    justify-content: center !important;
 }
 
-section {
-    margin-top: 2em !important;
-}
+@media only screen and (min-width: 760px) {
+    menu {
+        margin-top: 0.6em !important;
+    }
 
-.border_right {
-    border-right: 1px solid gray;
+    section {
+        margin-top: 2em !important;
+    }
+
+    .border_right {
+        border-right: 1px solid gray;
+    }
+
+    @keyframes example {
+        0% {
+            left: 0;
+        }
+        25% {
+            left: 25%;
+        }
+        50% {
+            left: 50%;
+        }
+        75% {
+            left: 75%;
+        }
+        100% {
+            left: 100%;
+        }
+    }
+
+    button {
+        animation: example 1s linear infinite alternate;
+    }
 }
 
 .card_link {

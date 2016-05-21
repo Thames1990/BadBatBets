@@ -70,13 +70,10 @@
     {% elif date_bet %}
         <h1>{{ date_bet.name }}</h1>
         <table>
-            <thead>
             <tr>
                 <th>Owner</th>
                 <td>{{ date_bet.owner }}</td>
             </tr>
-            </thead>
-            <tbody>
             <tr>
                 <th>Description</th>
                 <td>{{ date_bet.description }}</td>
@@ -101,7 +98,6 @@
                 <th>Resolved</th>
                 <td>{{ date_bet.resolved }}</td>
             </tr>
-            </tbody>
         </table>
 
         {% if user_can_bet %}
@@ -126,6 +122,7 @@
                     placeholder="Date"
                     required
                 >
+                {# TODO use xx for custom classes #}
                 <button m-full type="submit">Bet</button>
             </form>
         {% endif %}

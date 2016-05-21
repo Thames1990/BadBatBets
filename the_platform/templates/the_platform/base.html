@@ -22,12 +22,25 @@
                 <li>
                     <a>Create Bet</a>
                     <menu>
-                        <menuitem><a href="/">Choice Bet</a></menuitem>
-                        <menuitem><a href="{% url 'bets:create_date_bet' %}">Date Bet</a></menuitem>
+                        <menuitem>
+                            <a href="/">Choice Bet</a>
+                        </menuitem>
+                        <menuitem>
+                            <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
+                        </menuitem>
                     </menu>
                 </li>
-                <li><a href="{% url 'profiles:profile' %}">{% block profile %}Profile{% endblock %}</a></li>
-                <li><a href="{% url 'profiles:logout' %}">{% block login %}Logout{% endblock %}</a></li>
+                <li>
+                    <a>{% block profile %}Profile{% endblock %}</a>
+                    <menu>
+                        <menuitem>
+                            <a href="{% url 'profiles:profile' %}">Profile</a>
+                        </menuitem>
+                        <menuitem>
+                            <a href="{% url 'profiles:logout' %}">{% block login %}Logout{% endblock %}</a>
+                        </menuitem>
+                    </menu>
+                </li>
             </ul>
         </label>
     </nav>
@@ -45,11 +58,11 @@
                 <p style="display: inline">&copy; Fusion Integrals 2016</p>
             </div>
             <div col="1/2">
-                {# TODO Change paragraph anchor style? #}
-                <p style="float: right;">
+                <div style="float: right">
                     <a href="{% url 'profiles:general_terms_and_conditions' %}">General terms and conditions</a>
+                    <p style="display: inline">|</p>
                     <a href="{% url 'profiles:privacy_policy' %}">Privacy policy</a>
-                </p>
+                </div>
             </div>
         </grid>
     </footer>

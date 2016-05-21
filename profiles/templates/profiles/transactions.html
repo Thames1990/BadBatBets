@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Transactions</title>
-</head>
-<body>
+{% extends 'the_platform/base.html' %}
+
+{% block title %}
+    {{ block.super }} | Transactions
+{% endblock %}
+
+{% block profile %}
+    {{ user.profile }}
+{% endblock %}
+
+{% block content %}
     <table>
         <tr>
             <th>Date</th>
@@ -19,5 +23,4 @@
             </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}

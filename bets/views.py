@@ -10,36 +10,36 @@ from .util import filter_visible_bets, user_can_bet_on_bet
 
 def index_view(request):
     if request.user.is_authenticated():
-        if request.method == 'POST' and request.POST.get('agb'):
-            request.user.profile.accepted_agb = True
-            request.user.profile.save()
-        elif request.method == 'POST' and request.POST.get('privacy_policy'):
-            request.user.profile.accepted_privacy_policy = True
-            request.user.profile.save()
-
-        if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
-            choice_bets = ChoiceBet.objects.all()
-            placed_choice_bets = request.user.profile.placedchoicebet_set.all()
-            date_bets = DateBet.objects.all()
-            placed_date_bets = request.user.profile.placeddatebet_set.all()
-            return render(request, 'bets/index.html', {
-                'choice_bets': filter_visible_bets(choice_bets, request.user.profile),
-                'placed_choice_bets': placed_choice_bets,
-                'date_bets': filter_visible_bets(date_bets, request.user.profile),
-                'placed_date_bets': placed_date_bets,
-                'user': request.user
-            })
-        elif not request.user.profile.accepted_agb:
-            return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
-        elif not request.user.profile.accepted_privacy_policy:
-            return render(request, 'profiles/privacy_policy.html', {'accepted': False})
+        if request.method == 'POST':
+            if request.POST.get('agb'):
+                request.user.profile.accepted_agb = True
+                request.user.profile.save()
+            elif request.POST.get('privacy_policy'):
+                request.user.profile.accepted_privacy_policy = True
+                request.user.profile.save()
+        else:
+            if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
+                choice_bets = ChoiceBet.objects.all()
+                placed_choice_bets = request.user.profile.placedchoicebet_set.all()
+                date_bets = DateBet.objects.all()
+                placed_date_bets = request.user.profile.placeddatebet_set.all()
+                return render(request, 'bets/index.html', {
+                    'choice_bets': filter_visible_bets(choice_bets, request.user.profile),
+                    'placed_choice_bets': placed_choice_bets,
+                    'date_bets': filter_visible_bets(date_bets, request.user.profile),
+                    'placed_date_bets': placed_date_bets,
+                    'user': request.user
+                })
+            elif not request.user.profile.accepted_agb:
+                return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
+            else:
+                return render(request, 'profiles/privacy_policy.html', {'accepted': False})
     else:
         return render(request, 'profiles/login.html')
 
 
 @login_required
 def bet_view(request, prim_key):
-    # TODO Exclude already bet on
     if request.user.is_authenticated():
         try:
             choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
@@ -90,9 +90,7 @@ def bet_on_bet_view(request, prim_key):
             try:
                 date_bet = DateBet.objects.get(prim_key=prim_key)
             except DateBet.DoesNotExist:
-                raise Http404(
-                    "Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist."
-                )
+                raise Http404("Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist.")
             else:
                 placed_date_bet = PlacedDateBet(
                     placed_by=request.user.profile,

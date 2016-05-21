@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from ledger.models import Account
+
 
 class Profile(models.Model):
     # The user that this profile is associated with

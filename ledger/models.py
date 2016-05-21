@@ -1,7 +1,7 @@
 from django.db import models
 
 from .util import sum_credit_debit
-from bets.util import pkgen
+from bets.util import key_gen
 
 
 class Account(models.Model):
@@ -17,9 +17,9 @@ class Account(models.Model):
     balance = models.IntegerField(default=0)
 
     def compute_balance(self):
-        cre = self.credit_set.all()
-        deb = self.debit_set.all()
-        self.balance = sum_credit_debit(cre, deb)
+        credit = self.credit_set.all()
+        debit = self.debit_set.all()
+        self.balance = sum_credit_debit(credit, debit)
         return self.balance
 
     def __str__(self):
@@ -27,8 +27,7 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
-
-    transaction_id = models.PositiveIntegerField(default=pkgen, primary_key=True)
+    transaction_id = models.PositiveIntegerField(default=key_gen, primary_key=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
 
@@ -37,7 +36,6 @@ class Transaction(models.Model):
 
 
 class Credit(models.Model):
-
     transaction = models.ForeignKey(Transaction)
     account = models.ForeignKey(Account)
     amount = models.PositiveIntegerField()
@@ -50,7 +48,6 @@ class Credit(models.Model):
 
 
 class Debit(models.Model):
-
     transaction = models.ForeignKey(Transaction)
     account = models.ForeignKey(Account)
     amount = models.PositiveIntegerField()

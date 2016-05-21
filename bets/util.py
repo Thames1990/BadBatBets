@@ -1,33 +1,46 @@
 import logging
 
 
-def pkgen():
+def key_gen():
+    """
+    Generates a random key for bets, placed bets and accounts.
+    :return: Random key between 0 and 2147483647 (max size for django's PositiveIntegerField)
+    """
     from random import SystemRandom
 
     randomiser = SystemRandom()
-    # 2147483647 is the largest values supported by django's PositiveIntegerField
     return randomiser.randint(0, 2147483647)
 
 
-def get_bet(id):
-    """Gets the bet corresponding to the id. Return None, if not bet with that id exists"""
+def get_bet(prim_key):
+    """
+    Gets the bet corresponding to the primary key. Return None, if no bet with that id exists.
+    :param prim_key: Primary key of a bet (ChoiceBet/DateBet)
+    :return: The bet (ChoiceBet/DateBet) linked with the primary key or None, if no bet with that primary key exists.
+    """
     from bets.models import ChoiceBet, DateBet
 
-    bet = ChoiceBet.objects.filter(prim_key=id)
-    if len(bet) > 0:
-        return bet[0]
-
-    bet = DateBet.objects.filter(prim_key=id)
-    if len(bet) > 0:
-        return bet[0]
-
-    return None
+    try:
+        choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
+    except ChoiceBet.DoesNotExist:
+        try:
+            date_bet = DateBet.objects.get(prim_key=prim_key)
+        except DateBet.DoesNotExist:
+            return None
+        else:
+            return date_bet
+    else:
+        return choice_bet
 
 
 def get_bet_for_user(bet, user):
-    """Finds a placed bet made by that user on that bet"""
+    """
+    Finds a placed bet made by that user on that bet.
+    :param bet: Bet the user has bet on or not
+    :param user: User
+    :return: The placed bet the user has bet on for bet.
+    """
     from bets.models import ChoiceBet, DateBet
-    from journal.models import Entry
 
     if type(bet) == ChoiceBet:
         bets = bet.placedchoicebet_set.filter(placed_by__exact=user.profile)
@@ -39,14 +52,8 @@ def get_bet_for_user(bet, user):
     if len(bets) == 1:
         return bets[0]
     elif len(bets) > 1:
-        # Put an entry into the journal so that we know, that there's a problem
-        name = "Multiple PlacedBets for User"
-        content = "User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
-            user.username) + "\nBet: " + str(bet.prim_key)
-        raised_by = "get_bet_for_users"
-
-        journal_entry = Entry(name=name, content=content, raised_by=raised_by)
-        journal_entry.save()
+        logging.error("User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
+            user.username) + "\nBet: " + str(bet.prim_key))
 
         # Still return the first element of the list, so that we have something to work with
         return bets[0]
@@ -65,9 +72,15 @@ def bet_is_visible_to_user(bet, user):
     from django.utils import timezone
 
     if bet.pub_date and bet.end_bets_date:
-        return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date() < bet.end_bets_date
+        return \
+            user not in bet.forbidden.all() and \
+            not bet.resolved and \
+            bet.pub_date <= timezone.now().date() < bet.end_bets_date
     elif bet.pub_date:
-        return user not in bet.forbidden.all() and not bet.resolved and bet.pub_date <= timezone.now().date()
+        return \
+            user not in bet.forbidden.all() and \
+            not bet.resolved and \
+            bet.pub_date <= timezone.now().date()
     else:
         logging.error("Neither a publish date nor a end bets date were set.")
 
