@@ -43,6 +43,13 @@ urlpatterns = [
         name='transactions'
     ),
 
+    # Deposit funds in account
+    url(
+        r'^payment/$',
+        views.payment,
+        name='payment'
+    ),
+
     # General terms and conditions, privacy policy
     url(
         r'^general_terms_and_conditions/$',

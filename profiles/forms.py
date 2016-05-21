@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
-from ledger.models import Account
+from ledger.models import Account, Transaction, Credit, Debit
 
 
 class SignupForm(UserCreationForm):
@@ -25,7 +25,9 @@ class SignupForm(UserCreationForm):
         username = self.cleaned_data.get('username')
 
         if email and User.objects.filter(email=email).exclude(username=username).count():
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+            raise forms.ValidationError(
+                _("This email address is already in use. Please supply a different email address.")
+            )
         return email
 
     def save(self, commit=True):
@@ -44,3 +46,63 @@ class SignupForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     def clean_username(self):
         return self.cleaned_data.get('username').lower()
+
+
+class PaymentForm(forms.Form):
+    type = forms.ChoiceField(choices=[('d', 'Deposit'), ('w', 'Withdrawal')])
+    account = forms.ModelChoiceField(queryset=User.objects.all())
+    amount = forms.IntegerField()
+
+    def clean_account(self):
+        account = self.cleaned_data['account'].profile.account
+
+        if not account.type == 'p':
+            raise forms.ValidationError(
+                _("Funds can only be deposited in personal accounts."),
+                code='deposit_account_not_personal',
+            )
+
+        return account
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+
+        if amount <= 0:
+            raise forms.ValidationError(
+                _("This email address is already in use. Please supply a different email address."),
+                code='deposit_amount_not_positive',
+            )
+
+        if self.cleaned_data['type'] == 'w':
+            account = self.cleaned_data['account']
+            if account.compute_balance() < amount:
+                raise forms.ValidationError(
+                    _("Insufficient funds."),
+                    code='insuficcient_funds'
+                )
+
+        return self.cleaned_data['amount']
+
+    def save(self, authorised, commit=True):
+        user_account = self.cleaned_data['account']
+
+        if self.cleaned_data['type'] == 'w':
+            system_account = Account.objects.get(name='withdrawal')
+            description = "Withdrawal authorised by: " + str(authorised)
+
+            transaction = Transaction(description=description)
+            credit = Credit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
+            debit = Debit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+        else:
+            system_account = Account.objects.get(name='deposit')
+            description = "Deposit authorised by: " + str(authorised)
+
+            transaction = Transaction(description=description)
+            credit = Credit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+            debit = Debit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
+
+        transaction.save(commit)
+        credit.save(commit)
+        debit.save(commit)
+
+        return transaction

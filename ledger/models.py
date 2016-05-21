@@ -17,9 +17,10 @@ class Account(models.Model):
     balance = models.IntegerField(default=0)
 
     def compute_balance(self):
-        credits = self.credit_set.all()
-        debits = self.debit_set.all()
-        self.balance = sum_credit_debit(credits, debits)
+        cre = self.credit_set.all()
+        deb = self.debit_set.all()
+        self.balance = sum_credit_debit(cre, deb)
+        return self.balance
 
     def __str__(self):
         return self.get_type_display() + ": " + self.name

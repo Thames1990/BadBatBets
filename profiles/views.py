@@ -100,3 +100,21 @@ def privacy_policy_view(request):
     return render(request, 'profiles/privacy_policy.html', {
         'accepted': request.user.profile.accepted_privacy_policy
     })
+
+def payment(request):
+    if not request.user.is_authenticated() or not request.user.is_superuser:
+        return HttpResponseNotFound()
+
+    args = {}
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save(authorised=request.user)
+    else:
+        form = PaymentForm()
+
+    args['form'] = form
+
+    return render(request, 'profiles/payment.html', args)
+
