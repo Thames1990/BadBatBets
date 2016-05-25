@@ -119,8 +119,8 @@ def create_date_bet(request):
     if request.method == 'POST':
         form = DateBetCreationForm(data=request.POST)
         if form.is_valid():
-            form.save(request.user.profile)
-            # TODO redirect to bet page
+            prim_key = form.save(request.user.profile)
+            return HttpResponseRedirect(reverse('bets:bet', args={prim_key}))
     else:
         form = DateBetCreationForm()
 

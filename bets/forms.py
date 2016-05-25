@@ -10,7 +10,6 @@ from profiles.models import ForbiddenUser
 
 
 class DateBetCreationForm(forms.ModelForm):
-
     class Meta:
         model = DateBet
         fields = ['name', 'description', 'pub_date', 'end_bets_date', 'time_period_start', 'time_period_end']
@@ -136,3 +135,4 @@ class DateBetCreationForm(forms.ModelForm):
         for forbidden_user in forbidden:
             new_bet.forbidden.add(forbidden_user)
 
+        return new_bet.prim_key
