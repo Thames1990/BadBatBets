@@ -8,6 +8,8 @@
     {{ user.profile }}
 {% endblock %}
 
+{# TODO DRY (table) #}
+
 {% block content %}
     {% if choice_bet %}
         <h1>{{ choice_bet.name }}</h1>
@@ -35,6 +37,10 @@
             <tr>
                 <th>Resolved</th>
                 <td>{{ choice_bet.resolved }}</td>
+            </tr>
+            <tr>
+                <th>User can bet on bet</th>
+                <td>{{ user_can_bet }}</td>
             </tr>
         </table>
 
@@ -97,6 +103,10 @@
             <tr>
                 <th>Resolved</th>
                 <td>{{ date_bet.resolved }}</td>
+            </tr>
+            <tr>
+                <th>User can bet on bet</th>
+                <td>{{ user_can_bet }}</td>
             </tr>
         </table>
 

@@ -37,10 +37,10 @@ class Bet(models.Model):
         return self.name
 
     def open_to_bets(self):
-        if self.end_bets is None:
+        if self.end_bets_date is None:
             return True
         else:
-            return timezone.now() < self.end_bets
+            return timezone.now().date() < self.end_bets_date
 
 
 class PlacedBet(models.Model):

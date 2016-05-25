@@ -22,28 +22,6 @@ h2 {
     .border_right {
         border-right: 1px solid gray;
     }
-
-    @keyframes example {
-        0% {
-            left: 0;
-        }
-        25% {
-            left: 25%;
-        }
-        50% {
-            left: 50%;
-        }
-        75% {
-            left: 75%;
-        }
-        100% {
-            left: 100%;
-        }
-    }
-
-    button {
-        animation: example 1s linear infinite alternate;
-    }
 }
 
 .card_link {

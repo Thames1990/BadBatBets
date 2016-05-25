@@ -12,8 +12,7 @@ class Command(BaseCommand):
     logger = logging.getLogger(__name__)
 
     def handle(self, *args, **options):
-        choice_bets = ChoiceBet.objects.all()
-        for choice_bet in choice_bets:
+        for choice_bet in ChoiceBet.objects.all():
             if choice_bet.end_date:
                 if choice_bet.end_date >= timezone.now().date():
                     choice_bet.resolved = True
@@ -21,8 +20,7 @@ class Command(BaseCommand):
                     choice_bet.save()
                     logging.info(choice_bet.name + " is now resolved")
 
-        date_bets = DateBet.objects.all()
-        for date_bet in date_bets:
+        for date_bet in DateBet.objects.all():
             if date_bet.time_period_end:
                 if date_bet.time_period_end >= timezone.now().date():
                     date_bet.resolved = True

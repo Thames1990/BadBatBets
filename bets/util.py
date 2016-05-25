@@ -107,12 +107,17 @@ def user_can_bet_on_bet(user, bet):
     :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
     """
     logger = logging.getLogger(__name__)
-
+    logger.debug("_____________________________________")
     logger.debug("Bet name: " + bet.name)
+    logger.debug("Open to bets: " + str(bet.open_to_bets()))
     logger.debug("Is visible: " + str(bet_is_visible_to_user(bet, user)))
     logger.debug("Already bet on bet: " + str(bet in user.profile.placedchoicebet_set.all()))
+    logger.debug("Already bet on:")
+    for placed_bet in user.profile.placeddatebet_set.all():
+        logger.debug("\t" + placed_bet.placed_on.name)
 
     # TODO fix didn't bet on this yet
-    return bet_is_visible_to_user(bet, user) and \
+    return bet.open_to_bets() and \
+           bet_is_visible_to_user(bet, user) and \
            bet not in user.profile.placedchoicebet_set.all() and \
            bet not in user.profile.placeddatebet_set.all()
