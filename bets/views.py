@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
-from .util import filter_visible_bets, user_can_bet_on_bet, get_bet
+from .util import filter_visible_bets, user_can_place_bet, get_bet
 from profiles.util import user_authenticated
 
 
@@ -71,12 +71,12 @@ def bet_view(request, prim_key):
             else:
                 return render(request, 'bets/bets.html', {
                     'date_bet': date_bet,
-                    'user_can_bet': user_can_bet_on_bet(request.user, date_bet)
+                    'user_can_bet': user_can_place_bet(request.user, date_bet)
                 })
         else:
             return render(request, 'bets/bets.html', {
                 'choice_bet': choice_bet,
-                'user_can_bet': user_can_bet_on_bet(request.user, choice_bet)
+                'user_can_bet': user_can_place_bet(request.user, choice_bet)
             })
     else:
         return render(request, 'profiles/login.html')
@@ -84,7 +84,7 @@ def bet_view(request, prim_key):
 
 def place_bet(request, prim_key):
     bet = get_bet(prim_key)
-    if (bet is None) or (not user_can_bet_on_bet(user=request.user, bet=bet)):
+    if (bet is None) or (not user_can_place_bet(user=request.user, bet=bet)):
         raise Http404(
             # TODO: Do a proper 404...
             _("Foobar")

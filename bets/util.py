@@ -101,7 +101,7 @@ def filter_visible_bets(bets, user):
     return filtered_bets
 
 
-def user_can_bet_on_bet(user, bet):
+def user_can_place_bet(user, bet):
     """
     Check if a user can bet on a bet.
     :param user: User to check
