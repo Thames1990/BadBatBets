@@ -45,7 +45,7 @@
         </table>
 
         {% if user_can_bet %}
-            <form action="{% url 'bets:bet_on_bet' choice_bet.prim_key %}" method="post">
+            <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
                 <input
@@ -111,7 +111,7 @@
         </table>
 
         {% if user_can_bet %}
-            <form action="{% url 'bets:bet_on_bet' date_bet.prim_key %}" method="post">
+            <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
                 <input

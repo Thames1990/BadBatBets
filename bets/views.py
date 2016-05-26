@@ -82,39 +82,6 @@ def bet_view(request, prim_key):
         return render(request, 'profiles/login.html')
 
 
-@login_required
-def bet_on_bet_view(request, prim_key):
-    if request.user.is_authenticated():
-        try:
-            choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
-            choice = choice_bet.choice_set.get(description=request.POST['choice'])
-        except ChoiceBet.DoesNotExist:
-            try:
-                date_bet = DateBet.objects.get(prim_key=prim_key)
-            except DateBet.DoesNotExist:
-                raise Http404("Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist.")
-            else:
-                placed_date_bet = PlacedDateBet(
-                    placed_by=request.user.profile,
-                    placed_on=date_bet,
-                    placed_date=request.POST['date'],
-                    placed=request.POST['placed'],
-                )
-                placed_date_bet.save()
-                return HttpResponseRedirect(reverse('bets:index'))
-        else:
-            placed_choice_bet = PlacedChoiceBet(
-                placed_by=request.user.profile,
-                placed_on=choice_bet,
-                chosen=choice,
-                placed=request.POST['placed'],
-            )
-            placed_choice_bet.save()
-            return HttpResponseRedirect(reverse('bets:index'))
-    else:
-        return render(request, 'profiles/login.html')
-
-
 def place_bet(request, prim_key):
     bet = get_bet(prim_key)
     if (bet is None) or (not user_can_bet_on_bet(user=request.user, bet=bet)):
