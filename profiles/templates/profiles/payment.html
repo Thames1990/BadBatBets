@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Payment</title>
-</head>
-<body>
-<form action="{% url 'profiles:payment' %}" method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
+{% extends 'the_platform/base.html' %}
 
-    <input type="submit" value="Submit">
-</form>
-</body>
-</html>
+{% block title %}
+    {{ block.super }} | Login
+{% endblock %}
+
+{% block login %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'profiles:payment' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
