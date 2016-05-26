@@ -22,8 +22,8 @@ urlpatterns = [
     # /bets/<prim_key>/bet
     url(
         r'^(?P<prim_key>[0-9]+)/bet$',
-        views.bet_on_bet_view,
-        name='bet_on_bet'
+        views.place_bet,
+        name='place_bet'
     ),
 
     url(

@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
-from .util import filter_visible_bets, user_can_bet_on_bet, get_bet
+from .util import filter_visible_bets, user_can_place_bet, get_bet
 from profiles.util import user_authenticated
 
 
@@ -71,53 +71,20 @@ def bet_view(request, prim_key):
             else:
                 return render(request, 'bets/bets.html', {
                     'date_bet': date_bet,
-                    'user_can_bet': user_can_bet_on_bet(request.user, date_bet)
+                    'user_can_bet': user_can_place_bet(request.user, date_bet)
                 })
         else:
             return render(request, 'bets/bets.html', {
                 'choice_bet': choice_bet,
-                'user_can_bet': user_can_bet_on_bet(request.user, choice_bet)
+                'user_can_bet': user_can_place_bet(request.user, choice_bet)
             })
-    else:
-        return render(request, 'profiles/login.html')
-
-
-@login_required
-def bet_on_bet_view(request, prim_key):
-    if request.user.is_authenticated():
-        try:
-            choice_bet = ChoiceBet.objects.get(prim_key=prim_key)
-            choice = choice_bet.choice_set.get(description=request.POST['choice'])
-        except ChoiceBet.DoesNotExist:
-            try:
-                date_bet = DateBet.objects.get(prim_key=prim_key)
-            except DateBet.DoesNotExist:
-                raise Http404("Neither a choice bet nor a date bet with id:" + str(prim_key) + " does exist.")
-            else:
-                placed_date_bet = PlacedDateBet(
-                    placed_by=request.user.profile,
-                    placed_on=date_bet,
-                    placed_date=request.POST['date'],
-                    placed=request.POST['placed'],
-                )
-                placed_date_bet.save()
-                return HttpResponseRedirect(reverse('bets:index'))
-        else:
-            placed_choice_bet = PlacedChoiceBet(
-                placed_by=request.user.profile,
-                placed_on=choice_bet,
-                chosen=choice,
-                placed=request.POST['placed'],
-            )
-            placed_choice_bet.save()
-            return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
 
 
 def place_bet(request, prim_key):
     bet = get_bet(prim_key)
-    if (bet is None) or (not user_can_bet_on_bet(user=request.user, bet=bet)):
+    if (bet is None) or (not user_can_place_bet(user=request.user, bet=bet)):
         raise Http404(
             # TODO: Do a proper 404...
             _("Foobar")

@@ -97,7 +97,7 @@ def filter_visible_bets(bets, user):
     return filtered_bets
 
 
-def user_can_bet_on_bet(user, bet):
+def user_can_place_bet(user, bet):
     """
     Check if a user can bet on a bet.
     :param user: User to check
@@ -108,16 +108,6 @@ def user_can_bet_on_bet(user, bet):
     # Users that are not logged in & verified are not allowed to participate
     if not user_authenticated(user):
         return False
-
-    logger = logging.getLogger(__name__)
-    logger.debug("_____________________________________")
-    logger.debug("Bet name: " + bet.name)
-    logger.debug("Open to bets: " + str(bet.open_to_bets()))
-    logger.debug("Is visible: " + str(bet_is_visible_to_user(bet, user)))
-    logger.debug("Already bet on bet: " + str(bet in user.profile.placedchoicebet_set.all()))
-    logger.debug("Already bet on:")
-    for placed_bet in user.profile.placeddatebet_set.all():
-        logger.debug("\t" + placed_bet.placed_on.name)
 
     bet_on = []
 
