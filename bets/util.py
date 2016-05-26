@@ -33,19 +33,24 @@ def get_bet(prim_key):
         return choice_bet
 
 
-def get_bet_for_user(bet, user):
+def get_placed_bet_for_user(bet, user):
     """
-    Finds a placed bet made by that user on that bet.
-    :param bet: Bet the user has bet on or not
-    :param user: User
-    :return: The placed bet the user has bet on for bet.
+    Gets the corresponding placed bet for the user
+    :param user: user who might have placed a bet
+    :param bet: the bet that it might have been placed on
+    :return: the placed bet if one exists, None otherwise
     """
+    from django.contrib.auth.models import User
     from bets.models import ChoiceBet, DateBet
 
+    # If we are given a user-object, the we first need to get the corresponding profile
+    if isinstance(user, User):
+        user = user.profile
+
     if type(bet) == ChoiceBet:
-        bets = bet.placedchoicebet_set.filter(placed_by__exact=user.profile)
+        bets = bet.placedchoicebet_set.filter(placed_by__exact=user)
     elif type(bet) == DateBet:
-        bets = bet.placeddatebet_set.filter(placed_by__exact=user.profile)
+        bets = bet.placeddatebet_set.filter(placed_by__exact=user)
     else:
         return None
 
@@ -121,18 +126,53 @@ def user_can_place_bet(user, bet):
 
 
 def filter_index_bets(user, bets):
+    """
+    Filters a list of bets (available/placed)
+    :param user: the user...
+    :param bets: list of bets (should all be visible to the user)
+    :return: a dictionary of the form:
+    {
+        'available': [Bet],
+        'placed': [{
+            'bet': Bet,
+            'placed_bet': PlacedBet
+        }]
+    }
+    """
     filtered_bets = {'available': [], 'placed': []}
 
     for bet in bets:
         if user_can_place_bet(user, bet):
             filtered_bets['available'].append(bet)
         else:
-            filtered_bets['placed'].append(bet)
+            placed = {'bet': bet, 'placed_bet': get_placed_bet_for_user(user=user, bet=bet)}
+            filtered_bets['placed'].append(placed)
 
     return filtered_bets
 
 
 def generate_index(user):
+    """
+    Generates the data for the index for a user
+    :param user: the user
+    :return: A dictionary of the form:
+    {
+        'choice_bets': {
+            'available': [Bet],
+            'placed': [{
+                'bet': Bet,
+                'placed_bet': PlacedBet
+            }]
+        },
+        'date_bet': {
+            'available': [Bet],
+            'placed': [{
+                'bet': Bet,
+                'placed_bet': PlacedBet
+            }
+        }
+    }
+    """
     from .models import ChoiceBet, DateBet
 
     index = {}
