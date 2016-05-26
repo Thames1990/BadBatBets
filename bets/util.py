@@ -1,7 +1,5 @@
 import logging
 
-from profiles.util import user_authenticated
-
 
 def key_gen():
     """
@@ -78,13 +76,11 @@ def bet_is_visible_to_user(bet, user):
             user not in bet.forbidden.all() and \
             not bet.resolved and \
             bet.pub_date <= timezone.now().date() < bet.end_bets_date
-    elif bet.pub_date:
+    else:
         return \
             user not in bet.forbidden.all() and \
             not bet.resolved and \
-            bet.pub_date <= timezone.now().date()
-    else:
-        logging.error("Neither a publish date nor a end bets date were set.")
+            bet.open_to_bets()
 
 
 def filter_visible_bets(bets, user):
@@ -108,6 +104,7 @@ def user_can_bet_on_bet(user, bet):
     :param bet: Bet to check
     :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
     """
+    from profiles.util import user_authenticated
     # Users that are not logged in & verified are not allowed to participate
     if not user_authenticated(user):
         return False
@@ -130,7 +127,30 @@ def user_can_bet_on_bet(user, bet):
     for placed_bet in user.profile.placeddatebet_set.all():
         bet_on.append(placed_bet.placed_on)
 
-    # TODO fix didn't bet on this yet
-    return bet.open_to_bets() and \
-           bet_is_visible_to_user(bet, user) and \
-           bet not in bet_on
+    return bet_is_visible_to_user(bet, user) and (bet not in bet_on)
+
+
+def filter_index_bets(user, bets):
+    filtered_bets = {'available': [], 'placed': []}
+
+    for bet in bets:
+        if user_can_bet_on_bet(user, bet):
+            filtered_bets['available'].append(bet)
+        else:
+            filtered_bets['placed'].append(bet)
+
+    return filtered_bets
+
+
+def generate_index(user):
+    from .models import ChoiceBet, DateBet
+
+    index = {}
+
+    choice_bets = filter_visible_bets(user=user, bets=ChoiceBet.objects.all())
+    index['choice_bets'] = filter_index_bets(user=user, bets=choice_bets)
+
+    date_bets = filter_visible_bets(user=user, bets=DateBet.objects.all())
+    index['date_bets'] = filter_index_bets(user=user, bets=date_bets)
+
+    return index
