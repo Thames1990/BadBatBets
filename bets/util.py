@@ -124,7 +124,7 @@ def filter_index_bets(user, bets):
     filtered_bets = {'available': [], 'placed': []}
 
     for bet in bets:
-        if user_can_bet_on_bet(user, bet):
+        if user_can_place_bet(user, bet):
             filtered_bets['available'].append(bet)
         else:
             filtered_bets['placed'].append(bet)
