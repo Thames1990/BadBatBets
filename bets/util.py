@@ -1,5 +1,7 @@
 import logging
 
+from profiles.util import user_authenticated
+
 
 def key_gen():
     """
@@ -106,6 +108,10 @@ def user_can_bet_on_bet(user, bet):
     :param bet: Bet to check
     :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
     """
+    # Users that are not logged in & verified are not allowed to participate
+    if not user_authenticated(user):
+        return False
+
     logger = logging.getLogger(__name__)
     logger.debug("_____________________________________")
     logger.debug("Bet name: " + bet.name)
@@ -116,8 +122,15 @@ def user_can_bet_on_bet(user, bet):
     for placed_bet in user.profile.placeddatebet_set.all():
         logger.debug("\t" + placed_bet.placed_on.name)
 
+    bet_on = []
+
+    for placed_bet in user.profile.placedchoicebet_set.all():
+        bet_on.append(placed_bet.placed_on)
+
+    for placed_bet in user.profile.placeddatebet_set.all():
+        bet_on.append(placed_bet.placed_on)
+
     # TODO fix didn't bet on this yet
     return bet.open_to_bets() and \
            bet_is_visible_to_user(bet, user) and \
-           bet not in user.profile.placedchoicebet_set.all() and \
-           bet not in user.profile.placeddatebet_set.all()
+           bet not in bet_on

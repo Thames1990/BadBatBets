@@ -2,10 +2,12 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
-from .util import filter_visible_bets, user_can_bet_on_bet
+from .util import filter_visible_bets, user_can_bet_on_bet, get_bet
+from profiles.util import user_authenticated
 
 
 def index_view(request):
@@ -111,6 +113,37 @@ def bet_on_bet_view(request, prim_key):
             return HttpResponseRedirect(reverse('bets:index'))
     else:
         return render(request, 'profiles/login.html')
+
+
+def place_bet(request, prim_key):
+    bet = get_bet(prim_key)
+    if (bet is None) or (not user_can_bet_on_bet(user=request.user, bet=bet)):
+        raise Http404(
+            # TODO: Do a proper 404...
+            _("Foobar")
+        )
+
+    placed_by = request.user.profile
+    placed = request.POST['placed']
+
+    if isinstance(bet, ChoiceBet):
+        choice = bet.choice_set.get(description=request.POST['choice'])
+        placed_bet = PlacedChoiceBet(
+            placed_by=placed_by,
+            placed_on=bet,
+            placed=placed,
+            chosen=choice
+        )
+    else:
+        placed_bet = PlacedDateBet(
+            placed_by=placed_by,
+            placed_on=bet,
+            placed=placed,
+            placed_date=request.POST['date'],
+        )
+
+    placed_bet.save()
+    return HttpResponseRedirect(reverse('bets:index'))
 
 
 @login_required
