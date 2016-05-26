@@ -124,7 +124,6 @@ class DateBetCreationForm(forms.ModelForm):
             owner=user,
             name=name,
             description=description,
-            pub_date=pub_date,
             end_bets_date=end_bets_date,
             time_period_start=time_period_start,
             time_period_end=time_period_end,
@@ -135,4 +134,8 @@ class DateBetCreationForm(forms.ModelForm):
         for forbidden_user in forbidden:
             new_bet.forbidden.add(forbidden_user)
 
-        return new_bet.prim_key
+        if pub_date is not None:
+            new_bet.pub_date = pub_date
+            new_bet.save()
+
+        return new_bet
