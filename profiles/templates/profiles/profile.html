@@ -19,4 +19,28 @@
             <td>{{ profile.account.balance }}</td>
         </tr>
     </table>
+
+    <table>
+        <tr>
+            <th>Credit</th>
+            <th>Debit</th>
+        </tr>
+        <tr>
+            {% for credit in profile.account.credit_set.all %}
+                <td>{{ credit.transaction }}</td>
+                <td>{{ credit.account }}</td>
+                <td>{{ credit.amount }}</td>
+            {% empty %}
+                <td>No credit is available yet</td>
+            {% endfor %}
+
+            {% for debit in profile.account.debit_set.all %}
+                <td>{{ debit.transaction }}</td>
+                <td>{{ debit.account }}</td>
+                <td>{{ debit.amount }}</td>
+            {% empty %}
+                <td>No debit is available yet</td>
+            {% endfor %}
+        </tr>
+    </table>
 {% endblock %}
