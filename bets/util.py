@@ -214,3 +214,58 @@ def place_bet_transaction(user, bet, amount):
         )
 
     return transaction
+
+
+def resolve_choice_bet(bet, winning_option):
+    """
+
+    :param bet:
+    :param winning_option:
+    :return:
+    """
+    from django.utils.translation import ugettext_lazy as _
+    from .models import ChoiceBet, Choice
+    from ledger.models import Account
+    from ledger.util import one_to_many_transaction
+    from ledger.exceptions import InsufficientFunds
+
+    assert isinstance(bet, ChoiceBet)
+    assert isinstance(winning_option, Choice)
+
+    placed_bets = bet.placedchoicebet_set.all()
+    winning_bets = []
+
+    for placed_bet in placed_bets:
+        if placed_bet.chosen == winning_option:
+            winning_bets.append(placed_bet)
+
+    pot = bet.account.balance
+    winners = []
+    for winning_bet in winning_bets:
+        payout = int(bet.account.balance / len(winning_bets))
+        winners.append(
+            {
+                'account': winning_bet.placed_by.account,
+                'amount': payout
+            }
+        )
+        pot -= payout
+
+    winners.append(
+        {
+            'account': Account.objects.get(name='operator'),
+            'amount': pot
+        }
+    )
+
+    description = "Payout\nBet: " + str(bet.id)
+    for winner in winners:
+        description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
+
+    try:
+        return one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
+    except InsufficientFunds:
+        raise InsufficientFunds(
+            _("The pot division fucked up..."),
+            code='i_dun_goofed'
+        )

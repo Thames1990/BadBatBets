@@ -68,6 +68,7 @@ def place_bet(request, prim_key):
             placed=placed,
             chosen=choice
         )
+        choice.picks += 1
     else:
         placed_bet = PlacedDateBet(
             placed_by=placed_by,
