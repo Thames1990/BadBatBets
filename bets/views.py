@@ -6,8 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
-from .util import user_can_place_bet, get_bet, generate_index
-from ledger.util import place_bet_transaction
+from .util import user_can_place_bet, get_bet, generate_index, place_bet_transaction
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
 

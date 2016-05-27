@@ -18,9 +18,6 @@ def landing(request):
 
 @login_required
 def profile(request):
-    if not request.user.is_authenticated():
-        return redirect(login_user)
-
     return render(request, 'profiles/profile.html', {
         'user': request.user,
         'profile': request.user.profile
@@ -72,9 +69,8 @@ def signup(request):
     return render(request, 'profiles/signup.html', args)
 
 
+@login_required
 def change_password(request):
-    if not request.user.is_authenticated():
-        return redirect(login_user)
 
     args = {}
     if request.method == 'POST':

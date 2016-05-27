@@ -35,51 +35,35 @@ def create_table(credit, debit):
     return sorted(table, key=lambda x: x[0])
 
 
-def place_bet_transaction(user, bet, amount):
+def one_to_one_transaction(origin, destination, description, amount):
     """
-    Creates and saves a transaction to transfer money when a bet is placed
-    :param user: user that placed the bet
-    :param bet: well... the bet
-    :param amount: the amount that was placed
+    Creates a transaction with a single origin and destination
+    :param origin: Account from which the money will be deducted
+    :param destination: Account to which the money will be credited
+    :param description: Description of the transaction
+    :param amount: Amount to be transfered
     :return: Transaction-object
     """
-    from django.utils.translation import ugettext_lazy as _
-    from django.contrib.auth.models import User
-
-    from .models import Transaction, Debit, Credit
+    from .models import Account, Transaction, Debit, Credit
     from .exceptions import InsufficientFunds
-    from bets.models import Bet
-    from profiles.models import Profile
 
-    assert isinstance(user, User) or isinstance(user, Profile)
-    if isinstance(user, User):
-        username = user.username
-        user = user.profile.account
-    else:
-        username = user.user.username
-        user = user.account
+    assert isinstance(origin, Account)
+    assert isinstance(destination, Account)
+    assert isinstance(description, str)
+    assert isinstance(amount, int)
 
-    assert isinstance(bet, Bet)
-    bet_id = bet.id
-    bet = bet.account
+    if origin.balance < amount:
+        raise InsufficientFunds()
 
-    if not user.balance >= amount:
-        raise InsufficientFunds(
-            _("User has insufficient funds"),
-            code='insufficient_funds_on_placement'
-        )
-
-    transaction = Transaction(
-        description="Placed Bet\nBet: " + str(bet_id) + "\nUser: " + username + "\nAmount: " + str(amount)
-    )
+    transaction = Transaction(description=description)
     debit = Debit(
         transaction=transaction,
-        account=user,
+        account=origin,
         amount=amount
     )
     credit = Credit(
         transaction=transaction,
-        account=bet,
+        account=destination,
         amount=amount
     )
 
@@ -87,8 +71,8 @@ def place_bet_transaction(user, bet, amount):
     debit.save()
     credit.save()
 
-    user.compute_balance()
-    bet.compute_balance()
+    origin.compute_balance()
+    destination.compute_balance()
 
     return transaction
 

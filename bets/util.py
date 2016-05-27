@@ -174,3 +174,43 @@ def generate_index(user):
     index['date_bets'] = filter_index_bets(user=user, bets=date_bets)
 
     return index
+
+
+def place_bet_transaction(user, bet, amount):
+    """
+    Creates and saves a transaction to transfer money when a bet is placed
+    :param user: user that placed the bet
+    :param bet: well... the bet
+    :param amount: the amount that was placed
+    :return: Transaction-object
+    """
+    from django.utils.translation import ugettext_lazy as _
+    from django.contrib.auth.models import User
+    from bets.models import Bet
+    from profiles.models import Profile
+    from ledger.util import one_to_one_transaction
+    from ledger.exceptions import InsufficientFunds
+
+    assert isinstance(user, User) or isinstance(user, Profile)
+    if isinstance(user, User):
+        username = user.username
+        user = user.profile.account
+    else:
+        username = user.user.username
+        user = user.account
+
+    assert isinstance(bet, Bet)
+    bet_id = bet.id
+    bet = bet.account
+
+    description = "Placed Bet\nBet: " + str(bet_id) + "\nUser: " + username + "\nAmount: " + str(amount)
+
+    try:
+        transaction = one_to_one_transaction(origin=user, destination=bet, description=description, amount=amount)
+    except InsufficientFunds:
+        raise InsufficientFunds(
+            _("User has insufficient funds"),
+            code='insufficient_funds_on_placement'
+        )
+
+    return transaction
