@@ -99,6 +99,9 @@ ENV/
 
 .idea/
 
+## Directory-based project format:
+*.iml
+
 ## File-based project format:
 *.iws
 

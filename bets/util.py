@@ -76,7 +76,7 @@ def bet_is_visible_to_user(bet, user):
     """
     from django.utils import timezone
 
-    if bet.pub_date and bet.end_bets_date:
+    if bet.end_bets_date:
         return \
             user not in bet.forbidden.all() and \
             not bet.resolved and \
