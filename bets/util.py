@@ -133,10 +133,7 @@ def filter_index_bets(user, bets):
     :return: a dictionary of the form:
     {
         'available': [Bet],
-        'placed': [{
-            'bet': Bet,
-            'placed_bet': PlacedBet
-        }]
+        'placed': [PlacedBet]
     }
     """
     filtered_bets = {'available': [], 'placed': []}
@@ -145,12 +142,7 @@ def filter_index_bets(user, bets):
         if user_can_place_bet(user, bet):
             filtered_bets['available'].append(bet)
         else:
-            filtered_bets['placed'].append(
-                {
-                    'bet': bet,
-                    'placed_bet': get_placed_bet_for_user(user=user, bet=bet)
-                }
-            )
+            filtered_bets['placed'].append(get_placed_bet_for_user(user=user, bet=bet))
 
     return filtered_bets
 
@@ -163,17 +155,11 @@ def generate_index(user):
     {
         'choice_bets': {
             'available': [Bet],
-            'placed': [{
-                'bet': Bet,
-                'placed_bet': PlacedBet
-            }]
+            'placed': [PlacedBet]
         },
         'date_bets': {
             'available': [Bet],
-            'placed': [{
-                'bet': Bet,
-                'placed_bet': PlacedBet
-            }
+            'placed': [PlacedBet]
         }
     }
     """
