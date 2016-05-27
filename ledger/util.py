@@ -41,7 +41,7 @@ def one_to_one_transaction(origin, destination, description, amount):
     :param origin: Account from which the money will be deducted
     :param destination: Account to which the money will be credited
     :param description: Description of the transaction
-    :param amount: Amount to be transfered
+    :param amount: Amount to be transferred
     :return: Transaction-object
     """
     from .models import Account, Transaction, Debit, Credit
@@ -56,11 +56,13 @@ def one_to_one_transaction(origin, destination, description, amount):
         raise InsufficientFunds()
 
     transaction = Transaction(description=description)
+
     debit = Debit(
         transaction=transaction,
         account=origin,
         amount=amount
     )
+
     credit = Credit(
         transaction=transaction,
         account=destination,
@@ -76,3 +78,46 @@ def one_to_one_transaction(origin, destination, description, amount):
 
     return transaction
 
+
+def one_to_many_transaction(origin, destinations, description):
+    """
+    Creates a transaction with a single origin and many destinations
+    :param origin: Account from which the money will be deducted
+    :param destinations: Dictionary of the account and amount for each destination
+    :param description: Description of the transaction
+    :return: Transaction-object
+    """
+    from .models import Account, Transaction, Debit, Credit
+    from .exceptions import InsufficientFunds
+
+    assert isinstance(origin, Account)
+    assert isinstance(description, str)
+    for destination in destinations:
+        assert isinstance(destination['account'], Account)
+        assert isinstance(destination['amount'], int)
+
+    total_amount = 0
+    for destination in destinations:
+        total_amount += destination['amount']
+
+    if origin.balance < total_amount:
+        raise InsufficientFunds()
+
+    transaction = Transaction(description=description).save()
+
+    Debit(
+        transaction=transaction,
+        account=origin,
+        amount=total_amount
+    ).save()
+    origin.compute_balance()
+
+    for destination in destinations:
+        Credit(
+            transaction=transaction,
+            account=destination['account'],
+            amount=destination['amount']
+        ).save()
+        destination['account'].compute_balance()
+
+    return transaction
