@@ -36,6 +36,13 @@ def create_table(credit, debit):
 
 
 def place_bet_transaction(user, bet, amount):
+    """
+    Creates and saves a transaction to transfer money when a bet is placed
+    :param user: user that placed the bet
+    :param bet: well... the bet
+    :param amount: the amount that was placed
+    :return: Transaction-object
+    """
     from django.utils.translation import ugettext_lazy as _
     from django.contrib.auth.models import User
 

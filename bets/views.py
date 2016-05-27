@@ -7,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
 from .util import filter_visible_bets, user_can_place_bet, get_bet
+from ledger.util import place_bet_transaction
+from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
 
 
@@ -92,6 +94,12 @@ def place_bet(request, prim_key):
 
     placed_by = request.user.profile
     placed = request.POST['placed']
+
+    try:
+        place_bet_transaction(user=placed_by, bet=bet, amount=placed)
+    except InsufficientFunds:
+        # TODO: do something useful here...
+        pass
 
     if isinstance(bet, ChoiceBet):
         choice = bet.choice_set.get(description=request.POST['choice'])
