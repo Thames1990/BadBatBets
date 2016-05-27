@@ -1,46 +1,33 @@
 from django.http import Http404, HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import DateBetCreationForm
+from .util import user_can_place_bet, get_bet, generate_index
 from ledger.util import place_bet_transaction
 from ledger.exceptions import InsufficientFunds
-from .util import user_can_place_bet, get_bet, generate_index
+from profiles.util import user_authenticated
 
 
 def index_view(request):
-    if request.user.is_authenticated():
-        if request.method == 'POST':
-            if request.POST.get('agb'):
-                request.user.profile.accepted_agb = True
-                request.user.profile.save()
-            elif request.POST.get('privacy_policy'):
-                request.user.profile.accepted_privacy_policy = True
-                request.user.profile.save()
+    if not user_authenticated(request.user):
+        raise PermissionDenied()
 
-        if request.user.profile.accepted_agb and request.user.profile.accepted_privacy_policy:
-            index = generate_index(request.user)
-            return render(request, 'bets/index.html', {
-                'choice_bets': index['choice_bets']['available'],
-                'placed_choice_bets': index['choice_bets']['placed'],
-                'date_bets': index['date_bets']['available'],
-                'placed_date_bets': index['date_bets']['placed'],
-                'user': request.user
-            })
-        elif not request.user.profile.accepted_agb:
-            return render(request, 'profiles/general_terms_and_conditions.html', {'accepted': False})
-        else:
-            return render(request, 'profiles/privacy_policy.html', {'accepted': False})
-    else:
-        return render(request, 'profiles/login.html')
+    index = generate_index(request.user)
+    return render(request, 'bets/index.html', {
+        'choice_bets': index['choice_bets']['available'],
+        'placed_choice_bets': index['choice_bets']['placed'],
+        'date_bets': index['date_bets']['available'],
+        'placed_date_bets': index['date_bets']['placed'],
+        'user': request.user
+    })
 
 
-@login_required
 def bet_view(request, prim_key):
-    if request.user.is_authenticated():
+    if user_authenticated(request.user):
         bet = get_bet(prim_key)
         if bet is not None:
             if isinstance(bet, ChoiceBet):
@@ -54,7 +41,7 @@ def bet_view(request, prim_key):
                     'user_can_place_bet': user_can_place_bet(request.user, bet)
                 })
     else:
-        return render(request, 'profiles/login.html')
+        raise Http404()
 
 
 def place_bet(request, prim_key):
@@ -94,8 +81,10 @@ def place_bet(request, prim_key):
     return HttpResponseRedirect(reverse('bets:index'))
 
 
-@login_required
 def create_date_bet(request):
+    if not user_authenticated(request.user):
+        raise PermissionDenied()
+
     args = {}
     if request.method == 'POST':
         form = DateBetCreationForm(data=request.POST)
