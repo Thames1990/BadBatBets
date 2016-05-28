@@ -3,10 +3,110 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
-from .models import DateBet
+from .models import ChoiceBet, DateBet
 from ledger.models import Account
 
 from profiles.models import ForbiddenUser
+
+
+class ChoiceBetCreationForm(forms.ModelForm):
+    class Meta:
+        model = ChoiceBet
+        fields = ['name', 'description', 'pub_date', 'end_bets_date', 'end_date']
+
+    pub_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
+    end_bets_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
+    end_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
+    choices = forms.ComboField()
+    forbidden = forms.ModelMultipleChoiceField(queryset=ForbiddenUser.objects.all(), required=False)
+
+    def clean_pub_date(self):
+        pub_date = self.cleaned_data.get('pub_date')
+
+        if pub_date is None:
+            return pub_date
+
+        if pub_date <= timezone.now().date():
+            raise ValidationError(
+                _('If you set a publication date, it has to be in the future. '
+                  'If you want the bet to be visible immediately, do not set a publication date.'),
+                code='pub_date_not_in_future',
+            )
+
+        return pub_date
+
+    def clean_end_bets_date(self):
+        pub_date = self.cleaned_data.get('pub_date')
+        end_bets_date = self.cleaned_data.get('end_bets_date')
+
+        if end_bets_date is None:
+            return end_bets_date
+
+        if pub_date is None:
+            if end_bets_date <= timezone.now().date():
+                raise ValidationError(
+                    _('Must give at least 1 day to place bets.'),
+                    code='end_bets_not_in_future',
+                )
+        elif end_bets_date <= pub_date:
+            raise ValidationError(
+                _('Must give at least 1 day to place bets.'),
+                code='end_bets_not_greater_pub',
+            )
+
+        return end_bets_date
+
+    def clean_end_date(self):
+        pub_date = self.cleaned_data.get('pub_date')
+        end_bets_date = self.cleaned_data.get('end_bets_date')
+        end_date = self.cleaned_data.get('end_date')
+
+        if end_date is None:
+            return end_date
+
+        if end_date < end_bets_date:
+            raise ValidationError(
+                _('Placement of bets cannot be sustained after the bet is closed'),
+                code='end_date_before_end_bets_date'
+            )
+
+        if end_date <= pub_date:
+            raise ValidationError(
+                _('The timespan between the publishement date and end date must be at least one day.'),
+                code=''
+            )
+
+        return end_date
+
+    def save(self, user):
+        name = self.cleaned_data['name']
+        description = self.cleaned_data['description']
+        pub_date = self.cleaned_data['pub_date']
+        end_bets_date = self.cleaned_data['end_bets_date']
+        end_date = self.cleaned_data.get('end_date')
+        forbidden = self.cleaned_data['forbidden']
+
+        account = Account(name=name, type='b')
+        account.save()
+
+        new_bet = ChoiceBet(
+            owner=user,
+            name=name,
+            description=description,
+            end_bets_date=end_bets_date,
+            end_date=end_date,
+            account=account
+        )
+        new_bet.save()
+
+        for forbidden_user in forbidden:
+            new_bet.forbidden.add(forbidden_user)
+
+        if pub_date is not None:
+            new_bet.pub_date = pub_date
+            new_bet.save()
+
+        return new_bet
 
 
 class DateBetCreationForm(forms.ModelForm):

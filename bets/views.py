@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
-from .forms import DateBetCreationForm
-from .util import filter_visible_bets, user_can_place_bet, get_bet, generate_index
+from .forms import ChoiceBetCreationForm, DateBetCreationForm
+from .util import user_can_place_bet, get_bet, generate_index
 
 
 def index_view(request):
@@ -96,6 +96,22 @@ def create_date_bet(request):
             return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
     else:
         form = DateBetCreationForm()
+
+    args['form'] = form
+
+    return render(request, 'bets/create_date_bet.html', args)
+
+
+@login_required
+def create_choice_bet(request):
+    args = {}
+    if request.method == 'POST':
+        form = ChoiceBetCreationForm(data=request.POST)
+        if form.is_valid():
+            bet = form.save(request.user.profile)
+            return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+    else:
+        form = ChoiceBetCreationForm()
 
     args['form'] = form
 

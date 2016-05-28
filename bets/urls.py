@@ -27,6 +27,12 @@ urlpatterns = [
     ),
 
     url(
+        r'create/choice/$',
+        views.create_choice_bet,
+        name='create_choice_bet'
+    ),
+
+    url(
         r'^create/date/$',
         views.create_date_bet,
         name="create_date_bet"

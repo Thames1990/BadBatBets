@@ -1,9 +1,32 @@
 {% extends 'the_platform/base.html' %}
+{% load staticfiles %}
 
 {% block title %}
     {{ block.super }} | Create Choice Bet
 {% endblock %}
 
 {% block content %}
-    # TODO put stuff here
+    <script src="{% static 'js/add_choice.js' %}"></script>
+
+    {% if error_message %}
+        <strong>{{ error_message }}</strong>
+    {% endif %}
+
+    <form action="{% url 'bets:create_date_bet' %}" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <div id="choices">
+            Choice 1<br><input type="text" name="choices">
+        </div>
+        <input type="button" value="Add another choice" onclick="addChoice('choices')">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    {# TODO add custom Form #}
+
+    </form>
 {% endblock %}
