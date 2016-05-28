@@ -2,7 +2,6 @@ from django.http import Http404, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.views.generic import View
 
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
@@ -109,30 +108,15 @@ def create_date_bet(request):
 
 
 def create_choice_bet(request):
-    if request.method == 'POST':
-        form = ChoiceBetCreationForm(request.POST)
-        if form.is_valid():
-            bet = form.save(request.user.profile)
-            return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+    if user_authenticated(request.user):
+        if request.method == 'POST':
+            form = ChoiceBetCreationForm(request.POST)
+            if form.is_valid():
+                bet = form.save(request.user.profile)
+                return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+        else:
+            form = ChoiceBetCreationForm()
+
+        return render(request, 'bets/create_choice_bet.html', {'form': form})
     else:
-        form = ChoiceBetCreationForm()
-
-    return render(request, 'bets/create_date_bet.html', {'form': form})
-
-
-class CreateChoiceBet(View):
-    form_class = ChoiceBetCreationForm
-    template_name = 'bets/create_date_bet.html'
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            # TODO fix save method (commit=False)
-            choice_bet = form.save(request.user.profile)
-            # TODO insert checks
-            choice_bet.save()
+        raise PermissionDenied()
