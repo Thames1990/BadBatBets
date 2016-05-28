@@ -68,6 +68,8 @@ class Choice(models.Model):
     belongs_to = models.ForeignKey(ChoiceBet)
     # (Short) description of the choice
     description = models.CharField(max_length=64)
+    # Number of people that have picked this choice
+    picks = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         # TODO: Find a better way to do this...
