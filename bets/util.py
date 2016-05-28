@@ -200,14 +200,16 @@ def place_bet_transaction(user, bet, amount):
         user = user.account
 
     assert isinstance(bet, Bet)
-    bet_id = bet.id
+    # TODO why was it id? Just a mistake?
+    bet_prim_key = bet.prim_key
     bet = bet.account
 
-    description = "Placed Bet\nBet: " + str(bet_id) + "\nUser: " + username + "\nAmount: " + str(amount)
+    description = "Placed Bet\nBet: " + str(bet_prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
 
     try:
         transaction = one_to_one_transaction(origin=user, destination=bet, description=description, amount=amount)
     except InsufficientFunds:
+        # TODO fix "InsufficientFunds does not take keyword arguments"
         raise InsufficientFunds(
             _("User has insufficient funds"),
             code='insufficient_funds_on_placement'

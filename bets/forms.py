@@ -17,7 +17,6 @@ class ChoiceBetCreationForm(forms.ModelForm):
     pub_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_bets_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
-    choices = forms.ComboField()
     forbidden = forms.ModelMultipleChoiceField(queryset=ForbiddenUser.objects.all(), required=False)
 
     def clean_pub_date(self):
