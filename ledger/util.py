@@ -55,28 +55,24 @@ def one_to_one_transaction(origin, destination, description, amount):
     if origin.balance < amount:
         raise InsufficientFunds()
 
-    transaction = Transaction(description=description)
+    transaction = Transaction(description=description).save()
 
-    debit = Debit(
+    Debit(
         transaction=transaction,
         account=origin,
         amount=amount
-    )
+    ).save()
 
-    credit = Credit(
+    Credit(
         transaction=transaction,
         account=destination,
         amount=amount
-    )
+    ).save()
 
-    transaction.save()
-    debit.save()
-    credit.save()
-
-    origin.compute_balance()
-    destination.compute_balance()
-
-    return transaction
+    origin.balance -= amount
+    origin.save()
+    destination.balance += amount
+    destination.save()
 
 
 def one_to_many_transaction(origin, destinations, description):

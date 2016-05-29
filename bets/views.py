@@ -1,10 +1,10 @@
-from django.http import Http404, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
-from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render
 
-from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
+from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .util import user_can_place_bet, get_bet, generate_index, place_bet_transaction
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
@@ -22,7 +22,7 @@ def index_view(request):
         })
     # TODO Readd terms and policy agreement check (updated)
     else:
-        raise PermissionDenied()
+        raise PermissionDenied
 
 
 def bet_view(request, prim_key):
@@ -42,59 +42,57 @@ def bet_view(request, prim_key):
             else:
                 raise TypeError("Bets with type " + type(bet).__name__ + " are not handled yet.")
         else:
-            raise ObjectDoesNotExist("No bet with primary key " + str(prim_key) + " exists.")
+            raise Http404
     else:
-        # TODO Create custom 404 page
-        raise Http404()
+        raise Http404
 
 
 def place_bet(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
         if (bet is None) or (not user_can_place_bet(user=request.user, bet=bet)):
-            raise Http404()
+            raise Http404
         else:
             placed_by = request.user.profile
-            # TODO check why this was str
             placed = int(request.POST['placed'])
 
             try:
-                # TODO points aren't withdrawn yet. (At least not saved)
-                place_bet_transaction(user=placed_by, bet=bet, amount=placed)
+                place_bet_transaction(profile=placed_by, bet=bet, amount=placed)
             except InsufficientFunds:
                 # TODO: Notify the user that he/she doesn't have sufficient funds for the (placed) bet.
                 pass
 
             if isinstance(bet, ChoiceBet):
                 choice = bet.choice_set.get(description=request.POST['choice'])
-                placed_bet = PlacedChoiceBet(
+                choice.picks += 1
+                choice.save()
+                PlacedChoiceBet(
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
                     chosen=choice
-                )
-                placed_bet.save()
-                choice.picks += 1
-                choice.save()
+                ).save()
             elif isinstance(bet, DateBet):
-                placed_bet = PlacedDateBet(
+                PlacedDateBet(
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
                     placed_date=request.POST['date'],
-                )
-                placed_bet.save()
+                ).save()
             else:
                 raise TypeError("Bets with type " + type(bet).__name__ + " are not handled yet.")
 
             return HttpResponseRedirect(reverse('bets:index'))
     else:
-        raise PermissionDenied()
+        raise PermissionDenied
 
+
+# TODO generic create_bet (POST fields?)
 
 def create_date_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
+            print(request.POST)
             form = DateBetCreationForm(data=request.POST)
             if form.is_valid():
                 bet = form.save(request.user.profile)
@@ -104,7 +102,7 @@ def create_date_bet(request):
 
         return render(request, 'bets/create_date_bet.html', {'form': form})
     else:
-        raise PermissionDenied()
+        raise PermissionDenied
 
 
 def create_choice_bet(request):
@@ -119,4 +117,4 @@ def create_choice_bet(request):
 
         return render(request, 'bets/create_choice_bet.html', {'form': form})
     else:
-        raise PermissionDenied()
+        raise PermissionDenied

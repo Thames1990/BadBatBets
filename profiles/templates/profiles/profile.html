@@ -20,27 +20,44 @@
         </tr>
     </table>
 
-    <table>
-        <tr>
-            <th>Credit</th>
-            <th>Debit</th>
-        </tr>
-        <tr>
-            {% for credit in profile.account.credit_set.all %}
-                <td>{{ credit.transaction }}</td>
-                <td>{{ credit.account }}</td>
-                <td>{{ credit.amount }}</td>
-            {% empty %}
-                <td>No credit is available yet</td>
-            {% endfor %}
-
-            {% for debit in profile.account.debit_set.all %}
-                <td>{{ debit.transaction }}</td>
-                <td>{{ debit.account }}</td>
-                <td>{{ debit.amount }}</td>
-            {% empty %}
-                <td>No debit is available yet</td>
-            {% endfor %}
-        </tr>
-    </table>
+    <grid>
+        <div col="1/2">
+            <h2>Credit</h2>
+            <table>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Account</th>
+                    <th>Amount</th>
+                </tr>
+                {% for credit in profile.account.credit_set.all %}
+                    <tr>
+                        <td>{{ credit.transaction }}</td>
+                        <td>{{ credit.account }}</td>
+                        <td>{{ credit.amount }}</td>
+                    </tr>
+                {% empty %}
+                    <td>No credit is available yet</td>
+                {% endfor %}
+            </table>
+        </div>
+        <div col="1/2">
+            <h2>Debit</h2>
+            <table>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Account</th>
+                    <th>Amount</th>
+                </tr>
+                {% for debit in profile.account.debit_set.all %}
+                    <tr>
+                        <td>{{ debit.transaction }}</td>
+                        <td>{{ debit.account }}</td>
+                        <td>{{ debit.amount }}</td>
+                    </tr>
+                {% empty %}
+                    <td>No debit is available yet</td>
+                {% endfor %}
+            </table>
+        </div>
+    </grid>
 {% endblock %}

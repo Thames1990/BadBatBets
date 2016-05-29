@@ -176,46 +176,46 @@ def generate_index(user):
     return index
 
 
-def place_bet_transaction(user, bet, amount):
+def place_bet_transaction(profile, bet, amount):
     """
     Creates and saves a transaction to transfer money when a bet is placed
-    :param user: user that placed the bet
+    :param profile: profile that placed the bet
     :param bet: well... the bet
     :param amount: the amount that was placed
-    :return: Transaction-object
     """
-    from django.utils.translation import ugettext_lazy as _
-    from django.contrib.auth.models import User
     from bets.models import Bet
     from profiles.models import Profile
     from ledger.util import one_to_one_transaction
     from ledger.exceptions import InsufficientFunds
 
-    assert isinstance(user, User) or isinstance(user, Profile)
-    if isinstance(user, User):
-        username = user.username
-        user = user.profile.account
+    if isinstance(profile, Profile):
+        username = profile.user.username
+        profile = profile.account
     else:
-        username = user.user.username
-        user = user.account
-
-    assert isinstance(bet, Bet)
-    # TODO why was it id? Just a mistake?
-    bet_prim_key = bet.prim_key
-    bet = bet.account
-
-    description = "Placed Bet\nBet: " + str(bet_prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
-
-    try:
-        transaction = one_to_one_transaction(origin=user, destination=bet, description=description, amount=amount)
-    except InsufficientFunds:
-        # TODO fix "InsufficientFunds does not take keyword arguments"
-        raise InsufficientFunds(
-            _("User has insufficient funds"),
-            code='insufficient_funds_on_placement'
+        raise TypeError(
+            "place_bet_transaction() needs a Profile object as first argument; got " +
+            type(profile).__name__ +
+            " instead."
         )
 
-    return transaction
+    if isinstance(bet, Bet):
+        description = "Placed Bet\nBet: " + str(bet.prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
+
+        try:
+            one_to_one_transaction(
+                origin=profile,
+                destination=bet.account,
+                description=description,
+                amount=amount
+            )
+        except InsufficientFunds:
+            logging.info("User has insufficient funds")
+    else:
+        raise TypeError(
+            "place_bet_transaction() needs a Bet object as second argument; got " +
+            type(bet).__name__ +
+            " instead."
+        )
 
 
 def resolve_choice_bet(bet, winning_option):
