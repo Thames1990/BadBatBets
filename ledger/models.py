@@ -22,6 +22,7 @@ class Account(models.Model):
         credit = self.credit_set.all()
         debit = self.debit_set.all()
         self.balance = sum_credit_debit(credit, debit)
+        self.save()
         return self.balance
 
     def __str__(self):

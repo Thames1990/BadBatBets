@@ -10,9 +10,9 @@ class ChoiceInLine(admin.TabularInline):
 
 class ChoiceBetAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('General', {'fields': ['name', 'description']}),
+        ('General', {'fields': ['name', 'description', 'account']}),
         ('People', {'fields': ['owner', 'forbidden']}),
-        ('Dates', {'fields': ['pub_date', 'end_bets_date', 'end_date']}),
+        ('Dates', {'fields': ['end_bets_date', 'end_date']}),
         ('Misc', {
             'fields': ['resolved'],
             'classes': ('collapse',),

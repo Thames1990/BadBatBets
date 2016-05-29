@@ -105,4 +105,7 @@ class PaymentForm(forms.Form):
         credit.save(commit)
         debit.save(commit)
 
+        user_account.compute_balance()
+        system_account.compute_balance()
+
         return transaction
