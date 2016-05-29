@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>404</title>
 </head>
 <body>
-<h1>404 Bitch</h1>
-<p>{{ request }}</p>
+<div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(-50%);">
+    <h1 style="text-align: center">404 Bitch</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
 </body>
 </html>

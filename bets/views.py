@@ -1,4 +1,5 @@
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
@@ -22,7 +23,8 @@ def index_view(request):
         })
     # TODO Readd terms and policy agreement check (updated)
     else:
-        raise PermissionDenied
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        raise Http404
 
 
 def bet_view(request, prim_key):
@@ -40,10 +42,13 @@ def bet_view(request, prim_key):
                     'user_can_place_bet': user_can_place_bet(request.user, bet)
                 })
             else:
-                raise TypeError("Bets with type " + type(bet).__name__ + " are not handled yet.")
+                messages.error(request, "Bets with type " + type(bet).__name__ + " aren't handled yet.")
+                raise Http404
         else:
+            messages.error(request, "Bet with primary key " + str(prim_key) + " does not exist.")
             raise Http404
     else:
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise Http404
 
 
