@@ -11,7 +11,6 @@
 
     <form action="{% url 'bets:create_date_bet' %}" method="post">
         {% csrf_token %}
-        {# TODO improve date selection (via calendar) #}
         <table>
             {{ form.as_table }}
         </table>

@@ -4,12 +4,12 @@ html, body {
     background: #f4f5f6;
 }
 
-/* TODO Rewrite custom classes */
 h2 {
     display: flex !important;
     justify-content: center !important;
 }
 
+/* TODO check mobile min-width value */
 @media only screen and (min-width: 760px) {
     menu {
         margin-top: 0.6em !important;

@@ -16,14 +16,11 @@ class Account(models.Model):
     type = models.CharField(max_length=1, choices=types)
     balance = models.IntegerField(default=0)
 
-    # TODO Why do we need this? If we use this for transactions and save the object,
-    # TODO the users balance is reduced by an obscenely high amount (e.g. 9001 - 9000 = -26187)
     def compute_balance(self):
         credit = self.credit_set.all()
         debit = self.debit_set.all()
         self.balance = sum_credit_debit(credit, debit)
         self.save()
-        return self.balance
 
     def __str__(self):
         return self.get_type_display() + ": " + self.name

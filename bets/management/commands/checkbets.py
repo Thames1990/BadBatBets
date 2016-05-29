@@ -16,14 +16,14 @@ class Command(BaseCommand):
             if choice_bet.end_date:
                 if choice_bet.end_date >= timezone.now().date():
                     choice_bet.resolved = True
-                    # TODO distribution of the pot (placedchoicebet_set)
                     choice_bet.save()
                     logging.info(choice_bet.name + " is now resolved")
+                    # TODO Distribute pot
 
         for date_bet in DateBet.objects.all():
             if date_bet.time_period_end:
                 if date_bet.time_period_end >= timezone.now().date():
                     date_bet.resolved = True
-                    # TODO distribution of the pot (placeddatebet_set)
                     date_bet.save()
                     logging.info(date_bet.name + " is now resolved")
+                    # TODO Distribute pot

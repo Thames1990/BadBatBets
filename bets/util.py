@@ -218,13 +218,14 @@ def place_bet_transaction(profile, bet, amount):
         )
 
 
+# TODO make generic. What's the type of a date (winning_option)?
 def resolve_choice_bet(bet, winning_option):
     """
-
-    :param bet:
-    :param winning_option:
-    :return:
+    Resolves a choice bet and distributes the pot among the user who placed a bet on the winning choice.
+    :param bet: Bet to be resolved
+    :param winning_option: The winning choice
     """
+    # TODO Do we need translations?
     from django.utils.translation import ugettext_lazy as _
     from .models import ChoiceBet, Choice
     from ledger.models import Account
@@ -241,22 +242,24 @@ def resolve_choice_bet(bet, winning_option):
         if placed_bet.chosen == winning_option:
             winning_bets.append(placed_bet)
 
-    pot = bet.account.balance
+    # TODO Do we need the int cast? Are bet amounts floats?
+    payout = int(bet.account.balance // len(winning_bets))
+    server_payout = bet.account.balance % len(winning_bets)
+    # TODO let on rain on the server
+
     winners = []
     for winning_bet in winning_bets:
-        payout = int(bet.account.balance / len(winning_bets))
         winners.append(
             {
                 'account': winning_bet.placed_by.account,
                 'amount': payout
             }
         )
-        pot -= payout
 
     winners.append(
         {
             'account': Account.objects.get(name='operator'),
-            'amount': pot
+            'amount': payout
         }
     )
 
@@ -265,7 +268,7 @@ def resolve_choice_bet(bet, winning_option):
         description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
 
     try:
-        return one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
+        one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
         raise InsufficientFunds(
             _("The pot division fucked up..."),
