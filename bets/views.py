@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
-from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
+from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet, Choice
 from .util import user_can_place_bet, get_bet, generate_index, place_bet_transaction
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
@@ -113,8 +113,10 @@ def create_choice_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
             form = ChoiceBetCreationForm(request.POST)
+
             if form.is_valid():
                 bet = form.save(request.user.profile)
+                create_choices(request, bet)
                 return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
         else:
             form = ChoiceBetCreationForm()
@@ -122,3 +124,19 @@ def create_choice_bet(request):
         return render(request, 'bets/create_choice_bet.html', {'form': form})
     else:
         raise PermissionDenied
+
+
+def create_choices(request, bet):
+    last_choice = False
+    choice_number = 1
+    while not last_choice:
+        choice = request.POST.get("choice_" + str(choice_number))
+        if choice is not None:
+            Choice(
+                belongs_to=bet,
+                description=choice
+            ).save()
+
+            choice_number += 1
+        else:
+            last_choice = True
