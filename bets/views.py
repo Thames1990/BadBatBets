@@ -97,7 +97,6 @@ def place_bet(request, prim_key):
 def create_date_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
-            print(request.POST)
             form = DateBetCreationForm(data=request.POST)
             if form.is_valid():
                 bet = form.save(request.user.profile)
