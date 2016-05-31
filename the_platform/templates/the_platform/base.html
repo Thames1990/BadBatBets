@@ -47,9 +47,44 @@
     </nav>
 
     <section>
-        {% block content %}
-            <p>No content yet.</p>
-        {% endblock %}
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                    {# TODO Improve design (grid with 2 divs, error level left and message 80% right) #}
+                    <div id="debug" onclick='this.parentNode.removeChild(this); return false;'>
+                        <strong>
+                            DEBUG: {{ message }}
+                        </strong>
+                    </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <div id="info" onclick='this.parentNode.removeChild(this); return false;'>
+                        <strong>
+                            INFO: {{ message }}
+                        </strong>
+                    </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div id="success" onclick='this.parentNode.removeChild(this); return false;'>
+                        <strong>
+                            SUCCESS: {{ message }}
+                        </strong>
+                    </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                    <div id="warning" onclick='this.parentNode.removeChild(this); return false;'>
+                        <strong>
+                            WARNING: {{ message }}
+                        </strong>
+                    </div>
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div id="error" onclick='this.parentNode.removeChild(this); return false;'>
+                        <strong>
+                            ERROR: {{ message }}
+                        </strong>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
     </section>
 
     {# TODO Fix at bottom #}

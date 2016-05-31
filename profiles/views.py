@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect
 
 from .forms import SignupForm, LoginForm, PaymentForm
-from .util import user_authenticated
 from ledger.util import create_table
 
 
@@ -13,65 +13,56 @@ def landing(request):
     if request.user.is_authenticated():
         return redirect('bets:index')
     else:
-        return render(request, 'profiles/landing.html', {})
+        return render(request, 'profiles/landing.html')
 
 
 @login_required
 def profile(request):
-    return render(request, 'profiles/profile.html', {
-        'user': request.user,
-        'profile': request.user.profile
-    })
+    return render(request, 'profiles/profile.html')
 
 
 def login_user(request):
     if request.user.is_authenticated():
         return redirect('bets:index')
-
-    args = {}
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        # TODO fix "This field is required" even if data is available
-        # TODO /login and /profile/login differ
-        if form.is_valid():
-            login(request, form.get_user())
-            return redirect('bets:index')
     else:
-        # TODO Fix "blank" login button step
-        form = LoginForm()
+        if request.method == 'POST':
+            form = LoginForm(data=request.POST)
+            # TODO fix "This field is required" even if data is available
+            # TODO /login and /profile/login differ
+            if form.is_valid():
+                login(request, form.get_user())
+                return redirect('bets:index')
+        else:
+            # TODO Fix "blank" login button step
+            form = LoginForm()
 
-    args['form'] = form
-    return render(request, 'profiles/login.html', args)
+        return render(request, 'profiles/login.html', {'form': form})
 
 
 @login_required
 def logout_user(request):
     logout(request)
-    return render(request, 'profiles/login.html', {
-        'message': "Logout Successful"
-    })
+    messages.success(request, "Logout successful")
+    return render(request, 'profiles/login.html')
 
 
 def signup(request):
     if request.user.is_authenticated():
         return redirect('bets:index')
-
-    args = {}
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(login_user)
     else:
-        form = SignupForm()
+        if request.method == 'POST':
+            form = SignupForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect(login_user)
+        else:
+            form = SignupForm()
 
-    args['form'] = form
-    return render(request, 'profiles/signup.html', args)
+        return render(request, 'profiles/signup.html', {'form': form})
 
 
 @login_required
 def change_password(request):
-    args = {}
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, data=request.POST)
         if form.is_valid():
@@ -81,14 +72,10 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
 
-    args['form'] = form
-    return render(request, 'profiles/change_password.html', args)
+    return render(request, 'profiles/change_password.html', {'form': form})
 
 
 def transactions(request):
-    if not user_authenticated(request.user):
-        raise PermissionDenied()
-
     if request.user.is_authenticated():
         credit = request.user.profile.account.credit_set.all()
         debit = request.user.profile.account.debit_set.all()
@@ -97,33 +84,28 @@ def transactions(request):
             'table': create_table(credit, debit)
         })
     else:
-        return redirect(login_user)
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        raise PermissionDenied
 
 
 def payment(request):
-    if not request.user.is_superuser:
-        raise PermissionDenied()
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = PaymentForm(request.POST)
+            if form.is_valid():
+                form.save(authorised=request.user)
+        else:
+            form = PaymentForm()
 
-    args = {}
-
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            form.save(authorised=request.user)
+        return render(request, 'profiles/payment.html', {'form': form})
     else:
-        form = PaymentForm()
-
-    args['form'] = form
-
-    return render(request, 'profiles/payment.html', args)
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        raise PermissionDenied
 
 
 def general_terms_and_conditions_view(request):
-    return render(request, 'profiles/general_terms_and_conditions.html',
-                  {'accepted': request.user.profile.accepted_agb})
+    return render(request, 'profiles/general_terms_and_conditions.html')
 
 
 def privacy_policy_view(request):
-    return render(request, 'profiles/privacy_policy.html', {
-        'accepted': request.user.profile.accepted_privacy_policy
-    })
+    return render(request, 'profiles/privacy_policy.html')

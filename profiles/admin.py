@@ -3,7 +3,7 @@ from .models import Profile, ForbiddenUser
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    fields = ['user', 'account', 'verified', 'accepted_agb', 'accepted_privacy_policy']
+    fields = ['user', 'account', 'verified', 'accepted_general_terms_and_conditions', 'accepted_privacy_policy']
 
 
 admin.site.register(Profile, ProfileAdmin)

@@ -5,7 +5,6 @@ from bets.util import key_gen
 
 
 class Account(models.Model):
-    # TODO find a way to automatically create after user has been created
     types = [
         ('p', 'Person'),
         ('b', 'Bet'),
@@ -31,8 +30,6 @@ class Transaction(models.Model):
     transaction_id = models.PositiveIntegerField(default=key_gen, primary_key=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
-
-    # TODO split description into (origin, destination, amount)?
 
     def __str__(self):
         return str(self.transaction_id)

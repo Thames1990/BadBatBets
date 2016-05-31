@@ -12,8 +12,6 @@ from profiles.util import user_authenticated
 
 
 def index_view(request):
-    messages.error(request, "Test")
-    raise Http404
     if user_authenticated(request.user):
         index = generate_index(request.user)
         return render(request, 'bets/index.html', {
@@ -21,13 +19,10 @@ def index_view(request):
             'placed_choice_bets': index['choice_bets']['placed'],
             'date_bets': index['date_bets']['available'],
             'placed_date_bets': index['date_bets']['placed'],
-            'user': request.user
         })
     else:
-        # TODO readd terms check (updated terms)
-        # TODO link user to signup
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
-        raise Http404
+        raise PermissionDenied
 
 
 def bet_view(request, prim_key):
@@ -52,13 +47,17 @@ def bet_view(request, prim_key):
             raise Http404
     else:
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
-        raise Http404
+        raise PermissionDenied
 
 
 def place_bet(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
-        if (bet is None) or (not user_can_place_bet(user=request.user, bet=bet)):
+        if bet is None:
+            messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
+            raise Http404
+        elif not user_can_place_bet(user=request.user, bet=bet):
+            messages.error(request, "You already placed a bet on " + bet.name + ".")
             raise Http404
         else:
             placed_by = request.user.profile
@@ -67,8 +66,11 @@ def place_bet(request, prim_key):
             try:
                 place_bet_transaction(profile=placed_by, bet=bet, amount=placed)
             except InsufficientFunds:
-                # TODO: Notify the user that he/she doesn't have sufficient funds for the (placed) bet.
-                pass
+                print(request.user.profile.account.balance)
+                messages.error(request, "Insufficient funds. Your accounts balance is " +
+                               str(request.user.profile.account.balance) + " points and you wanted to bet " +
+                               str(placed) + " points.")
+                return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
 
             if isinstance(bet, ChoiceBet):
                 choice = bet.choice_set.get(description=request.POST['choice'])
@@ -88,10 +90,12 @@ def place_bet(request, prim_key):
                     placed_date=request.POST['date'],
                 ).save()
             else:
-                raise TypeError("Bets with type " + type(bet).__name__ + " are not handled yet.")
+                messages.error(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
+                raise Http404
 
             return HttpResponseRedirect(reverse('bets:index'))
     else:
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -109,6 +113,7 @@ def create_date_bet(request):
 
         return render(request, 'bets/create_date_bet.html', {'form': form})
     else:
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -126,6 +131,7 @@ def create_choice_bet(request):
 
         return render(request, 'bets/create_choice_bet.html', {'form': form})
     else:
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -141,5 +147,8 @@ def create_choices(request, bet):
             ).save()
 
             choice_number += 1
+        elif description == "":
+            # TODO Find a way to avoid blank choices
+            pass
         else:
             last_choice = True

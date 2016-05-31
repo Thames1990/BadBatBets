@@ -6,14 +6,12 @@ def sum_credit_debit(credit, debit):
     :return:
     """
     credit_sum = 0
-
-    for credit in credit:
-        credit_sum += credit.amount
+    for entry in credit:
+        credit_sum += entry.amount
 
     debit_sum = 0
-
-    for debit in debit:
-        debit_sum += debit.amount
+    for entry in debit:
+        debit_sum += entry.amount
 
     return credit_sum - debit_sum
 

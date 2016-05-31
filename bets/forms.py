@@ -1,6 +1,5 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from .models import ChoiceBet, DateBet
@@ -27,10 +26,9 @@ class ChoiceBetCreationForm(forms.ModelForm):
 
         if pub_date <= timezone.now().date():
             raise ValidationError(
-                _('If you set a publication date, it has to be in the future. '
-                  'If you want the bet to be visible immediately, do not set a publication date.'),
-                code='pub_date_not_in_future',
-            )
+                'If you set a publication date, it has to be in the future. If you want the bet to be visible '
+                'immediately, do not set a publication date.',
+                code='pub_date_not_in_future')
 
         return pub_date
 
@@ -43,15 +41,9 @@ class ChoiceBetCreationForm(forms.ModelForm):
 
         if pub_date is None:
             if end_bets_date <= timezone.now().date():
-                raise ValidationError(
-                    _('Must give at least 1 day to place bets.'),
-                    code='end_bets_not_in_future',
-                )
+                raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_in_future')
         elif end_bets_date <= pub_date:
-            raise ValidationError(
-                _('Must give at least 1 day to place bets.'),
-                code='end_bets_not_greater_pub',
-            )
+            raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_greater_pub')
 
         return end_bets_date
 
@@ -64,16 +56,12 @@ class ChoiceBetCreationForm(forms.ModelForm):
             return end_date
 
         if end_date < end_bets_date:
-            raise ValidationError(
-                _('Placement of bets cannot be sustained after the bet is closed'),
-                code='end_date_before_end_bets_date'
-            )
+            raise ValidationError('Placement of bets cannot be sustained after the bet is closed',
+                                  code='end_date_before_end_bets_date')
 
         if end_date <= pub_date:
-            raise ValidationError(
-                _('The timespan between the publishement date and end date must be at least one day.'),
-                code=''
-            )
+            raise ValidationError('The timespan between the publishement date and end date must be at least one day.',
+                                  code='bet_timespan_too_short')
 
         return end_date
 
@@ -127,10 +115,9 @@ class DateBetCreationForm(forms.ModelForm):
 
         if pub_date <= timezone.now().date():
             raise ValidationError(
-                _('If you set a publication date, it has to be in the future. '
-                  'If you want the bet to be visible immediately, do not set a publication date.'),
-                code='pub_date_not_in_future',
-            )
+                'If you set a publication date, it has to be in the future. If you want the bet to be visible '
+                'immediately, do not set a publication date.',
+                code='pub_date_not_in_future')
 
         return pub_date
 
@@ -143,15 +130,10 @@ class DateBetCreationForm(forms.ModelForm):
 
         if pub_date is None:
             if end_bets_date <= timezone.now().date():
-                raise ValidationError(
-                    _('Must give at least 1 day to place bets.'),
-                    code='end_bets_not_greater_pub',
-                )
+                # TODO Check ValidationError messages. I'm too tired right now.
+                raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_greater_pub')
         elif end_bets_date < pub_date:
-            raise ValidationError(
-                _('Must give at least 1 day to place bets.'),
-                code='end_bets_not_in_future',
-            )
+            raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_in_future')
 
         return end_bets_date
 
@@ -165,16 +147,12 @@ class DateBetCreationForm(forms.ModelForm):
         if pub_date is None:
             if time_period_start <= timezone.now().date():
                 raise ValidationError(
-                    _('The period to bet on must start after Publication.'
-                      'Do not set a start date if you want the period to start immediately'),
-                    code='period_start_not_in_future',
-                )
+                    'The period to bet on must be in the future.', code='time_period_start_not_in_future')
         elif time_period_start <= pub_date:
             raise ValidationError(
-                _('The period to bet on must start after Publication.'
-                  'Do not set a start date if you want the period to start at publication'),
-                code='period_start_not_greater_pub',
-            )
+                'The period to bet on must start after Publication. Do not set a start date if you want the '
+                'period to start at publication',
+                code='time_period_start_not_greater_pub')
 
         return time_period_start
 
@@ -188,22 +166,15 @@ class DateBetCreationForm(forms.ModelForm):
 
         if (pub_date is None) and (time_period_start is None):
             if time_period_end <= timezone.now().date():
-                raise ValidationError(
-                    _('The period to bet on must not end in the past'),
-                    code='period_end_not_in_future',
-                )
+                raise ValidationError('The period to bet on must not end in the past', code='period_end_not_in_future')
         elif not (time_period_start is None):
             if time_period_start >= time_period_end:
-                raise ValidationError(
-                    _('The period to bet on must end after it has started'),
-                    code='period_end_not_greater_period_start',
-                )
+                raise ValidationError('The period to bet on must end after it has started',
+                                      code='period_end_not_greater_period_start')
         elif not (pub_date is None):
             if time_period_end <= pub_date:
-                raise ValidationError(
-                    _('The period to bet on must not end before the bet is visible'),
-                    code='period_end_not_greater_pub',
-                )
+                raise ValidationError('The period to bet on must not end before the bet is visible',
+                                      code='period_end_not_greater_pub')
 
         return time_period_end
 

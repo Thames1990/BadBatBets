@@ -6,24 +6,12 @@
 
 {% block links %}
     <ul>
-        <li>
-            <a href="{% url 'profiles:login' %}">Login</a>
-        </li>
-        <li>
-            <a href="{% url 'profiles:signup' %}">Signup</a>
-        </li>
+        <li><a href="{% url 'profiles:login' %}">Login</a></li>
+        <li><a href="{% url 'profiles:signup' %}">Signup</a></li>
     </ul>
 {% endblock %}
 
 {% block content %}
-    {% if error_message %}
-        <strong>{{ error_message }}</strong>
-    {% endif %}
-
-    {% if message %}
-        <strong>{{ message }}</strong>
-    {% endif %}
-
     <form action="{% url 'profiles:login' %}" method="POST">
         {% csrf_token %}
         <table>

@@ -31,3 +31,39 @@ h2 {
     text-decoration: none;
     margin: 1em;
 }
+
+#debug {
+    background: lightskyblue;
+    text-align: center;
+    margin: 1em;
+}
+
+#debug:hover {
+    background: lightblue;
+    color: #fff;
+    cursor: pointer;
+}
+
+#info, #success {
+    background: lightgreen;
+    text-align: center;
+    margin: 1em;
+}
+
+#info:hover, #success:hover {
+    background: palegreen;
+    color: #fff;
+    cursor: pointer;
+}
+
+#warning, #error {
+    background: red;
+    text-align: center;
+    margin: 1em;
+}
+
+#warning:hover, #error:hover {
+    background: lightcoral;
+    color: #fff;
+    cursor: pointer;
+}

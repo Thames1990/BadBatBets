@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 
 app_name = 'profiles'
+
 urlpatterns = [
     url(
         r'^$',
@@ -16,6 +17,8 @@ urlpatterns = [
         views.login_user,
         name='login'
     ),
+
+    # Logout mechanism
     url(
         r'^logout/$',
         views.logout_user,
@@ -50,12 +53,14 @@ urlpatterns = [
         name='payment'
     ),
 
-    # General terms and conditions, privacy policy
+    # General terms and conditions
     url(
         r'^general_terms_and_conditions/$',
         views.general_terms_and_conditions_view,
         name='general_terms_and_conditions'
     ),
+
+    # Privacy policy
     url(
         r'^privacy_policy/$',
         views.privacy_policy_view,

@@ -286,7 +286,7 @@
         <li><a name="dokumente">Weitere Dokumente hinzufügen</a></li>
     </ol>
 
-    {% if not accepted %}
+    {% if not request.user.profile.accepted_general_terms_and_conditions %}
         <form action="{% url 'bets:index' %}" method="post">
             {% csrf_token %}
             <div style="text-align: center">

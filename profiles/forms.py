@@ -2,7 +2,6 @@ from django import forms
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
 from ledger.models import Account, Transaction, Credit, Debit
@@ -26,8 +25,7 @@ class SignupForm(UserCreationForm):
 
         if email and User.objects.filter(email=email).exclude(username=username).count():
             raise forms.ValidationError(
-                _("This email address is already in use. Please supply a different email address.")
-            )
+                "This email address is already in use. Please supply a different email address.", code='email_in_use')
         return email
 
     def save(self, commit=True):
@@ -59,10 +57,8 @@ class PaymentForm(forms.Form):
         account = self.cleaned_data['account'].profile.account
 
         if not account.type == 'p':
-            raise forms.ValidationError(
-                _("Funds can only be deposited in personal accounts."),
-                code='deposit_account_not_personal',
-            )
+            raise forms.ValidationError("Funds can only be deposited in personal accounts.",
+                                        code='deposit_account_not_personal')
 
         return account
 
@@ -71,17 +67,13 @@ class PaymentForm(forms.Form):
 
         if amount <= 0:
             raise forms.ValidationError(
-                _("This email address is already in use. Please supply a different email address."),
-                code='deposit_amount_not_positive',
-            )
+                "This email address is already in use. Please supply a different email address.",
+                code='deposit_amount_not_positive')
 
         if self.cleaned_data['type'] == 'w':
             account = self.cleaned_data['account']
             if account.compute_balance() < amount:
-                raise forms.ValidationError(
-                    _("Insufficient funds."),
-                    code='insuficcient_funds'
-                )
+                raise forms.ValidationError("Insufficient funds.", code='insuficcient_funds')
 
         return self.cleaned_data['amount']
 

@@ -107,7 +107,7 @@
         <li><a name="zeitraum">Maximalen Zeitraum für Cookies definieren</a></li>
     </ol>
 
-    {% if not accepted %}
+    {% if not request.user.profile.accepted_privacy_policy %}
         <form action="{% url 'bets:index' %}" method="post">
             {% csrf_token %}
             <div style="text-align: center">

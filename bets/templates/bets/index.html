@@ -1,7 +1,7 @@
 {% extends 'the_platform/base.html' %}
 
 {% block profile_name %}
-    {{ user.profile }}
+    {{ request.user.profile }}
 {% endblock %}
 
 {% block content %}

@@ -1,27 +1,27 @@
 {% extends 'the_platform/base.html' %}
 
 {% block title %}
-    {{ block.super }} | {{ user.profile }}
+    {{ block.super }} | {{ request.user.profile }}
 {% endblock %}
 
 {% block profile_name %}
-    {{ user.profile }}
+    {{ request.user.profile }}
 {% endblock %}
 
 {% block content %}
     <table>
         <tr>
             <th>Username</th>
-            <td>{{ user.username }}</td>
+            <td>{{ request.user.username }}</td>
         </tr>
         <tr>
             <th>Account Balance</th>
-            <td>{{ profile.account.balance }}</td>
+            <td>{{ request.user.profile.account.balance }}</td>
         </tr>
     </table>
-
+    <hr>
     <grid>
-        <div col="1/2">
+        <div col="1/2" class="border_right">
             <h2>Credit</h2>
             <table>
                 <tr>
@@ -29,7 +29,7 @@
                     <th>Account</th>
                     <th>Amount</th>
                 </tr>
-                {% for credit in profile.account.credit_set.all %}
+                {% for credit in request.user.profile.account.credit_set.all %}
                     <tr>
                         <td>{{ credit.transaction }}</td>
                         <td>{{ credit.account }}</td>
@@ -48,7 +48,7 @@
                     <th>Account</th>
                     <th>Amount</th>
                 </tr>
-                {% for debit in profile.account.debit_set.all %}
+                {% for debit in request.user.profile.account.debit_set.all %}
                     <tr>
                         <td>{{ debit.transaction }}</td>
                         <td>{{ debit.account }}</td>

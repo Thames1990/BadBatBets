@@ -33,24 +33,23 @@ def get_bet(prim_key):
         return choice_bet
 
 
-def get_placed_bet_for_user(bet, user):
+def get_placed_bet_for_profile(bet, profile):
     """
-    Gets the corresponding placed bet for the user
-    :param user: user who might have placed a bet
-    :param bet: the bet that it might have been placed on
-    :return: the placed bet if one exists, None otherwise
+    Gets the corresponding placed bet for the profile.
+    :param profile: Profile who might have placed a bet
+    :param bet: The bet that it might have been placed on
+    :return: The placed bet if one exists, None otherwise
     """
-    from django.contrib.auth.models import User
-    from bets.models import ChoiceBet, DateBet
+    from profiles.models import Profile
+    from bets.models import Bet, ChoiceBet, DateBet
 
-    # If we are given a user-object, the we first need to get the corresponding profile
-    if isinstance(user, User):
-        user = user.profile
+    assert isinstance(bet, Bet)
+    assert isinstance(profile, Profile)
 
     if type(bet) == ChoiceBet:
-        bets = bet.placedchoicebet_set.filter(placed_by__exact=user)
+        bets = bet.placedchoicebet_set.filter(placed_by__exact=profile)
     elif type(bet) == DateBet:
-        bets = bet.placeddatebet_set.filter(placed_by__exact=user)
+        bets = bet.placeddatebet_set.filter(placed_by__exact=profile)
     else:
         return None
 
@@ -58,7 +57,7 @@ def get_placed_bet_for_user(bet, user):
         return bets[0]
     elif len(bets) > 1:
         logging.error("User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
-            user.username) + "\nBet: " + str(bet.prim_key))
+            profile.username) + "\nBet: " + str(bet.prim_key))
 
         # Still return the first element of the list, so that we have something to work with
         return bets[0]
@@ -74,7 +73,12 @@ def bet_is_visible_to_user(bet, user):
     :return: True, if the user is not forbidden in the bet and the bet isn't resolved and active
     (already published and still available for bets); False otherwise
     """
+    from django.contrib.auth.models import User
     from django.utils import timezone
+    from .models import Bet
+
+    assert isinstance(bet, Bet)
+    assert isinstance(user, User)
 
     if bet.end_bets_date:
         return \
@@ -95,6 +99,10 @@ def filter_visible_bets(bets, user):
     :param user: User to check
     :return: Filtered list with user visible bets
     """
+    from django.contrib.auth.models import User
+
+    assert isinstance(user, User)
+
     filtered_bets = []
     for bet in bets:
         if bet_is_visible_to_user(bet, user):
@@ -109,7 +117,13 @@ def user_can_place_bet(user, bet):
     :param bet: Bet to check
     :return: True, if the user can see the bet and didn't already bet on it; False otherwiese.
     """
+    from django.contrib.auth.models import User
+    from .models import Bet
     from profiles.util import user_authenticated
+
+    assert isinstance(user, User)
+    assert isinstance(bet, Bet)
+
     # Users that are not logged in & verified are not allowed to participate
     if not user_authenticated(user):
         return False
@@ -136,13 +150,20 @@ def filter_index_bets(user, bets):
         'placed': [PlacedBet]
     }
     """
-    filtered_bets = {'available': [], 'placed': []}
+    from django.contrib.auth.models import User
+
+    assert isinstance(user, User)
+
+    filtered_bets = {
+        'available': [],
+        'placed': []
+    }
 
     for bet in bets:
         if user_can_place_bet(user, bet):
             filtered_bets['available'].append(bet)
         else:
-            filtered_bets['placed'].append(get_placed_bet_for_user(user=user, bet=bet))
+            filtered_bets['placed'].append(get_placed_bet_for_profile(profile=user.profile, bet=bet))
 
     return filtered_bets
 
@@ -163,7 +184,10 @@ def generate_index(user):
         }
     }
     """
+    from django.contrib.auth.models import User
     from .models import ChoiceBet, DateBet
+
+    assert isinstance(user, User)
 
     index = {}
 
@@ -188,45 +212,31 @@ def place_bet_transaction(profile, bet, amount):
     from ledger.util import one_to_one_transaction
     from ledger.exceptions import InsufficientFunds
 
-    if isinstance(profile, Profile):
-        username = profile.user.username
-        profile = profile.account
-    else:
-        raise TypeError(
-            "place_bet_transaction() needs a Profile object as first argument; got " +
-            type(profile).__name__ +
-            " instead."
+    assert isinstance(profile, Profile)
+    assert isinstance(bet, Bet)
+
+    username = profile.user.username
+    profile = profile.account
+    description = "Placed Bet\nBet: " + str(bet.prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
+
+    try:
+        one_to_one_transaction(
+            origin=profile,
+            destination=bet.account,
+            description=description,
+            amount=amount
         )
-
-    if isinstance(bet, Bet):
-        description = "Placed Bet\nBet: " + str(bet.prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
-
-        try:
-            one_to_one_transaction(
-                origin=profile,
-                destination=bet.account,
-                description=description,
-                amount=amount
-            )
-        except InsufficientFunds:
-            logging.info("User has insufficient funds")
-    else:
-        raise TypeError(
-            "place_bet_transaction() needs a Bet object as second argument; got " +
-            type(bet).__name__ +
-            " instead."
-        )
+    except InsufficientFunds:
+        raise
 
 
-# TODO make generic. What's the type of a date (winning_option)?
+# TODO Make generic. What's the type of a date (winning_option)?
 def resolve_choice_bet(bet, winning_option):
     """
     Resolves a choice bet and distributes the pot among the user who placed a bet on the winning choice.
     :param bet: Bet to be resolved
     :param winning_option: The winning choice
     """
-    # TODO Do we need translations?
-    from django.utils.translation import ugettext_lazy as _
     from .models import ChoiceBet, Choice
     from ledger.models import Account
     from ledger.util import one_to_many_transaction
@@ -242,10 +252,9 @@ def resolve_choice_bet(bet, winning_option):
         if placed_bet.chosen == winning_option:
             winning_bets.append(placed_bet)
 
-    # TODO Do we need the int cast? Are bet amounts floats?
-    payout = int(bet.account.balance // len(winning_bets))
+    payout = bet.account.balance // len(winning_bets)
     server_payout = bet.account.balance % len(winning_bets)
-    # TODO let on rain on the server
+    # TODO Let on rain on the server
 
     winners = []
     for winning_bet in winning_bets:
@@ -270,7 +279,4 @@ def resolve_choice_bet(bet, winning_option):
     try:
         one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
-        raise InsufficientFunds(
-            _("The pot division fucked up..."),
-            code='i_dun_goofed'
-        )
+        raise InsufficientFunds("The pot division fucked up...", code='i_dun_goofed')

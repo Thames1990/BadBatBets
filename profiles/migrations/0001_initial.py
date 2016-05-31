@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
                 ('verified', models.BooleanField(default=False)),
-                ('accepted_agb', models.BooleanField(default=False)),
+                ('accepted_general_terms_and_conditions', models.BooleanField(default=False)),
                 ('accepted_privacy_policy', models.BooleanField(default=False)),
                 ('account', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='ledger.Account')),
             ],

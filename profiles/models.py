@@ -13,8 +13,8 @@ class Profile(models.Model):
     verified = models.BooleanField(default=False)
     # Each user has an account
     account = models.OneToOneField(Account)
-    # Has the user accepted the AGB?
-    accepted_agb = models.BooleanField(default=False)
+    # Has the user accepted the general terms and conditions?
+    accepted_general_terms_and_conditions = models.BooleanField(default=False)
     # Has the user accepted the privacy policy?
     accepted_privacy_policy = models.BooleanField(default=False)
 
