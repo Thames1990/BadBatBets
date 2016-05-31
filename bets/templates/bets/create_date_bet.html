@@ -4,6 +4,10 @@
     {{ block.super }} | Create Date Bet
 {% endblock %}
 
+{% block profile_name %}
+    {{ user.profile }}
+{% endblock %}
+
 {% block content %}
     {% if error_message %}
         <strong>{{ error_message }}</strong>

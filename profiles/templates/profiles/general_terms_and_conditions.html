@@ -1,7 +1,11 @@
 {% extends 'the_platform/base.html' %}
 
 {% block title %}
-    {{ block.super }} | AGB
+    {{ block.super }} | General Terms And Conditions
+{% endblock %}
+
+{% block profile_name %}
+    {{ user.profile }}
 {% endblock %}
 
 {% block content %}

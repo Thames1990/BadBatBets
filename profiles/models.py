@@ -5,6 +5,7 @@ from ledger.models import Account
 
 
 class Profile(models.Model):
+    # TODO find a way to automatically create after user has been created
     # The user that this profile is associated with
     # Since each profile is associated with exactly one user, the user is the profiles primary key
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

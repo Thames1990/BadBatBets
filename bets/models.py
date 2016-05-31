@@ -30,6 +30,7 @@ class Bet(models.Model):
     forbidden = models.ManyToManyField(ForbiddenUser, blank=True)
     # Size of the pot
     pot = models.PositiveIntegerField(default=0)
+    # TODO should these be deleted after bet deletion?
     # Each bet also has an account
     account = models.OneToOneField(Account)
 

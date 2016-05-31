@@ -44,6 +44,8 @@ class SignupForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
+    # TODO improve validation
+
     def clean_username(self):
         return self.cleaned_data.get('username').lower()
 

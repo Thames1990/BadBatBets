@@ -71,7 +71,6 @@ def signup(request):
 
 @login_required
 def change_password(request):
-
     args = {}
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, data=request.POST)

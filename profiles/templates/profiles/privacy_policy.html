@@ -1,7 +1,11 @@
 {% extends 'the_platform/base.html' %}
 
 {% block title %}
-    {{ block.super }} | Datenschutzerklärung
+    {{ block.super }} | Privacy policy
+{% endblock %}
+
+{% block profile_name %}
+    {{ user.profile }}
 {% endblock %}
 
 {% block content %}

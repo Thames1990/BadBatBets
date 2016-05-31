@@ -21,8 +21,9 @@ def index_view(request):
             'placed_date_bets': index['date_bets']['placed'],
             'user': request.user
         })
-    # TODO Readd terms and policy agreement check (updated)
     else:
+        # TODO readd terms check (updated terms)
+        # TODO link user to signup
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise Http404
 
@@ -130,11 +131,11 @@ def create_choices(request, bet):
     last_choice = False
     choice_number = 1
     while not last_choice:
-        choice = request.POST.get("choice_" + str(choice_number))
-        if choice is not None:
+        description = request.POST.get("choice_" + str(choice_number))
+        if description is not None:
             Choice(
                 belongs_to=bet,
-                description=choice
+                description=description
             ).save()
 
             choice_number += 1
