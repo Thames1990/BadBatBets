@@ -17,8 +17,8 @@
             <header>
                 <a href="{% url 'bets:index' %}"><img src="{% static 'the_platform/icons/logo.svg' %}">Bad Bat Bets</a>
             </header>
-            <ul>
-                {% block links %}
+            {% block links %}
+                <ul>
                     <li>
                         <a>Create Bet</a>
                         <menu>
@@ -41,8 +41,8 @@
                             </menuitem>
                         </menu>
                     </li>
-                {% endblock %}
-            </ul>
+                </ul>
+            {% endblock %}
         </label>
     </nav>
 

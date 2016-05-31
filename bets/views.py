@@ -12,6 +12,8 @@ from profiles.util import user_authenticated
 
 
 def index_view(request):
+    messages.error(request, "Test")
+    raise Http404
     if user_authenticated(request.user):
         index = generate_index(request.user)
         return render(request, 'bets/index.html', {

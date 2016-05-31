@@ -1,4 +1,4 @@
-from django.conf.urls import url, include, handler404
+from django.conf.urls import url, include
 from django.contrib import admin
 
 from profiles.views import landing, login_user, signup
@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^bets/', include('bets.urls')),
 ]
 
+handler403 = views.error403
 handler404 = views.error404
+handler500 = views.error500

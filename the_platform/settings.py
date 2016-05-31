@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xex(5tc+c+e&*z-oe&^z&7p*c^qt%gz2cbl1nic9hye+@vs2cu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -188,7 +188,7 @@ LOGGING = {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
-        'journal': {
+        'ledger': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
