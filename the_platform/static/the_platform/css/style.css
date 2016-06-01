@@ -17,16 +17,7 @@ h2 {
     padding: 0.5em;
 }
 
-.helptext {
-    /* TODO Fix display none pushback */
-    display: block;
-    background: lightgreen;
-    text-align: center;
-    padding: 1em;
-}
-
-/* TODO This is not the optimal solution, since we have to manually override it every time */
-.nonfield {
+.helptext, .nonfield {
     display: none;
 }
 

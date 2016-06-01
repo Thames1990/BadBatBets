@@ -100,8 +100,6 @@ def place_bet(request, prim_key):
         raise PermissionDenied
 
 
-# TODO generic create_bet (POST fields?)
-
 def create_date_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
