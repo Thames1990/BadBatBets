@@ -28,10 +28,12 @@
                 <th>Published</th>
                 <td>{{ choice_bet.pub_date }}</td>
             </tr>
-            <tr>
-                <th>Ends on</th>
-                <td>{{ choice_bet.end_date }}</td>
-            </tr>
+            {% if not choice_bet.resolved %}
+                <tr>
+                    <th>Ends on</th>
+                    <td>{{ choice_bet.end_date }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Resolved</th>
                 <td>{{ choice_bet.resolved }}</td>
@@ -40,6 +42,12 @@
                 <tr>
                     <th>Choice</th>
                     <td>{{ placed_bet.chosen }}</td>
+                </tr>
+            {% endif %}
+            {% if choice_bet.resolved %}
+                <tr>
+                    <th>Winning choice</th>
+                    <td>{{ choice_bet.winning_choice }}</td>
                 </tr>
             {% endif %}
         </table>
@@ -75,7 +83,7 @@
             </form>
         {% endif %}
 
-        {% if choice_bet.owner == request.user.profile %}
+        {% if choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
             <h5>Available Choices</h5>
             <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}

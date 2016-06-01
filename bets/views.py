@@ -122,8 +122,8 @@ def resolve_bet(request, prim_key):
                 bet.winning_choice = choice
                 bet.resolved = True
                 bet.save()
-                messages.success(request, "You closed this bet. Pot is distributed.")
-                return HttpResponseRedirect(reverse('bets:bet', {bet.prim_key}))
+                messages.success(request, "You closed this bet.\nWinning choice: " + str(bet.winning_choice))
+                return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
             else:
                 messages.error(
                     request,
