@@ -62,6 +62,8 @@ class PlacedBet(models.Model):
 class ChoiceBet(Bet):
     # Date when the bet will be closed (if it is not resolved before)
     end_date = models.DateField(blank=True, null=True)
+    # The choice that won in the end
+    winning_choice = models.ForeignKey('Choice', null=True)
 
 
 class Choice(models.Model):

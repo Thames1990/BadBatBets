@@ -277,6 +277,63 @@ def resolve_choice_bet(bet, winning_option):
         description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
 
     try:
-        one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
+        transaction = one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
-        raise InsufficientFunds("The pot division fucked up...", code='i_dun_goofed')
+        raise InsufficientFunds(
+            _("The pot division fucked up..."),
+            code='i_dun_goofed'
+        )
+
+    bet.resolved = True
+    bet.save()
+
+    return transaction
+
+
+def resolve_date_bet(bet, winning_date):
+    """
+    Resolves a DateBet
+    :param bet: the bet...
+    :param winning_date:
+    :return:
+    """
+    from .models import DateBet
+    from datetime import date
+
+    assert isinstance(bet, DateBet)
+    assert isinstance(winning_date, date)
+
+    placed_bets = bet.placeddatebet_set.all()
+
+    winning_bets = find_closest_date(placed_bets=placed_bets, winning_date=winning_date)
+
+
+def find_closest_date(placed_bets, winning_date):
+    """
+    Finds the indices of the timestamps closest to the winning date
+    :param placed_bets: iterable of datetime.date objects
+    :param winning_date: datetime.date
+    :return: list of indices
+    """
+    from datetime import date
+    from .models import PlacedDateBet
+
+    assert isinstance(winning_date, date)
+
+    dates = []
+    for placed_bet in placed_bets:
+        assert isinstance(placed_bet, PlacedDateBet)
+        dates.append(placed_bet.placed_date)
+
+    timedeltas = []
+    for date in dates:
+        timedeltas.append(abs(winning_date - date))
+
+    closest = min(timedeltas)
+
+    indices = []
+    for i in range(0, len(timedeltas) - 1):
+        if timedeltas[i] == closest:
+            indices.append(i)
+
+    return indices
