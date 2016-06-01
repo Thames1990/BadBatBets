@@ -1,5 +1,7 @@
 import logging
 
+from django.core.exceptions import ValidationError
+
 
 def key_gen():
     """
@@ -280,3 +282,32 @@ def resolve_choice_bet(bet, winning_option):
         one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
         raise InsufficientFunds("The pot division fucked up...", code='i_dun_goofed')
+
+
+def create_choices(request, bet):
+    from .models import Choice
+
+    last_choice = False
+    choice_number = 1
+    choices = []
+    choice_descriptions = []
+
+    while not last_choice:
+        description = request.POST.get("choice_" + str(choice_number))
+        if description is not None:
+            if description != "" and description not in choice_descriptions:
+                choice_descriptions.append(description)
+                choices.append(
+                    Choice(
+                        belongs_to=bet,
+                        description=description
+                    )
+                )
+                choice_number += 1
+            else:
+                raise ValidationError("Invalid choice descriptions", code='invalid_choice_descriptions')
+        else:
+            last_choice = True
+
+    for choice in choices:
+        choice.save()

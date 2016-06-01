@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from .models import ChoiceBet, DateBet
+from .util import create_choices
 from ledger.models import Account
 
 from profiles.models import ForbiddenUser
@@ -65,7 +66,7 @@ class ChoiceBetCreationForm(forms.ModelForm):
 
         return end_date
 
-    def save(self, user):
+    def save(self, request):
         name = self.cleaned_data['name']
         description = self.cleaned_data['description']
         pub_date = self.cleaned_data['pub_date']
@@ -77,13 +78,18 @@ class ChoiceBetCreationForm(forms.ModelForm):
         account.save()
 
         new_bet = ChoiceBet(
-            owner=user,
+            owner=request.user.profile,
             name=name,
             description=description,
             end_bets_date=end_bets_date,
             end_date=end_date,
             account=account
         )
+        try:
+            create_choices(request, new_bet)
+        except ValidationError:
+            raise
+
         new_bet.save()
 
         for forbidden_user in forbidden:

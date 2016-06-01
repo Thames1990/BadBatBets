@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render
+
+from django.shortcuts import render, redirect
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
-from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet, Choice
+from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .util import user_can_place_bet, get_bet, generate_index, place_bet_transaction
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
@@ -121,10 +122,13 @@ def create_choice_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
             form = ChoiceBetCreationForm(request.POST)
-
             if form.is_valid():
-                bet = form.save(request.user.profile)
-                create_choices(request, bet)
+                try:
+                    bet = form.save(request)
+                except ValidationError:
+                    messages.error(request, "Invalid choice descriptions. Use distinct and non empty descriptions.")
+                    return redirect('bets:create_choice_bet')
+
                 return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
         else:
             form = ChoiceBetCreationForm()
@@ -133,22 +137,3 @@ def create_choice_bet(request):
     else:
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
-
-
-def create_choices(request, bet):
-    last_choice = False
-    choice_number = 1
-    while not last_choice:
-        description = request.POST.get("choice_" + str(choice_number))
-        if description is not None:
-            Choice(
-                belongs_to=bet,
-                description=description
-            ).save()
-
-            choice_number += 1
-        elif description == "":
-            # TODO Find a way to avoid blank choices
-            pass
-        else:
-            last_choice = True
