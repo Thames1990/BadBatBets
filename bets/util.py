@@ -232,31 +232,18 @@ def place_bet_transaction(profile, bet, amount):
         raise
 
 
-# TODO Make generic. What's the type of a date (winning_option)?
-def resolve_choice_bet(bet, winning_option):
+def perform_payout(bet, winning_bets):
     """
-    Resolves a choice bet and distributes the pot among the user who placed a bet on the winning choice.
-    :param bet: Bet to be resolved
-    :param winning_option: The winning choice
+    Pays out the pot of a bet to the winning users
+    :param bet: A subtype of Bet
+    :param winning_bets: list of winning placed bets
+    :return: transaction detailing the payout (already saved)
     """
-    from .models import ChoiceBet, Choice
     from ledger.models import Account
     from ledger.util import one_to_many_transaction
     from ledger.exceptions import InsufficientFunds
 
-    assert isinstance(bet, ChoiceBet)
-    assert isinstance(winning_option, Choice)
-
-    placed_bets = bet.placedchoicebet_set.all()
-    winning_bets = []
-
-    for placed_bet in placed_bets:
-        if placed_bet.chosen == winning_option:
-            winning_bets.append(placed_bet)
-
-    payout = bet.account.balance // len(winning_bets)
-    server_payout = bet.account.balance % len(winning_bets)
-    # TODO Let on rain on the server
+    payout = int(bet.account.balance / len(winning_bets))
 
     winners = []
     for winning_bet in winning_bets:
@@ -270,7 +257,7 @@ def resolve_choice_bet(bet, winning_option):
     winners.append(
         {
             'account': Account.objects.get(name='operator'),
-            'amount': payout
+            'amount': bet.account.balance % len(winning_bets)
         }
     )
 
@@ -279,9 +266,110 @@ def resolve_choice_bet(bet, winning_option):
         description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
 
     try:
-        one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
+        transaction = one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
-        raise InsufficientFunds("The pot division fucked up...", code='i_dun_goofed')
+        raise InsufficientFunds(
+            _("The pot division fucked up..."),
+            code='i_dun_goofed'
+        )
+
+    return transaction
+
+
+def resolve_bet(bet, winning_option):
+    """
+    Resolves a bet and performs the payout
+    :param bet: Either a ChoiceBet or a DateBet
+    :param winning_option: Either a Choice or datetime.date
+    :return: transaction detailing the payout
+    """
+    from .models import DateBet, ChoiceBet, Choice
+    from ledger.exceptions import InsufficientFunds
+    from datetime import date
+
+    assert isinstance(bet, DateBet) or isinstance(bet, ChoiceBet)
+
+    if isinstance(bet, DateBet):
+        assert isinstance(winning_option, date)
+        bet.winning_date = winning_option
+
+        placed_bets = bet.placeddatebet_set.all()
+
+        winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
+
+    else:
+        assert isinstance(winning_option, Choice)
+        bet.winning_choice = winning_option
+
+        placed_bets = bet.placedchoicebet_set.all()
+
+        winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
+
+    try:
+        transaction = perform_payout(bet=bet, winning_bets=winning_bets)
+    except InsufficientFunds:
+        raise
+
+    bet.resolved = True
+    bet.save()
+
+    return transaction
+
+
+def find_winning_dates(placed_bets, winning_date):
+    """
+    Finds the placed bets with the dates closest to the winning date
+    :param placed_bets: iterable of PlacedDateBet
+    :param winning_date: datetime.date
+    :return: list of winning PlacedDateBets
+    """
+    from datetime import date
+    from .models import PlacedDateBet
+
+    assert isinstance(winning_date, date)
+
+    dates = []
+    for placed_bet in placed_bets:
+        assert isinstance(placed_bet, PlacedDateBet)
+        dates.append(placed_bet.placed_date)
+
+    timedeltas = []
+    for date in dates:
+        timedeltas.append(abs(winning_date - date))
+
+    closest = min(timedeltas)
+
+    indices = []
+    for i in range(0, len(timedeltas)):
+        if timedeltas[i] == closest:
+            indices.append(i)
+
+    winning_bets = []
+    for index in indices:
+        winning_bets.append(placed_bets[index])
+
+    return winning_bets
+
+
+def find_winning_choices(placed_bets, winning_choice):
+    """
+    Finds the placed bets with the correct choice chosen
+    :param placed_bets: iterable of PlacedChoiceBet
+    :param winning_choice: Choice
+    :return: list of winning PlacedChoiceBets
+    """
+    from .models import Choice, PlacedChoiceBet
+
+    assert isinstance(winning_choice, Choice)
+
+    winning_bets = []
+
+    for placed_bet in placed_bets:
+        assert isinstance(placed_bet, PlacedChoiceBet)
+        if placed_bet.chosen == winning_choice:
+            winning_bets.append(placed_bet)
+
+    return winning_bets
 
 
 def create_choices(request, bet):
