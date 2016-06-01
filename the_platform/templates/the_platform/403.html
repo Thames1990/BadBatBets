@@ -3,3 +3,10 @@
 {% block title %}
     {{ block.super }}
 {% endblock %}
+
+{% block links %}
+    <ul>
+        <li><a href="{% url 'profiles:login' %}">Login</a></li>
+        <li><a href="{% url 'profiles:signup' %}">Signup</a></li>
+    </ul>
+{% endblock %}

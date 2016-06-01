@@ -10,6 +10,18 @@ h2 {
     justify-content: center !important;
 }
 
+.errorlist {
+    background: red;
+    text-align: center;
+    list-style-type: none;
+    padding: 0.5em;
+}
+
+/* TODO This is not the optimal solution, since we have to manually override it every time */
+.nonfield {
+    display: none;
+}
+
 /* TODO check mobile min-width value */
 @media only screen and (min-width: 760px) {
     menu {

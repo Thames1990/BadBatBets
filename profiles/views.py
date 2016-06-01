@@ -27,13 +27,10 @@ def login_user(request):
     else:
         if request.method == 'POST':
             form = LoginForm(data=request.POST)
-            # TODO fix "This field is required" even if data is available
-            # TODO /login and /profile/login differ
             if form.is_valid():
                 login(request, form.get_user())
                 return redirect('bets:index')
         else:
-            # TODO Fix "blank" login button step
             form = LoginForm()
 
         return render(request, 'profiles/login.html', {'form': form})

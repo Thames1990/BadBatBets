@@ -70,8 +70,6 @@ def one_to_one_transaction(origin, destination, description, amount):
     origin.compute_balance()
     destination.compute_balance()
 
-    return transaction
-
 
 def one_to_many_transaction(origin, destinations, description):
     """

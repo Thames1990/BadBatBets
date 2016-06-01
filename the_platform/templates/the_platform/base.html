@@ -52,33 +52,58 @@
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
                     {# TODO Improve design (grid with 2 divs, error level left and message 80% right) #}
                     <div id="debug" onclick='this.parentNode.removeChild(this); return false;'>
-                        <strong>
-                            DEBUG: {{ message }}
-                        </strong>
+                        <grid>
+                            <div col="1/6">
+                                <strong>DEBUG</strong>
+                            </div>
+                            <div col="5/6">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </div>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
                     <div id="info" onclick='this.parentNode.removeChild(this); return false;'>
-                        <strong>
-                            INFO: {{ message }}
-                        </strong>
+                        <grid>
+                            <div col="1/6">
+                                <strong>INFO</strong>
+                            </div>
+                            <div col="5/6">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </div>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                     <div id="success" onclick='this.parentNode.removeChild(this); return false;'>
-                        <strong>
-                            SUCCESS: {{ message }}
-                        </strong>
+                        <grid>
+                            <div col="1/6" class="border_right">
+                                <strong>SUCCESS</strong>
+                            </div>
+                            <div col="5/6">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </div>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
                     <div id="warning" onclick='this.parentNode.removeChild(this); return false;'>
-                        <strong>
-                            WARNING: {{ message }}
-                        </strong>
+                        <grid>
+                            <div col="1/6" class="border_right">
+                                <strong>WARNING</strong>
+                            </div>
+                            <div col="5/6">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </div>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                     <div id="error" onclick='this.parentNode.removeChild(this); return false;'>
-                        <strong>
-                            ERROR: {{ message }}
-                        </strong>
+                        <grid>
+                            <div col="1/6" class="border_right">
+                                <strong>ERROR</strong>
+                            </div>
+                            <div col="5/6">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </div>
                 {% endif %}
             {% endfor %}
