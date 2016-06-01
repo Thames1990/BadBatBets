@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 
 from .forms import SignupForm, LoginForm, PaymentForm
 from ledger.util import create_table
+from bets.util import generate_index
 
 
 def landing(request):
@@ -18,6 +19,7 @@ def landing(request):
 
 @login_required
 def profile(request):
+    # TODO Pass all resolved bet, on which the user has placed a bet
     return render(request, 'profiles/profile.html')
 
 
