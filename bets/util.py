@@ -252,9 +252,7 @@ def resolve_choice_bet(bet, winning_option):
         if placed_bet.chosen == winning_option:
             winning_bets.append(placed_bet)
 
-    payout = bet.account.balance // len(winning_bets)
-    server_payout = bet.account.balance % len(winning_bets)
-    # TODO Let on rain on the server
+    payout = int(bet.account.balance / len(winning_bets))
 
     winners = []
     for winning_bet in winning_bets:
@@ -268,7 +266,7 @@ def resolve_choice_bet(bet, winning_option):
     winners.append(
         {
             'account': Account.objects.get(name='operator'),
-            'amount': payout
+            'amount': bet.account.balance % len(winning_bets)
         }
     )
 
@@ -305,15 +303,17 @@ def resolve_date_bet(bet, winning_date):
 
     placed_bets = bet.placeddatebet_set.all()
 
-    winning_bets = find_closest_date(placed_bets=placed_bets, winning_date=winning_date)
+    winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_date)
+
+    return winning_bets
 
 
-def find_closest_date(placed_bets, winning_date):
+def find_winning_dates(placed_bets, winning_date):
     """
-    Finds the indices of the timestamps closest to the winning date
-    :param placed_bets: iterable of datetime.date objects
+    Finds the placed bets with the dates closest to the winning date
+    :param placed_bets: iterable of PlacedDateBet
     :param winning_date: datetime.date
-    :return: list of indices
+    :return: list of winning PlacedDateBets
     """
     from datetime import date
     from .models import PlacedDateBet
@@ -332,8 +332,12 @@ def find_closest_date(placed_bets, winning_date):
     closest = min(timedeltas)
 
     indices = []
-    for i in range(0, len(timedeltas) - 1):
+    for i in range(0, len(timedeltas)):
         if timedeltas[i] == closest:
             indices.append(i)
+
+    winning_bets = []
+    for index in indices:
+        winning_bets.append(placed_bets[index])
 
     return indices
