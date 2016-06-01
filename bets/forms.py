@@ -44,7 +44,8 @@ class ChoiceBetCreationForm(forms.ModelForm):
             if end_bets_date <= timezone.now().date():
                 raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_in_future')
         elif end_bets_date <= pub_date:
-            raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_greater_pub')
+            raise ValidationError('Bet placement has to be open after publish date.',
+                                  code='end_bets_date_before_pub_date')
 
         return end_bets_date
 
@@ -136,10 +137,10 @@ class DateBetCreationForm(forms.ModelForm):
 
         if pub_date is None:
             if end_bets_date <= timezone.now().date():
-                # TODO Check ValidationError messages. I'm too tired right now.
-                raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_greater_pub')
+                raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_in_future')
         elif end_bets_date < pub_date:
-            raise ValidationError('Must give at least 1 day to place bets.', code='end_bets_not_in_future')
+            raise ValidationError('Bet placement has to be open after publish date.',
+                                  code='end_bets_date_before_pub_date')
 
         return end_bets_date
 
@@ -156,8 +157,8 @@ class DateBetCreationForm(forms.ModelForm):
                     'The period to bet on must be in the future.', code='time_period_start_not_in_future')
         elif time_period_start <= pub_date:
             raise ValidationError(
-                'The period to bet on must start after Publication. Do not set a start date if you want the '
-                'period to start at publication',
+                'The period to bet on has to start after Publication. Do not set a start date if you want the '
+                'period to start at publication.',
                 code='time_period_start_not_greater_pub')
 
         return time_period_start
