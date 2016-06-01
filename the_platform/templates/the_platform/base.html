@@ -50,7 +50,6 @@
         {% if messages %}
             {% for message in messages %}
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
-                    {# TODO Improve design (grid with 2 divs, error level left and message 80% right) #}
                     <div id="debug" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
                             <div col="1/6">

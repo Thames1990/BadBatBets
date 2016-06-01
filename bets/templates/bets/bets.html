@@ -36,6 +36,12 @@
                 <th>Resolved</th>
                 <td>{{ choice_bet.resolved }}</td>
             </tr>
+            {% if placed_bet %}
+                <tr>
+                    <th>Choice</th>
+                    <td>{{ placed_bet.chosen }}</td>
+                </tr>
+            {% endif %}
         </table>
 
         {% if user_can_place_bet %}

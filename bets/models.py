@@ -74,8 +74,7 @@ class Choice(models.Model):
     picks = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
-        # TODO: Find a better way to do this...
-        return str(self.id) + ". " + self.description
+        return self.description
 
 
 class PlacedChoiceBet(PlacedBet):

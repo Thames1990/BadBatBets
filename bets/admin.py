@@ -38,7 +38,9 @@ class DateBetAdmin(admin.ModelAdmin):
     ]
     list_display = ('name', 'created', 'pub_date', 'resolved')
 
+
 admin.site.register(ChoiceBet, ChoiceBetAdmin)
 admin.site.register(PlacedChoiceBet)
 admin.site.register(DateBet, DateBetAdmin)
 admin.site.register(PlacedDateBet)
+admin.site.register(Choice)

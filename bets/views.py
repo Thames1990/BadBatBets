@@ -31,9 +31,15 @@ def bet_view(request, prim_key):
         bet = get_bet(prim_key)
         if bet is not None:
             if isinstance(bet, ChoiceBet):
+                placed_bet = None
+                try:
+                    placed_bet = bet.placedchoicebet_set.get(placed_by=request.user.profile)
+                except PlacedChoiceBet.DoesNotExist:
+                    pass
                 return render(request, 'bets/bets.html', {
                     'choice_bet': bet,
-                    'user_can_place_bet': user_can_place_bet(request.user, bet)
+                    'user_can_place_bet': user_can_place_bet(request.user, bet),
+                    'placed_bet': placed_bet
                 })
             elif isinstance(bet, DateBet):
                 return render(request, 'bets/bets.html', {
