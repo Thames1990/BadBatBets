@@ -19,11 +19,18 @@ urlpatterns = [
         name='bet'
     ),
 
-    # Placed a bet
+    # Place a bet
     url(
         r'^(?P<prim_key>[0-9]+)/bet$',
         views.place_bet,
         name='place_bet'
+    ),
+
+    # Resolve a bet
+    url(
+        r'^(?P<prim_key>[0-9]+)/resolve$',
+        views.resolve_bet,
+        name='resolve_bet'
     ),
 
     # Create ChoiceBet

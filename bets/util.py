@@ -67,6 +67,17 @@ def get_placed_bet_for_profile(bet, profile):
         return None
 
 
+def get_choice(description):
+    from bets.models import Choice
+
+    try:
+        choice = Choice.objects.get(description=description)
+    except Choice.DoesNotExist:
+        return None
+    else:
+        return choice
+
+
 def bet_is_visible_to_user(bet, user):
     """
     Check if a bet is visible to a user.

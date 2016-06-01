@@ -65,12 +65,38 @@
                         value="{{ choice.description }}"
                         required
                     >
-                    <label for="{{ forloop.counter }}">{{ choice.description }}</label><br>
+                    <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                    <br>
                 {% empty %}
                     <p style="display: inline">No choices available</p>
                 {% endfor %}
                 <hr>
                 <button m-full type="submit">Bet</button>
+            </form>
+        {% endif %}
+
+        {% if choice_bet.owner == request.user.profile %}
+            <h5>Available Choices</h5>
+            <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
+                {% csrf_token %}
+                {% for choice in choice_bet.choice_set.all %}
+                    <input
+                        type="radio"
+                        id="{{ forloop.counter }}"
+                        name="choice"
+                        value="{{ choice }}"
+                    >
+                    <label for="{{ forloop.counter }}">{{ choice }}</label>
+                    <br>
+                {% endfor %}
+                <hr>
+                <button
+                    name="resolve"
+                    value="resolve"
+                    onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                >
+                    Resolve
+                </button>
             </form>
         {% endif %}
     {% elif date_bet %}

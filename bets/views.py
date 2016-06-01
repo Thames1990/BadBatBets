@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
-from .util import user_can_place_bet, get_bet, generate_index, place_bet_transaction
+from .util import user_can_place_bet, get_bet, get_choice, generate_index, place_bet_transaction
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
 
@@ -101,6 +101,35 @@ def place_bet(request, prim_key):
                 raise Http404
 
             return HttpResponseRedirect(reverse('bets:index'))
+    else:
+        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        raise PermissionDenied
+
+
+def resolve_bet(request, prim_key):
+    if user_authenticated(request.user):
+        bet = get_bet(prim_key)
+        if bet is None:
+            messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
+            raise Http404
+        elif not bet.owner == request.user.profile:
+            messages.error(request, "You are not the owner of " + bet.name + ".")
+            raise PermissionDenied
+        else:
+            choice_description = request.POST['choice']
+            choice = get_choice(choice_description)
+            if choice is not None:
+                bet.winning_choice = choice
+                bet.resolved = True
+                bet.save()
+                messages.success(request, "You closed this bet. Pot is distributed.")
+                return HttpResponseRedirect(reverse('bets:bet', {bet.prim_key}))
+            else:
+                messages.error(
+                    request,
+                    "Choice with description " + choice_description + " for bet " + bet + " does not exist."
+                )
+                raise Http404
     else:
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
