@@ -33,6 +33,11 @@
                     <th>Ends on</th>
                     <td>{{ choice_bet.end_date }}</td>
                 </tr>
+            {% else %}
+                <tr>
+                    <th>Winning choice</th>
+                    <td>{{ choice_bet.winning_choice }}</td>
+                </tr>
             {% endif %}
             <tr>
                 <th>Resolved</th>
@@ -42,12 +47,6 @@
                 <tr>
                     <th>Choice</th>
                     <td>{{ placed_bet.chosen }}</td>
-                </tr>
-            {% endif %}
-            {% if choice_bet.resolved %}
-                <tr>
-                    <th>Winning choice</th>
-                    <td>{{ choice_bet.winning_choice }}</td>
                 </tr>
             {% endif %}
         </table>
@@ -126,18 +125,26 @@
                 <th>Published</th>
                 <td>{{ date_bet.pub_date }}</td>
             </tr>
-            <tr>
-                <th>Period starts on</th>
-                <td>{{ date_bet.time_period_start }}</td>
-            </tr>
-            <tr>
-                <th>Period ends on</th>
-                <td>{{ date_bet.time_period_end }}</td>
-            </tr>
+            {% if not date_bet.resolved %}
+                <tr>
+                    <th>Period starts on</th>
+                    <td>{{ date_bet.time_period_start }}</td>
+                </tr>
+                <tr>
+                    <th>Period ends on</th>
+                    <td>{{ date_bet.time_period_end }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Winning Date</th>
+                    <td>{{ date_bet.winning_date }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Resolved</th>
                 <td>{{ date_bet.resolved }}</td>
             </tr>
+
         </table>
 
         {% if user_can_place_bet %}
@@ -163,6 +170,29 @@
                     required
                 >
                 <button m-full type="submit">Bet</button>
+            </form>
+        {% endif %}
+
+        {% if date_bet.owner == request.user.profile and date_bet.winning_date == None %}
+            <h5>Winning Date</h5>
+            <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
+                {% csrf_token %}
+                <input
+                    type="date"
+                    id="{{ forloop.counter }}"
+                    name="date"
+                    value="{{ date }}"
+                    min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
+                    max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
+                >
+                <label for="{{ forloop.counter }}">{{ date }}</label>
+                <button
+                    name="resolve"
+                    value="resolve"
+                    onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                >
+                    Resolve
+                </button>
             </form>
         {% endif %}
     {% endif %}

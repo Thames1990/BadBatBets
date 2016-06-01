@@ -116,20 +116,32 @@ def resolve_bet(request, prim_key):
             messages.error(request, "You are not the owner of " + bet.name + ".")
             raise PermissionDenied
         else:
-            choice_description = request.POST['choice']
-            choice = get_choice(choice_description)
-            if choice is not None:
-                bet.winning_choice = choice
-                bet.resolved = True
-                bet.save()
-                messages.success(request, "You closed this bet.\nWinning choice: " + str(bet.winning_choice))
-                return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
-            else:
-                messages.error(
-                    request,
-                    "Choice with description " + choice_description + " for bet " + bet + " does not exist."
-                )
-                raise Http404
+            if isinstance(bet, ChoiceBet):
+                choice_description = request.POST['choice']
+                choice = get_choice(choice_description)
+                if choice is not None:
+                    bet.winning_choice = choice
+                    bet.resolved = True
+                    bet.save()
+                    messages.success(request, "You closed this bet.\nWinning choice: " + str(bet.winning_choice))
+                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+                else:
+                    messages.error(
+                        request,
+                        "Choice with description " + choice_description + " for bet " + bet + " does not exist."
+                    )
+                    raise Http404
+            elif isinstance(bet, DateBet):
+                date = request.POST['date']
+                if date is not None:
+                    bet.winning_date = date
+                    bet.resolved = True
+                    bet.save()
+                    messages.success(request, "You closed this bet.\nWinning date: " + str(bet.winning_date))
+                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+                else:
+                    messages.error(request, "Date doesn not exist.")
+                    raise Http404
     else:
         messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
