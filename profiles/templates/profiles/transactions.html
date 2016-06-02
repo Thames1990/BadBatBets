@@ -21,6 +21,10 @@
                 <th>{{ entry.1 }}</th>
                 <th>{{ entry.2 }}</th>
             </tr>
+        {% empty %}
+            <p style="display: inline">
+                No entries available. Please contact the administrator. This shouldn't happen.
+            </p>
         {% endfor %}
     </table>
 {% endblock %}
