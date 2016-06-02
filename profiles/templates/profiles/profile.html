@@ -26,13 +26,11 @@
             <table>
                 <tr>
                     <th>Transaction</th>
-                    <th>Account</th>
                     <th>Amount</th>
                 </tr>
                 {% for credit in request.user.profile.account.credit_set.all %}
                     <tr>
-                        <td>{{ credit.transaction }}</td>
-                        <td>{{ credit.account }}</td>
+                        <td>{{ credit.transaction.description }}</td>
                         <td>{{ credit.amount }}</td>
                     </tr>
                 {% empty %}
@@ -45,13 +43,11 @@
             <table>
                 <tr>
                     <th>Transaction</th>
-                    <th>Account</th>
                     <th>Amount</th>
                 </tr>
                 {% for debit in request.user.profile.account.debit_set.all %}
                     <tr>
-                        <td>{{ debit.transaction }}</td>
-                        <td>{{ debit.account }}</td>
+                        <td>{{ debit.transaction.description }}</td>
                         <td>{{ debit.amount }}</td>
                     </tr>
                 {% empty %}

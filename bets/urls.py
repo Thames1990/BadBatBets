@@ -5,13 +5,6 @@ from . import views
 app_name = 'bets'
 
 urlpatterns = [
-    # Index page
-    url(
-        r'^$',
-        views.index_view,
-        name='index'
-    ),
-
     # Bet page
     url(
         r'^(?P<prim_key>[0-9]+)/$',
@@ -29,7 +22,7 @@ urlpatterns = [
     # Resolve a bet
     url(
         r'^(?P<prim_key>[0-9]+)/resolve$',
-        views.resolve_bet,
+        views.resolve_bet_view,
         name='resolve_bet'
     ),
 

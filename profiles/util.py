@@ -1,4 +1,10 @@
 def user_authenticated(user):
+    """
+    Checks if a user is authenticated.
+    :param user: User to check
+    :return: True, if the useris verified and accepted general terms and conditions as well as the privacy policy;
+    False otherwise.
+    """
     return \
         user.is_authenticated() and \
         user.profile.verified and \

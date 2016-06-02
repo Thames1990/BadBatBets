@@ -2,6 +2,8 @@ import logging
 
 from django.core.exceptions import ValidationError
 
+logger = logging.getLogger(__name__)
+
 
 def key_gen():
     """
@@ -48,17 +50,18 @@ def get_placed_bet_for_profile(bet, profile):
     assert isinstance(bet, Bet)
     assert isinstance(profile, Profile)
 
-    if type(bet) == ChoiceBet:
+    if isinstance(bet, ChoiceBet):
         bets = bet.placedchoicebet_set.filter(placed_by__exact=profile)
-    elif type(bet) == DateBet:
+    elif isinstance(bet, DateBet):
         bets = bet.placeddatebet_set.filter(placed_by__exact=profile)
     else:
+        logger.warning("Tried to get placed bets for unknown bet type with bet (" + bet + ").")
         return None
 
     if len(bets) == 1:
         return bets[0]
     elif len(bets) > 1:
-        logging.error("User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
+        logger.error("User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
             profile.username) + "\nBet: " + str(bet.prim_key))
 
         # Still return the first element of the list, so that we have something to work with
@@ -68,6 +71,11 @@ def get_placed_bet_for_profile(bet, profile):
 
 
 def get_choice(description):
+    """
+    Gets a choice by description.
+    :param description: Description of the searched choice
+    :return: The choice, if a fitting choice exists for the given description; None otherwise.
+    """
     from bets.models import Choice
 
     try:
@@ -214,6 +222,15 @@ def generate_index(user):
 
 
 def generate_profile_resolved_bet(profile):
+    """
+    Generates the data for resolved bets for user profile page
+    :param profile: The Profile
+    :return: A dictionary of the form:
+    {
+        'resolved_placed_choice_bets': [resolved ChoiceBet],
+        'resolved_placed_date_bets': [resolved DateBet]
+    }
+    """
     from profiles.models import Profile
     from .models import PlacedChoiceBet, PlacedDateBet
 
@@ -293,10 +310,8 @@ def perform_payout(bet, winning_bets):
     try:
         transaction = one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
     except InsufficientFunds:
-        raise InsufficientFunds(
-            _("The pot division fucked up..."),
-            code='i_dun_goofed'
-        )
+        logger.error("The pot division fucked up...")
+        raise InsufficientFunds("The pot division fucked up...", code='pot_division_error')
 
     return transaction
 
@@ -317,18 +332,16 @@ def resolve_bet(bet, winning_option):
     if isinstance(bet, DateBet):
         assert isinstance(winning_option, date)
         bet.winning_date = winning_option
-
         placed_bets = bet.placeddatebet_set.all()
-
         winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
-
-    else:
+    elif isinstance(bet, ChoiceBet):
         assert isinstance(winning_option, Choice)
         bet.winning_choice = winning_option
-
         placed_bets = bet.placedchoicebet_set.all()
-
         winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
+    else:
+        logger.warning("Tried to resolve bet (" + bet + ")with unknown bet type.")
+        return None
 
     try:
         transaction = perform_payout(bet=bet, winning_bets=winning_bets)
@@ -398,6 +411,11 @@ def find_winning_choices(placed_bets, winning_choice):
 
 
 def create_choices(request, bet):
+    """
+    Creates choices from ChoiceBet creation form.
+    :param request: Request of the creation page. Is necessary to get POST data.
+    :param bet: Bet to create choices for
+    """
     from .models import Choice
 
     last_choice = False

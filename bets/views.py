@@ -1,15 +1,18 @@
+import logging
+
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
-
 from django.shortcuts import render, redirect
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
-from .util import user_can_place_bet, get_bet, get_choice, generate_index, place_bet_transaction
+from .util import user_can_place_bet, get_bet, get_choice, generate_index, place_bet_transaction, resolve_bet
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
+
+logger = logging.getLogger(__name__)
 
 
 def index_view(request):
@@ -22,7 +25,9 @@ def index_view(request):
             'placed_date_bets': index['date_bets']['placed'],
         })
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.info("Unverified user " + request.user.username + " tried to view index page.")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -47,13 +52,19 @@ def bet_view(request, prim_key):
                     'user_can_place_bet': user_can_place_bet(request.user, bet)
                 })
             else:
-                messages.error(request, "Bets with type " + type(bet).__name__ + " aren't handled yet.")
+                warning_message = "Bets with type " + type(bet).__name__ + " aren't handled yet."
+                logger.warning(warning_message)
+                messages.warning(request, warning_message)
                 raise Http404
         else:
-            messages.error(request, "Bet with primary key " + str(prim_key) + " does not exist.")
+            messages.info(request, "Bet with primary key " + str(prim_key) + " does not exist.")
             raise Http404
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning(
+                "Unverified user " + request.user.username + " tried to take a look at bet with primary key " + str(
+                    prim_key) + ".")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -64,7 +75,7 @@ def place_bet(request, prim_key):
             messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
             raise Http404
         elif not user_can_place_bet(user=request.user, bet=bet):
-            messages.error(request, "You already placed a bet on " + bet.name + ".")
+            messages.info(request, "You already placed a bet on " + bet.name + ".")
             raise Http404
         else:
             placed_by = request.user.profile
@@ -73,10 +84,9 @@ def place_bet(request, prim_key):
             try:
                 place_bet_transaction(profile=placed_by, bet=bet, amount=placed)
             except InsufficientFunds:
-                print(request.user.profile.account.balance)
-                messages.error(request, "Insufficient funds. Your accounts balance is " +
-                               str(request.user.profile.account.balance) + " points and you wanted to bet " +
-                               str(placed) + " points.")
+                messages.info(request, "Insufficient funds. Your accounts balance is " +
+                              str(request.user.profile.account.balance) + " points and you wanted to bet " +
+                              str(placed) + " points.")
                 return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
 
             if isinstance(bet, ChoiceBet):
@@ -97,53 +107,51 @@ def place_bet(request, prim_key):
                     placed_date=request.POST['date'],
                 ).save()
             else:
-                messages.error(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
+                logger.warning("Bets with type " + type(bet).__name__ + " are not handled yet.")
+                messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
                 raise Http404
 
-            return HttpResponseRedirect(reverse('bets:index'))
+            return HttpResponseRedirect(reverse('index'))
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning(
+                "Unverified user " + request.user.username + " tried to place on bet with primary key " + str(
+                    prim_key) + ".")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
-def resolve_bet(request, prim_key):
+def resolve_bet_view(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
         if bet is None:
             messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
             raise Http404
-        elif not bet.owner == request.user.profile:
-            messages.error(request, "You are not the owner of " + bet.name + ".")
-            raise PermissionDenied
         else:
             if isinstance(bet, ChoiceBet):
-                choice_description = request.POST['choice']
-                choice = get_choice(choice_description)
-                if choice is not None:
-                    bet.winning_choice = choice
-                    bet.resolved = True
-                    bet.save()
-                    messages.success(request, "You closed this bet.\nWinning choice: " + str(bet.winning_choice))
-                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+                winning_choice = request.POST['choice']
+                winning_choice = get_choice(winning_choice)
+                if winning_choice is not None:
+                    resolve_bet(bet, winning_choice)
                 else:
                     messages.error(
                         request,
-                        "Choice with description " + choice_description + " for bet " + bet + " does not exist."
+                        "Choice with description " + winning_choice + " for bet " + bet + " does not exist."
                     )
                     raise Http404
             elif isinstance(bet, DateBet):
-                date = request.POST['date']
-                if date is not None:
-                    bet.winning_date = date
-                    bet.resolved = True
-                    bet.save()
-                    messages.success(request, "You closed this bet.\nWinning date: " + str(bet.winning_date))
-                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
+                winning_date = request.POST['winning_date']
+                if winning_date is not None:
+                    resolve_bet(bet, winning_date)
                 else:
-                    messages.error(request, "Date doesn not exist.")
+                    messages.error(request, "Date does not exist.")
                     raise Http404
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning(
+                "Unverified user " + request.user.username + " tried to resolve bet with primary key " + str(
+                    prim_key) + ".")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -159,7 +167,10 @@ def create_date_bet(request):
 
         return render(request, 'bets/create_date_bet.html', {'form': form})
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning(
+                "Unverified user " + request.user.username + " tried to place create a date bet.")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
 
@@ -180,5 +191,8 @@ def create_choice_bet(request):
 
         return render(request, 'bets/create_choice_bet.html', {'form': form})
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning(
+                "Unverified user " + request.user.username + " tried to place create a choice bet.")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
