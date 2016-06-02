@@ -84,14 +84,14 @@ class PaymentForm(forms.Form):
         user_account = self.cleaned_data['account']
 
         if self.cleaned_data['type'] == 'w':
-            system_account = Account.objects.get(name='withdrawal')
+            system_account = Account.objects.get(name='withdrawal', type='o')
             description = "Withdrawal authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)
             credit = Credit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
             debit = Debit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
         else:
-            system_account = Account.objects.get(name='deposit')
+            system_account = Account.objects.get(name='deposit', type='o')
             description = "Deposit authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)

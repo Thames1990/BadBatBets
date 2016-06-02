@@ -281,7 +281,7 @@ def perform_payout(bet, winning_bets):
 
     winners.append(
         {
-            'account': Account.objects.get(name='operator'),
+            'account': Account.objects.get(name='operator', type='o'),
             'amount': bet.account.balance % len(winning_bets)
         }
     )
