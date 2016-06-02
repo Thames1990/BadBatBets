@@ -79,7 +79,9 @@
                     <label for="{{ forloop.counter }}">{{ choice.description }}</label>
                     <br>
                 {% empty %}
-                    <p style="display: inline">No choices available</p>
+                    <p style="display: inline">
+                        No choices available. Please contact the administrator. This shouldn't happen.
+                    </p>
                 {% endfor %}
                 <hr>
                 <button m-full type="submit">Bet</button>
@@ -99,6 +101,10 @@
                     >
                     <label for="{{ forloop.counter }}">{{ choice }}</label>
                     <br>
+                {% empty %}
+                    <p style="display: inline">
+                        No choices available. Please contact the administrator. This shouldn't happen.
+                    </p>
                 {% endfor %}
                 <hr>
                 <button
