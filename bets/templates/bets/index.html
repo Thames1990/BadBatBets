@@ -50,7 +50,7 @@
             {% endfor %}
         </div>
 
-        <div col="1/2">
+        <div col="1/2" class="border_left">
             <h2>Placed Choice Bets</h2>
             {% for placed_choice_bet in placed_choice_bets %}
                 <a class="card_link" href="{% url 'bets:bet' placed_choice_bet.placed_on.prim_key %}">

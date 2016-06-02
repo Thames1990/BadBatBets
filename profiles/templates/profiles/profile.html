@@ -23,37 +23,41 @@
     <grid>
         <div col="1/2" class="border_right">
             <h2>Credit</h2>
-            <table>
-                <tr>
-                    <th>Transaction</th>
-                    <th>Amount</th>
-                </tr>
-                {% for credit in request.user.profile.account.credit_set.all %}
+            {% if request.user.profile.account.credit_set.all %}
+                <table>
                     <tr>
-                        <td style="white-space: pre">{{ credit.transaction.description }}</td>
-                        <td>{{ credit.amount }}</td>
+                        <th>Transaction</th>
+                        <th>Amount</th>
                     </tr>
-                {% empty %}
-                    <td>No credit is available yet</td>
-                {% endfor %}
-            </table>
+                    {% for credit in request.user.profile.account.credit_set.all %}
+                        <tr>
+                            <td style="white-space: pre">{{ credit.transaction.description }}</td>
+                            <td>{{ credit.amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h5 style="text-align: center">There are no credits yet.</h5>
+            {% endif %}
         </div>
-        <div col="1/2">
+        <div col="1/2" class="border_left">
             <h2>Debit</h2>
-            <table>
-                <tr>
-                    <th>Transaction</th>
-                    <th>Amount</th>
-                </tr>
-                {% for debit in request.user.profile.account.debit_set.all %}
+            {% if request.user.profile.account.debit_set.all %}
+                <table>
                     <tr>
-                        <td style="white-space: pre">{{ debit.transaction.description }}</td>
-                        <td>{{ debit.amount }}</td>
+                        <th>Transaction</th>
+                        <th>Amount</th>
                     </tr>
-                {% empty %}
-                    <td>No debit is available yet</td>
-                {% endfor %}
-            </table>
+                    {% for debit in request.user.profile.account.debit_set.all %}
+                        <tr>
+                            <td style="white-space: pre">{{ debit.transaction.description }}</td>
+                            <td>{{ debit.amount }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h5 style="text-align: center">There are no debits yet.</h5>
+            {% endif %}
         </div>
     </grid>
     <hr>
@@ -69,10 +73,10 @@
                     </card>
                 </a>
             {% empty %}
-                <h5>No resolved choice bets are available yet.</h5>
+                <h5 style="text-align: center">There are not resolved choice bets yet.</h5>
             {% endfor %}
         </div>
-        <div col="1/2">
+        <div col="1/2" class="border_left">
             <h2>Resolved Date Bets</h2>
             {% for resolved_bet in resolved_placed_date_bets %}
                 <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
@@ -83,7 +87,7 @@
                     </card>
                 </a>
             {% empty %}
-                <h5>No resolved date bets are available yet.</h5>
+                <h5 style="text-align: center">There are no resolved date bets yet.</h5>
             {% endfor %}
         </div>
     </grid>

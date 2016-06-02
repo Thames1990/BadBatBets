@@ -10,17 +10,6 @@ h2 {
     justify-content: center !important;
 }
 
-.errorlist {
-    background: red;
-    text-align: center;
-    list-style-type: none;
-    padding: 0.5em;
-}
-
-.helptext, .nonfield {
-    display: none;
-}
-
 /* TODO check mobile min-width value */
 @media only screen and (min-width: 760px) {
     menu {
@@ -34,6 +23,11 @@ h2 {
     .border_right {
         border-right: 1px solid gray;
     }
+
+    .border_left {
+        border-left: 1px solid gray;
+        margin-left: -1px;
+    }
 }
 
 .card_link {
@@ -41,6 +35,17 @@ h2 {
     display: block;
     text-decoration: none;
     margin: 1em;
+}
+
+.errorlist {
+    background: red;
+    text-align: center;
+    list-style-type: none;
+    padding: 0.5em;
+}
+
+.helptext, .nonfield {
+    display: none;
 }
 
 #debug {
