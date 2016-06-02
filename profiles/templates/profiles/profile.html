@@ -30,7 +30,7 @@
                 </tr>
                 {% for credit in request.user.profile.account.credit_set.all %}
                     <tr>
-                        <td>{{ credit.transaction.description }}</td>
+                        <td style="white-space: pre">{{ credit.transaction.description }}</td>
                         <td>{{ credit.amount }}</td>
                     </tr>
                 {% empty %}
@@ -47,7 +47,7 @@
                 </tr>
                 {% for debit in request.user.profile.account.debit_set.all %}
                     <tr>
-                        <td>{{ debit.transaction.description }}</td>
+                        <td style="white-space: pre">{{ debit.transaction.description }}</td>
                         <td>{{ debit.amount }}</td>
                     </tr>
                 {% empty %}
