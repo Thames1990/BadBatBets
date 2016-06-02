@@ -108,7 +108,7 @@
     </ol>
 
     {% if not request.user.profile.accepted_privacy_policy %}
-        <form action="{% url 'bets:index' %}" method="post">
+        <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
             <div style="text-align: center">
                 <input type="submit" name="privacy_policy" value="agree to privacy policy">

@@ -1,15 +1,16 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from profiles.views import landing, login_user, signup
+from bets.views import index_view
+from profiles.views import login_user, signup
 
 from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    # Landing page
-    url(r'^$', landing, name='landing'),
+    # Index page
+    url(r'^$', index_view, name='index'),
 
     # When the user goes to /login
     url(r'^login/', login_user),
