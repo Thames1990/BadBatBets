@@ -11,13 +11,15 @@ function addChoice() {
     th.innerHTML = "<label for='id_choice_" + choice_count + "'>Choice " + choice_count + ":</label>";
     row.appendChild(th);
     var td = row.insertCell(1);
-    td.innerHTML = "<input " +
+    td.innerHTML =
+        "<input " +
         "id='id_choice_" + choice_count + "' " +
         "maxlength='64' " +
         "name='choice_" + choice_count + "' " +
         "type='text' " +
         "required " +
         "pattern='[a-zA-Z0-9]+' " +
-        "oninvalid='setCustomValidity(\"Required. Please only use letters and/or numbers.\")'" +
+        "oninvalid='setCustomValidity(\"Required. Please only use letters and/or numbers.\")' " +
+        "onchange='try{setCustomValidity(\"\")}catch(e){}'" +
         ">";
 }
