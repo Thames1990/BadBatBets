@@ -18,7 +18,16 @@
             {{ form.as_table }}
             <tr>
                 <th><label for="id_choice_1">Choice 1:</label></th>
-                <td><input id="id_choice_1" maxlength="64" name="choice_1" type="text"></td>
+                <td>
+                    <input
+                        id="id_choice_1"
+                        maxlength="64"
+                        name="choice_1"
+                        type="text"
+                        pattern="[a-zA-Z0-9]+"
+                        oninvalid="setCustomValidity('Please only use letters and/or numbers.')"
+                    >
+                </td>
             </tr>
         </table>
         <button m-full type="button" onclick="addChoice()">Add another choice</button>
