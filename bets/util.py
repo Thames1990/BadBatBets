@@ -213,6 +213,20 @@ def generate_index(user):
     return index
 
 
+def generate_profile_resolved_bet(profile):
+    from profiles.models import Profile
+    from .models import PlacedChoiceBet, PlacedDateBet
+
+    assert isinstance(profile, Profile)
+
+    resolved_bets = {
+        'resolved_placed_choice_bets': PlacedChoiceBet.objects.filter(placed_by=profile, placed_on__resolved=True),
+        'resolved_placed_date_bets': PlacedDateBet.objects.filter(placed_by=profile, placed_on__resolved=True)
+    }
+
+    return resolved_bets
+
+
 def place_bet_transaction(profile, bet, amount):
     """
     Creates and saves a transaction to transfer money when a bet is placed
