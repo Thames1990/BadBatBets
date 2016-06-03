@@ -52,7 +52,7 @@
         </table>
         <hr>
 
-        {% if user_can_place_bet and choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
+        {% if user_can_place_bet and choice_bet.owner == request.user.profile and not choice_bet.winning_choice %}
             <grid>
                 <div col="1/2" class="border_right">
                     <h2>Place Bet</h2>
@@ -118,7 +118,7 @@
                     </form>
                 </div>
             </grid>
-        {% elif user_can_place_bet and not choice_bet.owner != request.user.profile and choice_bet.winning_choice != None %}
+        {% elif user_can_place_bet and choice_bet.owner != request.user.profile and not choice_bet.winning_choice %}
             <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
