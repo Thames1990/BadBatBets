@@ -24,14 +24,6 @@
                 <th>Description</th>
                 <td>{{ choice_bet.description }}</td>
             </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ choice_bet.created }}</td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td>{{ choice_bet.pub_date }}</td>
-            </tr>
             {% if not choice_bet.resolved %}
                 <tr>
                     <th>Ends on</th>
@@ -47,10 +39,6 @@
                     <td>{{ choice_bet.pot }}</td>
                 </tr>
             {% endif %}
-            <tr>
-                <th>Resolved</th>
-                <td>{{ choice_bet.resolved }}</td>
-            </tr>
             {% if placed_bet %}
                 <tr>
                     <th>Your Choice</th>
@@ -203,14 +191,6 @@
                 <th>Description</th>
                 <td>{{ date_bet.description }}</td>
             </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ date_bet.created }}</td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td>{{ date_bet.pub_date }}</td>
-            </tr>
             {% if not date_bet.resolved %}
                 <tr>
                     <th>Period starts on</th>
@@ -230,10 +210,6 @@
                     <td>{{ date_bet.pot }}</td>
                 </tr>
             {% endif %}
-            <tr>
-                <th>Resolved</th>
-                <td>{{ date_bet.resolved }}</td>
-            </tr>
 
         </table>
 
