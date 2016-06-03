@@ -62,8 +62,76 @@
                 </tr>
             {% endif %}
         </table>
+        <hr>
 
-        {% if user_can_place_bet %}
+        {% if user_can_place_bet and choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
+            <grid>
+                <div col="1/2" class="border_right">
+                    <h2>Place Bet</h2>
+                    <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <label for="number"><h5>Amount</h5></label>
+                        <input
+                            type="number"
+                            id="placed"
+                            name="placed"
+                            min="0"
+                            placeholder="Amount"
+                            required
+                        >
+                        <h5>Available choices</h5>
+                        {% for choice in choice_bet.choice_set.all %}
+                            <input
+                                type="radio"
+                                id="{{ forloop.counter }}"
+                                name="choice"
+                                value="{{ choice.description }}"
+                                required
+                            >
+                            <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                            <br>
+                        {% empty %}
+                            <p style="display: inline">
+                                No choices available. Please contact the administrator. This shouldn't happen.
+                            </p>
+                        {% endfor %}
+                        <hr>
+                        <button m-full type="submit">Bet</button>
+                    </form>
+                </div>
+                <div col="1/2" class="border_left">
+                    <h2>Resolve Bet</h2>
+                    <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <h5>Available Choices</h5>
+                        {% for choice in choice_bet.choice_set.all %}
+                            <input
+                                type="radio"
+                                id="{{ forloop.counter }}"
+                                name="choice"
+                                value="{{ choice }}"
+                            >
+                            <label for="{{ forloop.counter }}">{{ choice }}</label>
+                            <br>
+                        {% empty %}
+                            <p style="display: inline">
+                                No choices available. Please contact the administrator. This shouldn't happen.
+                            </p>
+                        {% endfor %}
+                        <hr>
+                        <button
+                            m-full
+                            name="resolve"
+                            value="resolve"
+                            onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                        >
+                            Resolve
+                        </button>
+                    </form>
+                </div>
+            </grid>
+        {% elif user_can_place_bet and not choice_bet.owner != request.user.profile and choice_bet.winning_choice != None %}
+            <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
@@ -94,13 +162,11 @@
                 <hr>
                 <button m-full type="submit">Bet</button>
             </form>
-        {% endif %}
-
-        {# TODO Decide when a user can resolve a bet (after he placed and/or if he decides to not be able to place) #}
-        {% if choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %} {# and not placed_bet #}
-            <h5>Available Choices</h5>
+        {% elif not user_can_place_bet and choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
+            <h2>Resolve Bet</h2>
             <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
+                <h5>Available Choices</h5>
                 {% for choice in choice_bet.choice_set.all %}
                     <input
                         type="radio"
@@ -117,6 +183,7 @@
                 {% endfor %}
                 <hr>
                 <button
+                    m-full
                     name="resolve"
                     value="resolve"
                     onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
@@ -170,7 +237,61 @@
 
         </table>
 
-        {% if user_can_place_bet %}
+        {% if user_can_place_bet and date_bet.owner == request.user.profile and date_bet.winning_date == None %}
+            <grid>
+                <div col="1/2" class="border_right">
+                    <h2>Place Bet</h2>
+                    <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <label for="number"><h5>Amount</h5></label>
+                        <input
+                            type="number"
+                            id="placed"
+                            name="placed"
+                            min="0"
+                            placeholder="Amount"
+                            required
+                        >
+                        <label for="date"><h5>Date</h5></label>
+                        <input
+                            type="date"
+                            id="placed"
+                            name="date"
+                            min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
+                            max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
+                            placeholder="Date"
+                            required
+                        >
+                        <button m-full type="submit">Bet</button>
+                    </form>
+                </div>
+                <div col="1/2" class="border_left">
+                    <h2>Resolve Bet</h2>
+                    <h5>Winning Date</h5>
+                    <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <input
+                            type="date"
+                            id="{{ forloop.counter }}"
+                            name="date"
+                            value="{{ date }}"
+                            min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
+                            max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
+                        >
+                        <label for="{{ forloop.counter }}">{{ date }}</label>
+                        <button
+                            m-full
+                            name="resolve"
+                            value="resolve"
+                            onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                        >
+                            Resolve
+                        </button>
+                    </form>
+                </div>
+            </grid>
+        {% elif user_can_place_bet and date_bet.owner != request.user.profile and date_bet.winning_date != None %}
+            <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
@@ -194,10 +315,8 @@
                 >
                 <button m-full type="submit">Bet</button>
             </form>
-        {% endif %}
-
-        {# TODO Decide when a user can resolve a bet (after he placed and/or if he decides to not be able to place) #}
-        {% if date_bet.owner == request.user.profile and date_bet.winning_date == None %} {# and not placed_bet #}
+        {% elif not user_can_place_bet and date_bet.owner == request.user.profile and date_bet.winning_date == None %}
+            <h2>Resolve Bet</h2>
             <h5>Winning Date</h5>
             <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -211,6 +330,7 @@
                 >
                 <label for="{{ forloop.counter }}">{{ date }}</label>
                 <button
+                    m-full
                     name="resolve"
                     value="resolve"
                     onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
