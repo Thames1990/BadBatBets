@@ -20,7 +20,8 @@ class ChoiceBetCreationForm(forms.ModelForm):
     forbidden = forms.ModelMultipleChoiceField(
         queryset=ForbiddenUser.objects.all(),
         required=False,
-        widget=forms.SelectMultiple(attrs={'size': len(ForbiddenUser.objects.all())})
+        # TODO Fix "django.db.utils.OperationalError: no such table: profiles_forbiddenuser"
+        # widget=forms.SelectMultiple(attrs={'size': len(ForbiddenUser.objects.all())})
     )
 
     def clean_pub_date(self):
