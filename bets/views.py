@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -49,9 +50,15 @@ def bet_view(request, prim_key):
                     'placed_bet': placed_bet
                 })
             elif isinstance(bet, DateBet):
+                placed_bet = None
+                try:
+                    placed_bet = bet.placeddatebet_set.get(placed_by=request.user.profile)
+                except PlacedDateBet.DoesNotExist:
+                    pass
                 return render(request, 'bets/bets.html', {
                     'date_bet': bet,
-                    'user_can_place_bet': user_can_place_bet(request.user, bet)
+                    'user_can_place_bet': user_can_place_bet(request.user, bet),
+                    'placed_bet': placed_bet
                 })
             else:
                 warning_message = "Bets with type " + type(bet).__name__ + " aren't handled yet."
@@ -135,7 +142,7 @@ def resolve_bet_view(request, prim_key):
                 winning_choice = get_choice(winning_choice)
                 if winning_choice is not None:
                     resolve_bet(bet, winning_choice)
-                    return redirect('bets:bet', {bet.prim_key})
+                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(
                         request,
@@ -143,10 +150,10 @@ def resolve_bet_view(request, prim_key):
                     )
                     raise Http404
             elif isinstance(bet, DateBet):
-                winning_date = request.POST['winning_date']
+                winning_date = datetime.strptime(request.POST['date'], '%Y-%m-%d').date()
                 if winning_date is not None:
                     resolve_bet(bet, winning_date)
-                    return redirect('bets:bet', {bet.prim_key})
+                    return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(request, "Date does not exist.")
                     raise Http404
