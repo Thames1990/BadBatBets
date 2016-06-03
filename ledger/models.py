@@ -22,6 +22,12 @@ class Account(models.Model):
         self.balance = sum_credit_debit(credit, debit)
         self.save()
 
+    def pot_size(self):
+        total = 0
+        for credit in self.credit_set.all():
+            total += credit.amount
+        return total
+
     def __str__(self):
         return self.get_type_display() + ": " + self.name
 

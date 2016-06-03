@@ -332,6 +332,7 @@ def resolve_bet(bet, winning_option):
     from .models import DateBet, ChoiceBet, Choice
     from ledger.exceptions import InsufficientFunds
     from datetime import date
+    from .exceptions import NoPlacedBets
 
     assert isinstance(bet, DateBet) or isinstance(bet, ChoiceBet)
 
@@ -339,11 +340,19 @@ def resolve_bet(bet, winning_option):
         assert isinstance(winning_option, date)
         bet.winning_date = winning_option
         placed_bets = bet.placeddatebet_set.all()
+        if len(placed_bets) == 0:
+            raise NoPlacedBets(
+                "Nobody placed any bets yet..."
+            )
         winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
     elif isinstance(bet, ChoiceBet):
         assert isinstance(winning_option, Choice)
         bet.winning_choice = winning_option
         placed_bets = bet.placedchoicebet_set.all()
+        if len(placed_bets) == 0:
+            raise NoPlacedBets(
+                "Nobody placed any bets yet..."
+            )
         winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
     else:
         logger.warning("Tried to resolve bet (" + bet + ")with unknown bet type.")
