@@ -4,12 +4,34 @@
     Signup | {{ block.super }}
 {% endblock %}
 
-{% block links %}
-    <ul>
-        <li><a href="{% url 'profiles:login' %}">Login</a></li>
-        <li><a href="{% url 'profiles:signup' %}">Signup</a></li>
-    </ul>
-{% endblock %}
+{% if request.user.is_authenticated %}
+    {% block links %}
+        <ul>
+            <li>
+                <a>Create Bet</a>
+                <menu>
+                    <menuitem>
+                        <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
+                    </menuitem>
+                    <menuitem>
+                        <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
+                    </menuitem>
+                </menu>
+            </li>
+            <li>
+                <a>{{ request.user.profile }}</a>
+                <menu>
+                    <menuitem>
+                        <a href="{% url 'profiles:profile' %}">Profile</a>
+                    </menuitem>
+                    <menuitem>
+                        <a href="{% url 'profiles:logout' %}">Logout</a>
+                    </menuitem>
+                </menu>
+            </li>
+        </ul>
+    {% endblock %}
+{% endif %}
 
 {% block content %}
     <form action="{% url 'profiles:signup' %}" method="post">

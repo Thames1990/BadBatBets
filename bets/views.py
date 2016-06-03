@@ -38,6 +38,7 @@ def bet_view(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
         if bet is not None:
+            pot_size = bet.account.pot_size()
             if isinstance(bet, ChoiceBet):
                 placed_bet = None
                 try:
@@ -47,7 +48,8 @@ def bet_view(request, prim_key):
                 return render(request, 'bets/bets.html', {
                     'choice_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
-                    'placed_bet': placed_bet
+                    'placed_bet': placed_bet,
+                    'pot_size': pot_size
                 })
             elif isinstance(bet, DateBet):
                 placed_bet = None
@@ -58,7 +60,8 @@ def bet_view(request, prim_key):
                 return render(request, 'bets/bets.html', {
                     'date_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
-                    'placed_bet': placed_bet
+                    'placed_bet': placed_bet,
+                    'pot_size': pot_size
                 })
             else:
                 warning_message = "Bets with type " + type(bet).__name__ + " aren't handled yet."
