@@ -48,38 +48,31 @@ h2 {
     display: none;
 }
 
+#debug, #info, #success, #warning, #error {
+    text-align: center;
+    margin: 1em;
+}
+
+#debug:hover, #info:hover, #success:hover, #warning:hover, #error:hover {
+    cursor: pointer;
+}
+
 #debug {
-    background: lightskyblue;
-    text-align: center;
-    margin: 1em;
+    background: black;
 }
 
-#debug:hover {
-    background: lightblue;
-    color: #fff;
-    cursor: pointer;
+#info {
+    background: white;
 }
 
-#info, #success {
+#success {
     background: lightgreen;
-    text-align: center;
-    margin: 1em;
 }
 
-#info:hover, #success:hover {
-    background: palegreen;
-    color: #fff;
-    cursor: pointer;
+#warning {
+    background: yellow;
 }
 
-#warning, #error {
+#error {
     background: red;
-    text-align: center;
-    margin: 1em;
-}
-
-#warning:hover, #error:hover {
-    background: lightcoral;
-    color: #fff;
-    cursor: pointer;
 }
