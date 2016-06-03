@@ -1,0 +1,20 @@
+{% extends 'the_platform/base.html' %}
+
+{% block title %}
+    Payment | {{ block.super }}
+{% endblock %}
+
+{% block profile_name %}
+    {{ user.profile }}
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'profiles:feedback' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}

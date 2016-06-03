@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from .models import Profile
+from .models import Profile, Feedback
 from ledger.models import Account, Transaction, Credit, Debit
 
 
@@ -106,3 +106,14 @@ class PaymentForm(forms.Form):
         system_account.compute_balance()
 
         return transaction
+
+
+class FeedbackForm(forms.Form):
+    feedback = forms.CharField(required=True)
+
+    def save(self, user, commit=True):
+        assert isinstance(user, User)
+        saved_feedback = Feedback(provided_by=user, feedback=self.cleaned_data['feedback'])
+        saved_feedback.save(commit)
+
+        return saved_feedback
