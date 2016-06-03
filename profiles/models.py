@@ -31,3 +31,13 @@ class ForbiddenUser(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Feedback(models.Model):
+    # User that provided the feedback
+    provided_by = models.ForeignKey(User)
+    # the actual feedback
+    feedback = models.TextField()
+
+    def __str__(self):
+        return str(self.id)

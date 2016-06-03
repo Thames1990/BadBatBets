@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from bets.views import index_view
-from profiles.views import login_user, signup
+from profiles.views import login_user, signup, feedback
 
 from . import views
 
@@ -17,6 +17,9 @@ urlpatterns = [
 
     # When the user goes to /signup
     url(r'^signup/$', signup),
+
+    # When the user goes to /feedback
+    url(r'feedback/$', feedback),
 
     # Profiles sub-module
     url(r'^profile/', include('profiles.urls')),

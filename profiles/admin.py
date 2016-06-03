@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, ForbiddenUser
+from .models import Profile, ForbiddenUser, Feedback
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class ForbiddenUserAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(ForbiddenUser, ForbiddenUserAdmin)
+admin.site.register(Feedback)

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 
-from .forms import SignupForm, LoginForm, PaymentForm
+from .forms import SignupForm, LoginForm, PaymentForm, FeedbackForm
 from ledger.util import create_table
 from bets.util import generate_profile_resolved_bet
 
@@ -121,3 +121,16 @@ def general_terms_and_conditions_view(request):
 
 def privacy_policy_view(request):
     return render(request, 'profiles/privacy_policy.html')
+
+
+@login_required
+def feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save(user=request.user)
+            # TODO: Redirect to somewhere useful...
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'profiles/feedback.html', {'form': form})

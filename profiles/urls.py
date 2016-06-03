@@ -65,5 +65,12 @@ urlpatterns = [
         r'^privacy_policy/$',
         views.privacy_policy_view,
         name='privacy_policy'
+    ),
+
+    # Provide feedback
+    url(
+        r'feedback/$',
+        views.feedback,
+        name='feedback'
     )
 ]
