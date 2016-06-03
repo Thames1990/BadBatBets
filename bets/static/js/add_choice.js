@@ -1,4 +1,4 @@
-var choice_count = 1;
+var choice_count = 2;
 
 /**
  * Adds a choice field to the ChoiceBet creation form

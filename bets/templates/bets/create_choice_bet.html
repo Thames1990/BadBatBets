@@ -1,5 +1,6 @@
 {% extends 'the_platform/base.html' %}
 {% load staticfiles %}
+{% load get_range %}
 
 {% block title %}
     {{ block.super }} | Create Choice Bet
@@ -16,21 +17,25 @@
         {% csrf_token %}
         <table id="choice_bet_table">
             {{ form.as_table }}
-            <tr>
-                <th><label for="id_choice_1">Choice 1:</label></th>
-                <td>
-                    <input
-                        id="id_choice_1"
-                        maxlength="64"
-                        name="choice_1"
-                        type="text"
-                        required
-                        pattern="[a-zA-Z0-9]+"
-                        oninvalid="setCustomValidity('Required. Please only use letters and/or numbers.')"
-                        onchange="try{setCustomValidity('')}catch(e){}"
-                    >
-                </td>
-            </tr>
+            {% for choice_number in 2|get_range %}
+                <tr>
+                    <th>
+                        <label for="id_choice_{{ choice_number|add:"1" }}">Choice {{ choice_number|add:"1" }}:</label>
+                    </th>
+                    <td>
+                        <input
+                            id="id_choice_{{ choice_number|add:"1" }}"
+                            maxlength="64"
+                            name="choice_{{ choice_number|add:"1" }}"
+                            type="text"
+                            required
+                            pattern="[a-zA-Z0-9]+"
+                            oninvalid="setCustomValidity('Required. Please only use letters and/or numbers.')"
+                            onchange="try{setCustomValidity('')}catch(e){}"
+                        >
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
         <button m-full type="button" onclick="addChoice()">Add another choice</button>
 
