@@ -50,69 +50,59 @@
         {% if messages %}
             {% for message in messages %}
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
-                    <card id="debug">
-                        <div onclick='this.parentNode.removeChild(this); return false;'>
-                            <grid>
-                                <div col="1/6" style="word-wrap: break-word" class="border_right">
-                                    <strong>DEBUG</strong>
-                                </div>
-                                <div col="5/6" style="word-wrap: break-word" class="border_left">
-                                    <strong>{{ message }}</strong>
-                                </div>
-                            </grid>
-                        </div>
+                    <card id="debug" onclick='this.parentNode.removeChild(this); return false;'>
+                        <grid>
+                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                                <strong>DEBUG</strong>
+                            </div>
+                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                    <card id="info">
-                        <div onclick='this.parentNode.removeChild(this); return false;'>
-                            <grid>
-                                <div col="1/6" style="word-wrap: break-word" class="border_right">
-                                    <strong>INFO</strong>
-                                </div>
-                                <div col="5/6" style="word-wrap: break-word" class="border_left">
-                                    <strong>{{ message }}</strong>
-                                </div>
-                            </grid>
-                        </div>
+                    <card id="info" onclick='this.parentNode.removeChild(this); return false;'>
+                        <grid>
+                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                                <strong>INFO</strong>
+                            </div>
+                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <card id="success">
-                        <div onclick='this.parentNode.removeChild(this); return false;'>
-                            <grid>
-                                <div col="1/6" style="word-wrap: break-word" class="border_right">
-                                    <strong>SUCCESS</strong>
-                                </div>
-                                <div col="5/6" style="word-wrap: break-word" class="border_left">
-                                    <strong>{{ message }}</strong>
-                                </div>
-                            </grid>
-                        </div>
+                    <card id="success" onclick='this.parentNode.removeChild(this); return false;'>
+                        <grid>
+                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                                <strong>SUCCESS</strong>
+                            </div>
+                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
-                    <card id="warning">
-                        <div onclick='this.parentNode.removeChild(this); return false;'>
-                            <grid>
-                                <div col="1/6" style="word-wrap: break-word" class="border_right">
-                                    <strong>WARNING</strong>
-                                </div>
-                                <div col="5/6" style="word-wrap: break-word" class="border_left">
-                                    <strong>{{ message }}</strong>
-                                </div>
-                            </grid>
-                        </div>
+                    <card id="warning" onclick='this.parentNode.removeChild(this); return false;'>
+                        <grid>
+                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                                <strong>WARNING</strong>
+                            </div>
+                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    <card id="error">
-                        <div onclick='this.parentNode.removeChild(this); return false;'>
-                            <grid>
-                                <div col="1/6" style="word-wrap: break-word" class="border_right">
-                                    <strong>ERROR</strong>
-                                </div>
-                                <div col="5/6" style="word-wrap: break-word" class="border_left">
-                                    <strong>{{ message }}</strong>
-                                </div>
-                            </grid>
-                        </div>
+                    <card id="error" onclick='this.parentNode.removeChild(this); return false;'>
+                        <grid>
+                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                                <strong>ERROR</strong>
+                            </div>
+                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                                <strong>{{ message }}</strong>
+                            </div>
+                        </grid>
                     </card>
                 {% endif %}
             {% endfor %}
