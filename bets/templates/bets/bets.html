@@ -1,7 +1,11 @@
 {% extends 'the_platform/base.html' %}
 
 {% block title %}
-    {{ bet.name }} | {{ block.super }}
+    {% if choice_bet %}
+        {{ choice_bet }} | {{ block.super }}
+    {% elif date_bet %}
+        {{ date_bet }} | {{ block.super }}
+    {% endif %}
 {% endblock %}
 
 {% block profile_name %}
