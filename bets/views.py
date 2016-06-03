@@ -27,6 +27,8 @@ def index_view(request):
     else:
         if not request.user.is_anonymous():
             logger.info("Unverified user " + request.user.username + " tried to view index page.")
+            messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
+            return redirect('profiles:profile')
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 
@@ -133,6 +135,7 @@ def resolve_bet_view(request, prim_key):
                 winning_choice = get_choice(winning_choice)
                 if winning_choice is not None:
                     resolve_bet(bet, winning_choice)
+                    return redirect('bets:bet', {bet.prim_key})
                 else:
                     messages.error(
                         request,
@@ -143,6 +146,7 @@ def resolve_bet_view(request, prim_key):
                 winning_date = request.POST['winning_date']
                 if winning_date is not None:
                     resolve_bet(bet, winning_date)
+                    return redirect('bets:bet', {bet.prim_key})
                 else:
                     messages.error(request, "Date does not exist.")
                     raise Http404

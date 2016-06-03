@@ -41,7 +41,7 @@ def login_user(request):
             form = LoginForm(data=request.POST)
             if form.is_valid():
                 login(request, form.get_user())
-                return redirect('index')
+                return redirect('profiles:profile')
         else:
             form = LoginForm()
 
@@ -62,7 +62,10 @@ def signup(request):
         if request.method == 'POST':
             form = SignupForm(request.POST)
             if form.is_valid():
-                form.save()
+                user = form.save()
+                user.profile.accepted_general_terms_and_conditions = True
+                user.profile.accepted_privacy_policy = True
+                user.profile.save()
                 return redirect(login_user)
         else:
             form = SignupForm()

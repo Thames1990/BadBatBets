@@ -24,14 +24,6 @@
                 <th>Description</th>
                 <td>{{ choice_bet.description }}</td>
             </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ choice_bet.created }}</td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td>{{ choice_bet.pub_date }}</td>
-            </tr>
             {% if not choice_bet.resolved %}
                 <tr>
                     <th>Ends on</th>
@@ -47,10 +39,6 @@
                     <td>{{ choice_bet.pot }}</td>
                 </tr>
             {% endif %}
-            <tr>
-                <th>Resolved</th>
-                <td>{{ choice_bet.resolved }}</td>
-            </tr>
             {% if placed_bet %}
                 <tr>
                     <th>Your Choice</th>
@@ -64,7 +52,7 @@
         </table>
         <hr>
 
-        {% if user_can_place_bet and choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
+        {% if user_can_place_bet and choice_bet.owner == request.user.profile and not choice_bet.winning_choice %}
             <grid>
                 <div col="1/2" class="border_right">
                     <h2>Place Bet</h2>
@@ -130,7 +118,7 @@
                     </form>
                 </div>
             </grid>
-        {% elif user_can_place_bet and not choice_bet.owner != request.user.profile and choice_bet.winning_choice != None %}
+        {% elif user_can_place_bet and choice_bet.owner != request.user.profile and not choice_bet.winning_choice %}
             <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -203,14 +191,6 @@
                 <th>Description</th>
                 <td>{{ date_bet.description }}</td>
             </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ date_bet.created }}</td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td>{{ date_bet.pub_date }}</td>
-            </tr>
             {% if not date_bet.resolved %}
                 <tr>
                     <th>Period starts on</th>
@@ -230,10 +210,6 @@
                     <td>{{ date_bet.pot }}</td>
                 </tr>
             {% endif %}
-            <tr>
-                <th>Resolved</th>
-                <td>{{ date_bet.resolved }}</td>
-            </tr>
 
         </table>
 

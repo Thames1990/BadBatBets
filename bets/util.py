@@ -309,7 +309,7 @@ def perform_payout(bet, winning_bets):
         }
     )
 
-    description = "Payout\nBet: " + str(bet.id)
+    description = "Payout\nBet: " + str(bet.prim_key)
     for winner in winners:
         description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
 
