@@ -41,7 +41,7 @@ def login_user(request):
             form = LoginForm(data=request.POST)
             if form.is_valid():
                 login(request, form.get_user())
-                return redirect('index')
+                return redirect('profiles:profile')
         else:
             form = LoginForm()
 

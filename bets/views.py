@@ -27,6 +27,8 @@ def index_view(request):
     else:
         if not request.user.is_anonymous():
             logger.info("Unverified user " + request.user.username + " tried to view index page.")
+            messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
+            return redirect('profiles:profile')
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         raise PermissionDenied
 

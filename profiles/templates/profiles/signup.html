@@ -18,6 +18,9 @@
             {{ form.as_table }}
         </table>
 
+        <input type="checkbox" id="general_terms_and_conditions" name="user_agreement">
+        <label for="general_terms_and_conditions">Agree to <a href="{{ url 'profile:general_terms_and_conditions' }}">general terms and conditions</a> </label>
+
         <button m-full="">Signup</button>
     </form>
 {% endblock %}
