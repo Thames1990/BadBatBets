@@ -101,14 +101,20 @@ def bet_is_visible_to_user(bet, user):
     assert isinstance(bet, Bet)
     assert isinstance(user, User)
 
+    forbidden_accounts = []
+
+    for forbidden_user in bet.forbidden.all():
+        if forbidden_user.has_account:
+            forbidden_accounts.append(forbidden_user.account.user)
+
     if bet.end_bets_date:
         return \
-            user not in bet.forbidden.all() and \
+            user not in forbidden_accounts and \
             not bet.resolved and \
             bet.pub_date <= timezone.now().date() < bet.end_bets_date
     else:
         return \
-            user not in bet.forbidden.all() and \
+            user not in forbidden_accounts and \
             not bet.resolved and \
             bet.open_to_bets()
 
