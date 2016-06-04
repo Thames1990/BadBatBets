@@ -4,7 +4,7 @@
     Feedback | {{ block.super }}
 {% endblock %}
 
-{% if request.user.is_authenticated %}
+{% if user.is_authenticated %}
     {% block links %}
         <ul>
             <li>
@@ -19,7 +19,7 @@
                 </menu>
             </li>
             <li>
-                <a>{{ request.user.profile }}</a>
+                <a>{{ user.profile }}</a>
                 <menu>
                     <menuitem>
                         <a href="{% url 'profiles:profile' %}">Profile</a>

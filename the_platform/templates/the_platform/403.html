@@ -1,13 +1,6 @@
 {% extends 'the_platform/base.html' %}
 
-{% block content %}
-    403
-    <p>user: {{ user }}</p>
-    <p>is anonymous: {{ user.is_anonymous }}</p>
-    <p>is authenticated: {{ user.is_authenticated }}</p>
-{% endblock %}
-
-{% if not user.is_anonymous %}
+{% if user.is_authenticated %}
     {% block links %}
         <ul>
             <li>
@@ -22,7 +15,7 @@
                 </menu>
             </li>
             <li>
-                <a>{{ request.user.profile }}</a>
+                <a>{{ user.profile }}</a>
                 <menu>
                     <menuitem>
                         <a href="{% url 'profiles:profile' %}">Profile</a>

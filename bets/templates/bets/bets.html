@@ -8,7 +8,7 @@
     {% endif %}
 {% endblock %}
 
-{% if request.user.is_authenticated %}
+{% if user.is_authenticated %}
     {% block links %}
         <ul>
             <li>
@@ -23,7 +23,7 @@
                 </menu>
             </li>
             <li>
-                <a>{{ request.user.profile }}</a>
+                <a>{{ user.profile }}</a>
                 <menu>
                     <menuitem>
                         <a href="{% url 'profiles:profile' %}">Profile</a>
@@ -77,7 +77,7 @@
         </table>
         <hr>
 
-        {% if user_can_place_bet and choice_bet.owner == request.user.profile and not choice_bet.winning_choice %}
+        {% if user_can_place_bet and choice_bet.owner == user.profile and not choice_bet.winning_choice %}
             <grid>
                 <div col="1/2" class="border_right">
                     <h2>Place Bet</h2>
@@ -143,7 +143,7 @@
                     </form>
                 </div>
             </grid>
-        {% elif user_can_place_bet and choice_bet.owner != request.user.profile and not choice_bet.winning_choice %}
+        {% elif user_can_place_bet and choice_bet.owner != user.profile and not choice_bet.winning_choice %}
             <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -175,7 +175,7 @@
                 <hr>
                 <button m-full type="submit">Bet</button>
             </form>
-        {% elif not user_can_place_bet and choice_bet.owner == request.user.profile and choice_bet.winning_choice == None %}
+        {% elif not user_can_place_bet and choice_bet.owner == user.profile and choice_bet.winning_choice == None %}
             <h2>Resolve Bet</h2>
             <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -247,7 +247,7 @@
             {% endif %}
         </table>
 
-        {% if user_can_place_bet and date_bet.owner == request.user.profile and not date_bet.winning_date %}
+        {% if user_can_place_bet and date_bet.owner == user.profile and not date_bet.winning_date %}
             <grid>
                 <div col="1/2" class="border_right">
                     <h2>Place Bet</h2>
@@ -300,7 +300,7 @@
                     </form>
                 </div>
             </grid>
-        {% elif user_can_place_bet and not date_bet.owner == request.user.profile and not date_bet.winning_date %}
+        {% elif user_can_place_bet and not date_bet.owner == user.profile and not date_bet.winning_date %}
             <h2>Place Bet</h2>
             <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -325,7 +325,7 @@
                 >
                 <button m-full type="submit">Bet</button>
             </form>
-        {% elif not user_can_place_bet and date_bet.owner == request.user.profile and not date_bet.winning_date %}
+        {% elif not user_can_place_bet and date_bet.owner == user.profile and not date_bet.winning_date %}
             <h2>Resolve Bet</h2>
             <h5>Winning Date</h5>
             <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">

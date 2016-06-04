@@ -4,7 +4,7 @@
     General Terms And Conditions | {{ block.super }}
 {% endblock %}
 
-{% if request.user.is_authenticated %}
+{% if user.is_authenticated %}
     {% block links %}
         <ul>
             <li>
@@ -19,7 +19,7 @@
                 </menu>
             </li>
             <li>
-                <a>{{ request.user.profile }}</a>
+                <a>{{ user.profile }}</a>
                 <menu>
                     <menuitem>
                         <a href="{% url 'profiles:profile' %}">Profile</a>
@@ -311,7 +311,7 @@
         <li><a name="dokumente">Weitere Dokumente hinzufügen</a></li>
     </ol>
 
-    {% if not request.user.profile.accepted_general_terms_and_conditions %}
+    {% if not user.profile.accepted_general_terms_and_conditions %}
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
             <div style="text-align: center">
