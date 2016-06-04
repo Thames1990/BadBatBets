@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 
 
 def user_authenticated(user):
@@ -8,10 +8,14 @@ def user_authenticated(user):
     :return: True, if the useris verified and accepted general terms and conditions as well as the privacy policy;
     False otherwise.
     """
-    assert isinstance(user, User)
-
-    return \
-        user.is_authenticated() and \
-        user.profile.verified and \
-        user.profile.accepted_general_terms_and_conditions and \
-        user.profile.accepted_privacy_policy
+    if isinstance(user, User):
+        return \
+            user.is_authenticated() and \
+            user.profile.verified and \
+            user.profile.accepted_general_terms_and_conditions and \
+            user.profile.accepted_privacy_policy
+    elif isinstance(user, AnonymousUser):
+        return False
+    else:
+        # TODO
+        pass
