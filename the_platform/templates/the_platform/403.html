@@ -1,6 +1,6 @@
 {% extends 'the_platform/base.html' %}
 
-{% if user.is_authenticated %}
+{% if user_authenticated %}
     {% block links %}
         <ul>
             <li>
@@ -28,3 +28,7 @@
         </ul>
     {% endblock %}
 {% endif %}
+
+{% block content %}
+    {{ user_authenticated }}
+{% endblock %}
