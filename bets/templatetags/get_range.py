@@ -3,6 +3,7 @@ from django.template import Library
 register = Library()
 
 
+# TODO move to the_platform
 @register.filter
 def get_range(value):
     """
