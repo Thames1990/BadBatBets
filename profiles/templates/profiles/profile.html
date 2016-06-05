@@ -55,18 +55,18 @@
                 <th>Message</th>
                 <th>Resolved</th>
             </tr>
-            {% for feedback in request.user.feedback_set.all %}
+            {% for entry in feedback %}
                 <tr>
-                    <td>{{ feedback.provided_by }}</td>
-                    <td style="white-space: pre">{{ feedback.feedback }}</td>
-                    {% if feedback.resolved %}
+                    <td>{{ entry.provided_by }}</td>
+                    <td style="white-space: pre">{{ entry.feedback }}</td>
+                    {% if entry.resolved %}
                         <td>True</td>
                     {% else %}
                         <td>
-                            <form action="{% url 'profiles:resolve_feedback' feedback.id %}" method="post">
+                            <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
                                 {% csrf_token %}
                                 <button
-                                    name="{{ feedback.prim_key }}"
+                                    name="{{ entry.prim_key }}"
                                     onclick="return confirm('Are you sure? The feedback will be resolved.')"
                                 >
                                     Resolve
