@@ -3,7 +3,7 @@ from django.db import models
 
 from bets.util import key_gen
 from profiles.models import Profile, ForbiddenUser
-from ledger.models import Account
+from ledger.models import Account, Transaction
 
 
 class Bet(models.Model):
@@ -53,6 +53,8 @@ class PlacedBet(models.Model):
     placed_by = models.ForeignKey(Profile)
     # Amount the user placed
     placed = models.PositiveIntegerField()
+    # Transaction that accompanied the placement
+    transaction = models.ForeignKey(Transaction)
 
     def __str__(self):
         return self.placed_on.name + ": " + self.placed_by.user.username

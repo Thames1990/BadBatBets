@@ -1,0 +1,2183 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO django;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO django;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO django;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO django;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO django;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO django;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE auth_user OWNER TO django;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_groups OWNER TO django;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_groups_id_seq OWNER TO django;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_id_seq OWNER TO django;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_user_permissions OWNER TO django;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO django;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: bets_choice; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_choice (
+    id integer NOT NULL,
+    description character varying(64) NOT NULL,
+    picks smallint NOT NULL,
+    belongs_to_id integer NOT NULL,
+    CONSTRAINT bets_choice_picks_check CHECK ((picks >= 0))
+);
+
+
+ALTER TABLE bets_choice OWNER TO django;
+
+--
+-- Name: bets_choice_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE bets_choice_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bets_choice_id_seq OWNER TO django;
+
+--
+-- Name: bets_choice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE bets_choice_id_seq OWNED BY bets_choice.id;
+
+
+--
+-- Name: bets_choicebet; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_choicebet (
+    prim_key integer NOT NULL,
+    name character varying(64) NOT NULL,
+    description text NOT NULL,
+    created timestamp with time zone NOT NULL,
+    pub_date date NOT NULL,
+    end_bets_date date,
+    resolved boolean NOT NULL,
+    pot integer NOT NULL,
+    end_date date,
+    account_id integer NOT NULL,
+    owner_id integer NOT NULL,
+    winning_choice_id integer,
+    CONSTRAINT bets_choicebet_pot_check CHECK ((pot >= 0)),
+    CONSTRAINT bets_choicebet_prim_key_check CHECK ((prim_key >= 0))
+);
+
+
+ALTER TABLE bets_choicebet OWNER TO django;
+
+--
+-- Name: bets_choicebet_forbidden; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_choicebet_forbidden (
+    id integer NOT NULL,
+    choicebet_id integer NOT NULL,
+    forbiddenuser_id integer NOT NULL
+);
+
+
+ALTER TABLE bets_choicebet_forbidden OWNER TO django;
+
+--
+-- Name: bets_choicebet_forbidden_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE bets_choicebet_forbidden_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bets_choicebet_forbidden_id_seq OWNER TO django;
+
+--
+-- Name: bets_choicebet_forbidden_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE bets_choicebet_forbidden_id_seq OWNED BY bets_choicebet_forbidden.id;
+
+
+--
+-- Name: bets_datebet; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_datebet (
+    prim_key integer NOT NULL,
+    name character varying(64) NOT NULL,
+    description text NOT NULL,
+    created timestamp with time zone NOT NULL,
+    pub_date date NOT NULL,
+    end_bets_date date,
+    resolved boolean NOT NULL,
+    pot integer NOT NULL,
+    time_period_start date,
+    time_period_end date,
+    winning_date date,
+    account_id integer NOT NULL,
+    owner_id integer NOT NULL,
+    CONSTRAINT bets_datebet_pot_check CHECK ((pot >= 0)),
+    CONSTRAINT bets_datebet_prim_key_check CHECK ((prim_key >= 0))
+);
+
+
+ALTER TABLE bets_datebet OWNER TO django;
+
+--
+-- Name: bets_datebet_forbidden; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_datebet_forbidden (
+    id integer NOT NULL,
+    datebet_id integer NOT NULL,
+    forbiddenuser_id integer NOT NULL
+);
+
+
+ALTER TABLE bets_datebet_forbidden OWNER TO django;
+
+--
+-- Name: bets_datebet_forbidden_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE bets_datebet_forbidden_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bets_datebet_forbidden_id_seq OWNER TO django;
+
+--
+-- Name: bets_datebet_forbidden_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE bets_datebet_forbidden_id_seq OWNED BY bets_datebet_forbidden.id;
+
+
+--
+-- Name: bets_placedchoicebet; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_placedchoicebet (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    placed integer NOT NULL,
+    chosen_id integer NOT NULL,
+    placed_by_id integer NOT NULL,
+    placed_on_id integer NOT NULL,
+    CONSTRAINT bets_placedchoicebet_placed_check CHECK ((placed >= 0))
+);
+
+
+ALTER TABLE bets_placedchoicebet OWNER TO django;
+
+--
+-- Name: bets_placedchoicebet_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE bets_placedchoicebet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bets_placedchoicebet_id_seq OWNER TO django;
+
+--
+-- Name: bets_placedchoicebet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE bets_placedchoicebet_id_seq OWNED BY bets_placedchoicebet.id;
+
+
+--
+-- Name: bets_placeddatebet; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE bets_placeddatebet (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    placed integer NOT NULL,
+    placed_date date NOT NULL,
+    placed_by_id integer NOT NULL,
+    placed_on_id integer NOT NULL,
+    CONSTRAINT bets_placeddatebet_placed_check CHECK ((placed >= 0))
+);
+
+
+ALTER TABLE bets_placeddatebet OWNER TO django;
+
+--
+-- Name: bets_placeddatebet_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE bets_placeddatebet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE bets_placeddatebet_id_seq OWNER TO django;
+
+--
+-- Name: bets_placeddatebet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE bets_placeddatebet_id_seq OWNED BY bets_placeddatebet.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO django;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO django;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO django;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO django;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO django;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO django;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO django;
+
+--
+-- Name: ledger_account; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE ledger_account (
+    id integer NOT NULL,
+    created timestamp with time zone NOT NULL,
+    name character varying(64) NOT NULL,
+    type character varying(1) NOT NULL,
+    balance integer NOT NULL
+);
+
+
+ALTER TABLE ledger_account OWNER TO django;
+
+--
+-- Name: ledger_account_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE ledger_account_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ledger_account_id_seq OWNER TO django;
+
+--
+-- Name: ledger_account_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE ledger_account_id_seq OWNED BY ledger_account.id;
+
+
+--
+-- Name: ledger_credit; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE ledger_credit (
+    id integer NOT NULL,
+    amount integer NOT NULL,
+    account_id integer NOT NULL,
+    transaction_id integer NOT NULL,
+    CONSTRAINT ledger_credit_amount_check CHECK ((amount >= 0))
+);
+
+
+ALTER TABLE ledger_credit OWNER TO django;
+
+--
+-- Name: ledger_credit_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE ledger_credit_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ledger_credit_id_seq OWNER TO django;
+
+--
+-- Name: ledger_credit_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE ledger_credit_id_seq OWNED BY ledger_credit.id;
+
+
+--
+-- Name: ledger_debit; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE ledger_debit (
+    id integer NOT NULL,
+    amount integer NOT NULL,
+    account_id integer NOT NULL,
+    transaction_id integer NOT NULL,
+    CONSTRAINT ledger_debit_amount_check CHECK ((amount >= 0))
+);
+
+
+ALTER TABLE ledger_debit OWNER TO django;
+
+--
+-- Name: ledger_debit_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE ledger_debit_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE ledger_debit_id_seq OWNER TO django;
+
+--
+-- Name: ledger_debit_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE ledger_debit_id_seq OWNED BY ledger_debit.id;
+
+
+--
+-- Name: ledger_transaction; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE ledger_transaction (
+    transaction_id integer NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    description text NOT NULL,
+    CONSTRAINT ledger_transaction_transaction_id_check CHECK ((transaction_id >= 0))
+);
+
+
+ALTER TABLE ledger_transaction OWNER TO django;
+
+--
+-- Name: profiles_feedback; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE profiles_feedback (
+    id integer NOT NULL,
+    feedback text NOT NULL,
+    provided_by_id integer NOT NULL
+);
+
+
+ALTER TABLE profiles_feedback OWNER TO django;
+
+--
+-- Name: profiles_feedback_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE profiles_feedback_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE profiles_feedback_id_seq OWNER TO django;
+
+--
+-- Name: profiles_feedback_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE profiles_feedback_id_seq OWNED BY profiles_feedback.id;
+
+
+--
+-- Name: profiles_forbiddenuser; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE profiles_forbiddenuser (
+    id integer NOT NULL,
+    name character varying(64) NOT NULL,
+    has_account boolean NOT NULL,
+    account_id integer
+);
+
+
+ALTER TABLE profiles_forbiddenuser OWNER TO django;
+
+--
+-- Name: profiles_forbiddenuser_id_seq; Type: SEQUENCE; Schema: public; Owner: django
+--
+
+CREATE SEQUENCE profiles_forbiddenuser_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE profiles_forbiddenuser_id_seq OWNER TO django;
+
+--
+-- Name: profiles_forbiddenuser_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: django
+--
+
+ALTER SEQUENCE profiles_forbiddenuser_id_seq OWNED BY profiles_forbiddenuser.id;
+
+
+--
+-- Name: profiles_profile; Type: TABLE; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE TABLE profiles_profile (
+    user_id integer NOT NULL,
+    verified boolean NOT NULL,
+    accepted_general_terms_and_conditions boolean NOT NULL,
+    accepted_privacy_policy boolean NOT NULL,
+    account_id integer NOT NULL
+);
+
+
+ALTER TABLE profiles_profile OWNER TO django;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choice ALTER COLUMN id SET DEFAULT nextval('bets_choice_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet_forbidden ALTER COLUMN id SET DEFAULT nextval('bets_choicebet_forbidden_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_datebet_forbidden ALTER COLUMN id SET DEFAULT nextval('bets_datebet_forbidden_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placedchoicebet ALTER COLUMN id SET DEFAULT nextval('bets_placedchoicebet_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placeddatebet ALTER COLUMN id SET DEFAULT nextval('bets_placeddatebet_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_account ALTER COLUMN id SET DEFAULT nextval('ledger_account_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_credit ALTER COLUMN id SET DEFAULT nextval('ledger_credit_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_debit ALTER COLUMN id SET DEFAULT nextval('ledger_debit_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_feedback ALTER COLUMN id SET DEFAULT nextval('profiles_feedback_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_forbiddenuser ALTER COLUMN id SET DEFAULT nextval('profiles_forbiddenuser_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can add permission	2	add_permission
+5	Can change permission	2	change_permission
+6	Can delete permission	2	delete_permission
+7	Can add group	3	add_group
+8	Can change group	3	change_group
+9	Can delete group	3	delete_group
+10	Can add user	4	add_user
+11	Can change user	4	change_user
+12	Can delete user	4	delete_user
+13	Can add content type	5	add_contenttype
+14	Can change content type	5	change_contenttype
+15	Can delete content type	5	delete_contenttype
+16	Can add session	6	add_session
+17	Can change session	6	change_session
+18	Can delete session	6	delete_session
+19	Can add profile	7	add_profile
+20	Can change profile	7	change_profile
+21	Can delete profile	7	delete_profile
+22	Can add forbidden user	8	add_forbiddenuser
+23	Can change forbidden user	8	change_forbiddenuser
+24	Can delete forbidden user	8	delete_forbiddenuser
+25	Can add choice bet	9	add_choicebet
+26	Can change choice bet	9	change_choicebet
+27	Can delete choice bet	9	delete_choicebet
+28	Can add choice	10	add_choice
+29	Can change choice	10	change_choice
+30	Can delete choice	10	delete_choice
+31	Can add placed choice bet	11	add_placedchoicebet
+32	Can change placed choice bet	11	change_placedchoicebet
+33	Can delete placed choice bet	11	delete_placedchoicebet
+34	Can add date bet	12	add_datebet
+35	Can change date bet	12	change_datebet
+36	Can delete date bet	12	delete_datebet
+37	Can add placed date bet	13	add_placeddatebet
+38	Can change placed date bet	13	change_placeddatebet
+39	Can delete placed date bet	13	delete_placeddatebet
+40	Can add account	14	add_account
+41	Can change account	14	change_account
+42	Can delete account	14	delete_account
+43	Can add transaction	15	add_transaction
+44	Can change transaction	15	change_transaction
+45	Can delete transaction	15	delete_transaction
+46	Can add credit	16	add_credit
+47	Can change credit	16	change_credit
+48	Can delete credit	16	delete_credit
+49	Can add debit	17	add_debit
+50	Can change debit	17	change_debit
+51	Can delete debit	17	delete_debit
+52	Can add feedback	18	add_feedback
+53	Can change feedback	18	change_feedback
+54	Can delete feedback	18	delete_feedback
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 54, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+1	pbkdf2_sha256$24000$3KDfziy0WQgl$UO42HAd7SgFRK4Uq8kjpHBCDrrk72FvcB6LzOg3QeB4=	\N	t	thames1990	Thomas	Mohr	ThomasMohr1990@gmail.com	t	t	2016-06-02 20:08:19+02
+2	pbkdf2_sha256$24000$kHFqI5TE1hzE$SPMlJc0HOKrUvNA21fDdKi8Hzbs+7CEkt2PX1nqD1vc=	2016-06-02 23:15:52.219672+02	t	splork	Markus	Sommer	markus@splork.de	t	t	2016-06-02 20:13:52+02
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 2, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: bets_choice; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_choice (id, description, picks, belongs_to_id) FROM stdin;
+\.
+
+
+--
+-- Name: bets_choice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('bets_choice_id_seq', 1, false);
+
+
+--
+-- Data for Name: bets_choicebet; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_choicebet (prim_key, name, description, created, pub_date, end_bets_date, resolved, pot, end_date, account_id, owner_id, winning_choice_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: bets_choicebet_forbidden; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_choicebet_forbidden (id, choicebet_id, forbiddenuser_id) FROM stdin;
+\.
+
+
+--
+-- Name: bets_choicebet_forbidden_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('bets_choicebet_forbidden_id_seq', 1, false);
+
+
+--
+-- Data for Name: bets_datebet; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_datebet (prim_key, name, description, created, pub_date, end_bets_date, resolved, pot, time_period_start, time_period_end, winning_date, account_id, owner_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: bets_datebet_forbidden; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_datebet_forbidden (id, datebet_id, forbiddenuser_id) FROM stdin;
+\.
+
+
+--
+-- Name: bets_datebet_forbidden_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('bets_datebet_forbidden_id_seq', 1, false);
+
+
+--
+-- Data for Name: bets_placedchoicebet; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_placedchoicebet (id, created, placed, chosen_id, placed_by_id, placed_on_id) FROM stdin;
+\.
+
+
+--
+-- Name: bets_placedchoicebet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('bets_placedchoicebet_id_seq', 1, false);
+
+
+--
+-- Data for Name: bets_placeddatebet; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY bets_placeddatebet (id, created, placed, placed_date, placed_by_id, placed_on_id) FROM stdin;
+\.
+
+
+--
+-- Name: bets_placeddatebet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('bets_placeddatebet_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2016-06-02 20:16:15.087+02	1	thames1990	2	Changed username, first_name and last_name.	4	2
+2	2016-06-02 20:16:24.844+02	2	splork	2	Changed first_name and last_name.	4	2
+3	2016-06-02 20:16:49.414+02	1	Person: thames1990	1	Added.	14	2
+4	2016-06-02 20:17:29.027+02	2	Person: splork	1	Added.	14	2
+5	2016-06-02 20:17:39.424+02	1	thames1990	1	Added.	7	2
+6	2016-06-02 20:17:48.376+02	2	splork	1	Added.	7	2
+7	2016-06-02 20:22:46.268+02	3	Other: withdrawal	1	Added.	14	2
+8	2016-06-02 20:23:02.431+02	4	Other: deposit	1	Added.	14	2
+9	2016-06-02 20:23:22.132+02	1	Markus Sommer	1	Added.	8	2
+10	2016-06-02 20:23:31.351+02	2	Thomas Mohr	1	Added.	8	2
+11	2016-06-02 20:24:04.186+02	5	Other: operator	1	Added.	14	2
+12	2016-06-02 20:24:40.777+02	3	Carsten	1	Added.	8	2
+13	2016-06-02 20:24:46.184+02	2	Thomas	2	Changed name.	8	2
+14	2016-06-02 20:24:53.703+02	1	Markus	2	Changed name.	8	2
+15	2016-06-02 20:25:03.122+02	4	Niko	1	Added.	8	2
+16	2016-06-02 20:25:10.096+02	5	Marco	1	Added.	8	2
+17	2016-06-02 20:25:17.414+02	6	Nick	1	Added.	8	2
+18	2016-06-02 20:25:26.026+02	7	Hermel	1	Added.	8	2
+19	2016-06-02 20:25:37.525+02	8	Andrea	1	Added.	8	2
+20	2016-06-02 20:25:44.727+02	9	Julia	1	Added.	8	2
+21	2016-06-02 20:25:54.603+02	10	Gregor	1	Added.	8	2
+22	2016-06-02 20:26:03.491+02	11	Adrian	1	Added.	8	2
+23	2016-06-02 20:26:11.414+02	12	Steffi	1	Added.	8	2
+24	2016-06-02 20:26:21.267+02	13	Bodi	1	Added.	8	2
+25	2016-06-02 20:26:27.408+02	14	Theo	1	Added.	8	2
+26	2016-06-02 20:26:36.977+02	15	Fred	1	Added.	8	2
+27	2016-06-02 20:26:44.35+02	16	Ibrahim	1	Added.	8	2
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 27, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	profiles	profile
+8	profiles	forbiddenuser
+9	bets	choicebet
+10	bets	choice
+11	bets	placedchoicebet
+12	bets	datebet
+13	bets	placeddatebet
+14	ledger	account
+15	ledger	transaction
+16	ledger	credit
+17	ledger	debit
+18	profiles	feedback
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 18, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2016-06-02 23:03:19.021199+02
+2	auth	0001_initial	2016-06-02 23:03:19.154781+02
+3	admin	0001_initial	2016-06-02 23:03:19.203069+02
+4	admin	0002_logentry_remove_auto_add	2016-06-02 23:03:19.238772+02
+5	contenttypes	0002_remove_content_type_name	2016-06-02 23:03:19.294357+02
+6	auth	0002_alter_permission_name_max_length	2016-06-02 23:03:19.315667+02
+7	auth	0003_alter_user_email_max_length	2016-06-02 23:03:19.339542+02
+8	auth	0004_alter_user_username_opts	2016-06-02 23:03:19.363591+02
+9	auth	0005_alter_user_last_login_null	2016-06-02 23:03:19.393955+02
+10	auth	0006_require_contenttypes_0002	2016-06-02 23:03:19.396538+02
+11	auth	0007_alter_validators_add_error_messages	2016-06-02 23:03:19.452021+02
+12	ledger	0001_initial	2016-06-02 23:03:19.559541+02
+13	profiles	0001_initial	2016-06-02 23:03:19.647732+02
+14	bets	0001_initial	2016-06-02 23:03:20.078872+02
+15	sessions	0001_initial	2016-06-02 23:03:20.103356+02
+16	profiles	0002_feedback	2016-06-03 20:13:56.220338+02
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 16, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+6dw4wajlqprlq45q49nq9x4gnealw8wn	ODJkYzQxNTkwM2EwNGFiMjc2ZjA3ZDE2MmNmNzkwOWNjOTcxNzEzOTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiYmEwNDg0N2IzZjM5ZGMzYjRmMmRkODY1YTgwZWRhZGE4NDA1NzQ1MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=	2016-06-16 20:14:27.6+02
+t1yuwp4bkvi7pvegw6o1g6b73cfhnigc	N2I4ZDY1NzU2NTcwYmQ5MjM3YWI3NGUyYTFmOGNkNjFmNzdlMDlkZTp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJkODIxODE2ZGQxOTFiNDI1Mjg5NWNmZWIwYmNhNGFlYmRmMDU2OWZlIn0=	2016-06-16 23:15:52.224996+02
+\.
+
+
+--
+-- Data for Name: ledger_account; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY ledger_account (id, created, name, type, balance) FROM stdin;
+1	2016-06-02 20:16:49.413+02	thames1990	p	0
+2	2016-06-02 20:17:29.026+02	splork	p	0
+3	2016-06-02 20:22:46.267+02	withdrawal	o	0
+4	2016-06-02 20:23:02.43+02	deposit	o	0
+5	2016-06-02 20:24:04.185+02	operator	o	0
+\.
+
+
+--
+-- Name: ledger_account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('ledger_account_id_seq', 5, true);
+
+
+--
+-- Data for Name: ledger_credit; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY ledger_credit (id, amount, account_id, transaction_id) FROM stdin;
+\.
+
+
+--
+-- Name: ledger_credit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('ledger_credit_id_seq', 1, false);
+
+
+--
+-- Data for Name: ledger_debit; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY ledger_debit (id, amount, account_id, transaction_id) FROM stdin;
+\.
+
+
+--
+-- Name: ledger_debit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('ledger_debit_id_seq', 1, false);
+
+
+--
+-- Data for Name: ledger_transaction; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY ledger_transaction (transaction_id, "timestamp", description) FROM stdin;
+\.
+
+
+--
+-- Data for Name: profiles_feedback; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY profiles_feedback (id, feedback, provided_by_id) FROM stdin;
+\.
+
+
+--
+-- Name: profiles_feedback_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('profiles_feedback_id_seq', 1, false);
+
+
+--
+-- Data for Name: profiles_forbiddenuser; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY profiles_forbiddenuser (id, name, has_account, account_id) FROM stdin;
+1	Markus	t	2
+2	Thomas	t	1
+3	Carsten	f	\N
+4	Niko	f	\N
+5	Marco	f	\N
+6	Nick	f	\N
+7	Hermel	f	\N
+8	Andrea	f	\N
+9	Julia	f	\N
+10	Gregor	f	\N
+11	Adrian	f	\N
+12	Steffi	f	\N
+13	Bodi	f	\N
+14	Theo	f	\N
+15	Fred	f	\N
+16	Ibrahim	f	\N
+\.
+
+
+--
+-- Name: profiles_forbiddenuser_id_seq; Type: SEQUENCE SET; Schema: public; Owner: django
+--
+
+SELECT pg_catalog.setval('profiles_forbiddenuser_id_seq', 16, true);
+
+
+--
+-- Data for Name: profiles_profile; Type: TABLE DATA; Schema: public; Owner: django
+--
+
+COPY profiles_profile (user_id, verified, accepted_general_terms_and_conditions, accepted_privacy_policy, account_id) FROM stdin;
+1	t	t	t	1
+2	t	t	t	2
+\.
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: bets_choice_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_choice
+    ADD CONSTRAINT bets_choice_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bets_choicebet_account_id_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_choicebet
+    ADD CONSTRAINT bets_choicebet_account_id_key UNIQUE (account_id);
+
+
+--
+-- Name: bets_choicebet_forbidden_choicebet_id_5157d0c9_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_choicebet_forbidden
+    ADD CONSTRAINT bets_choicebet_forbidden_choicebet_id_5157d0c9_uniq UNIQUE (choicebet_id, forbiddenuser_id);
+
+
+--
+-- Name: bets_choicebet_forbidden_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_choicebet_forbidden
+    ADD CONSTRAINT bets_choicebet_forbidden_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bets_choicebet_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_choicebet
+    ADD CONSTRAINT bets_choicebet_pkey PRIMARY KEY (prim_key);
+
+
+--
+-- Name: bets_datebet_account_id_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_datebet
+    ADD CONSTRAINT bets_datebet_account_id_key UNIQUE (account_id);
+
+
+--
+-- Name: bets_datebet_forbidden_datebet_id_571c8722_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_datebet_forbidden
+    ADD CONSTRAINT bets_datebet_forbidden_datebet_id_571c8722_uniq UNIQUE (datebet_id, forbiddenuser_id);
+
+
+--
+-- Name: bets_datebet_forbidden_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_datebet_forbidden
+    ADD CONSTRAINT bets_datebet_forbidden_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bets_datebet_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_datebet
+    ADD CONSTRAINT bets_datebet_pkey PRIMARY KEY (prim_key);
+
+
+--
+-- Name: bets_placedchoicebet_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_placedchoicebet
+    ADD CONSTRAINT bets_placedchoicebet_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bets_placeddatebet_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY bets_placeddatebet
+    ADD CONSTRAINT bets_placeddatebet_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: ledger_account_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY ledger_account
+    ADD CONSTRAINT ledger_account_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ledger_credit_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY ledger_credit
+    ADD CONSTRAINT ledger_credit_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ledger_debit_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY ledger_debit
+    ADD CONSTRAINT ledger_debit_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ledger_transaction_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY ledger_transaction
+    ADD CONSTRAINT ledger_transaction_pkey PRIMARY KEY (transaction_id);
+
+
+--
+-- Name: profiles_feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_feedback
+    ADD CONSTRAINT profiles_feedback_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles_forbiddenuser_account_id_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_forbiddenuser
+    ADD CONSTRAINT profiles_forbiddenuser_account_id_key UNIQUE (account_id);
+
+
+--
+-- Name: profiles_forbiddenuser_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_forbiddenuser
+    ADD CONSTRAINT profiles_forbiddenuser_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles_profile_account_id_key; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_profile
+    ADD CONSTRAINT profiles_profile_account_id_key UNIQUE (account_id);
+
+
+--
+-- Name: profiles_profile_pkey; Type: CONSTRAINT; Schema: public; Owner: django; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_profile
+    ADD CONSTRAINT profiles_profile_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: bets_choice_7de27a13; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_choice_7de27a13 ON bets_choice USING btree (belongs_to_id);
+
+
+--
+-- Name: bets_choicebet_2b697623; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_choicebet_2b697623 ON bets_choicebet USING btree (winning_choice_id);
+
+
+--
+-- Name: bets_choicebet_5e7b1936; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_choicebet_5e7b1936 ON bets_choicebet USING btree (owner_id);
+
+
+--
+-- Name: bets_choicebet_forbidden_9c9ab592; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_choicebet_forbidden_9c9ab592 ON bets_choicebet_forbidden USING btree (forbiddenuser_id);
+
+
+--
+-- Name: bets_choicebet_forbidden_a7f1f55d; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_choicebet_forbidden_a7f1f55d ON bets_choicebet_forbidden USING btree (choicebet_id);
+
+
+--
+-- Name: bets_datebet_5e7b1936; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_datebet_5e7b1936 ON bets_datebet USING btree (owner_id);
+
+
+--
+-- Name: bets_datebet_forbidden_25e40f88; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_datebet_forbidden_25e40f88 ON bets_datebet_forbidden USING btree (datebet_id);
+
+
+--
+-- Name: bets_datebet_forbidden_9c9ab592; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_datebet_forbidden_9c9ab592 ON bets_datebet_forbidden USING btree (forbiddenuser_id);
+
+
+--
+-- Name: bets_placedchoicebet_0581b944; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_placedchoicebet_0581b944 ON bets_placedchoicebet USING btree (placed_by_id);
+
+
+--
+-- Name: bets_placedchoicebet_57b5092a; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_placedchoicebet_57b5092a ON bets_placedchoicebet USING btree (chosen_id);
+
+
+--
+-- Name: bets_placedchoicebet_6dd9e9aa; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_placedchoicebet_6dd9e9aa ON bets_placedchoicebet USING btree (placed_on_id);
+
+
+--
+-- Name: bets_placeddatebet_0581b944; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_placeddatebet_0581b944 ON bets_placeddatebet USING btree (placed_by_id);
+
+
+--
+-- Name: bets_placeddatebet_6dd9e9aa; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX bets_placeddatebet_6dd9e9aa ON bets_placeddatebet USING btree (placed_on_id);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: ledger_credit_8a089c2a; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX ledger_credit_8a089c2a ON ledger_credit USING btree (account_id);
+
+
+--
+-- Name: ledger_credit_f847de52; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX ledger_credit_f847de52 ON ledger_credit USING btree (transaction_id);
+
+
+--
+-- Name: ledger_debit_8a089c2a; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX ledger_debit_8a089c2a ON ledger_debit USING btree (account_id);
+
+
+--
+-- Name: ledger_debit_f847de52; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX ledger_debit_f847de52 ON ledger_debit USING btree (transaction_id);
+
+
+--
+-- Name: profiles_feedback_b8eb69ba; Type: INDEX; Schema: public; Owner: django; Tablespace: 
+--
+
+CREATE INDEX profiles_feedback_b8eb69ba ON profiles_feedback USING btree (provided_by_id);
+
+
+--
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_cho_forbiddenuser_id_5a70cfab_fk_profiles_forbiddenuser_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet_forbidden
+    ADD CONSTRAINT bets_cho_forbiddenuser_id_5a70cfab_fk_profiles_forbiddenuser_id FOREIGN KEY (forbiddenuser_id) REFERENCES profiles_forbiddenuser(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_choice_belongs_to_id_7ffde1c4_fk_bets_choicebet_prim_key; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choice
+    ADD CONSTRAINT bets_choice_belongs_to_id_7ffde1c4_fk_bets_choicebet_prim_key FOREIGN KEY (belongs_to_id) REFERENCES bets_choicebet(prim_key) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_choicebet_account_id_759986c5_fk_ledger_account_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet
+    ADD CONSTRAINT bets_choicebet_account_id_759986c5_fk_ledger_account_id FOREIGN KEY (account_id) REFERENCES ledger_account(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_choicebet_choicebet_id_57aaeb99_fk_bets_choicebet_prim_key; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet_forbidden
+    ADD CONSTRAINT bets_choicebet_choicebet_id_57aaeb99_fk_bets_choicebet_prim_key FOREIGN KEY (choicebet_id) REFERENCES bets_choicebet(prim_key) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_choicebet_owner_id_27884df8_fk_profiles_profile_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet
+    ADD CONSTRAINT bets_choicebet_owner_id_27884df8_fk_profiles_profile_user_id FOREIGN KEY (owner_id) REFERENCES profiles_profile(user_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_choicebet_winning_choice_id_4934b132_fk_bets_choice_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_choicebet
+    ADD CONSTRAINT bets_choicebet_winning_choice_id_4934b132_fk_bets_choice_id FOREIGN KEY (winning_choice_id) REFERENCES bets_choice(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_dat_forbiddenuser_id_96836572_fk_profiles_forbiddenuser_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_datebet_forbidden
+    ADD CONSTRAINT bets_dat_forbiddenuser_id_96836572_fk_profiles_forbiddenuser_id FOREIGN KEY (forbiddenuser_id) REFERENCES profiles_forbiddenuser(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_datebet_account_id_694b4dfc_fk_ledger_account_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_datebet
+    ADD CONSTRAINT bets_datebet_account_id_694b4dfc_fk_ledger_account_id FOREIGN KEY (account_id) REFERENCES ledger_account(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_datebet_forbi_datebet_id_88f066f1_fk_bets_datebet_prim_key; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_datebet_forbidden
+    ADD CONSTRAINT bets_datebet_forbi_datebet_id_88f066f1_fk_bets_datebet_prim_key FOREIGN KEY (datebet_id) REFERENCES bets_datebet(prim_key) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_datebet_owner_id_76774d30_fk_profiles_profile_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_datebet
+    ADD CONSTRAINT bets_datebet_owner_id_76774d30_fk_profiles_profile_user_id FOREIGN KEY (owner_id) REFERENCES profiles_profile(user_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_placedch_placed_by_id_a21fb230_fk_profiles_profile_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placedchoicebet
+    ADD CONSTRAINT bets_placedch_placed_by_id_a21fb230_fk_profiles_profile_user_id FOREIGN KEY (placed_by_id) REFERENCES profiles_profile(user_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_placedcho_placed_on_id_171696f4_fk_bets_choicebet_prim_key; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placedchoicebet
+    ADD CONSTRAINT bets_placedcho_placed_on_id_171696f4_fk_bets_choicebet_prim_key FOREIGN KEY (placed_on_id) REFERENCES bets_choicebet(prim_key) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_placedchoicebet_chosen_id_4da6aff2_fk_bets_choice_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placedchoicebet
+    ADD CONSTRAINT bets_placedchoicebet_chosen_id_4da6aff2_fk_bets_choice_id FOREIGN KEY (chosen_id) REFERENCES bets_choice(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_placedda_placed_by_id_97c7055a_fk_profiles_profile_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placeddatebet
+    ADD CONSTRAINT bets_placedda_placed_by_id_97c7055a_fk_profiles_profile_user_id FOREIGN KEY (placed_by_id) REFERENCES profiles_profile(user_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: bets_placeddateb_placed_on_id_7959800d_fk_bets_datebet_prim_key; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY bets_placeddatebet
+    ADD CONSTRAINT bets_placeddateb_placed_on_id_7959800d_fk_bets_datebet_prim_key FOREIGN KEY (placed_on_id) REFERENCES bets_datebet(prim_key) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: le_transaction_id_eb0ac972_fk_ledger_transaction_transaction_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_debit
+    ADD CONSTRAINT le_transaction_id_eb0ac972_fk_ledger_transaction_transaction_id FOREIGN KEY (transaction_id) REFERENCES ledger_transaction(transaction_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: le_transaction_id_fe8caa0c_fk_ledger_transaction_transaction_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_credit
+    ADD CONSTRAINT le_transaction_id_fe8caa0c_fk_ledger_transaction_transaction_id FOREIGN KEY (transaction_id) REFERENCES ledger_transaction(transaction_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ledger_credit_account_id_55191097_fk_ledger_account_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_credit
+    ADD CONSTRAINT ledger_credit_account_id_55191097_fk_ledger_account_id FOREIGN KEY (account_id) REFERENCES ledger_account(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ledger_debit_account_id_695e6d2f_fk_ledger_account_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY ledger_debit
+    ADD CONSTRAINT ledger_debit_account_id_695e6d2f_fk_ledger_account_id FOREIGN KEY (account_id) REFERENCES ledger_account(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: profiles_feedback_provided_by_id_b7da3d92_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_feedback
+    ADD CONSTRAINT profiles_feedback_provided_by_id_b7da3d92_fk_auth_user_id FOREIGN KEY (provided_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: profiles_forbid_account_id_2c999bf2_fk_profiles_profile_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_forbiddenuser
+    ADD CONSTRAINT profiles_forbid_account_id_2c999bf2_fk_profiles_profile_user_id FOREIGN KEY (account_id) REFERENCES profiles_profile(user_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: profiles_profile_account_id_679b46bb_fk_ledger_account_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_profile
+    ADD CONSTRAINT profiles_profile_account_id_679b46bb_fk_ledger_account_id FOREIGN KEY (account_id) REFERENCES ledger_account(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: profiles_profile_user_id_a3e81f91_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: django
+--
+
+ALTER TABLE ONLY profiles_profile
+    ADD CONSTRAINT profiles_profile_user_id_a3e81f91_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
