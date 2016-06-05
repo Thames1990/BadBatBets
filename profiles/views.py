@@ -4,12 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
-from .forms import SignupForm, LoginForm, PaymentForm, FeedbackForm
+from .forms import SignupForm, LoginForm, FeedbackForm
 from .models import Feedback
 from bets.util import generate_profile_resolved_bet
 from profiles.util import user_authenticated

@@ -2,14 +2,17 @@ import logging
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.views.generic.edit import UpdateView, DeleteView
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
 from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
-from .util import user_can_place_bet, get_bet, get_choice, generate_index, place_bet_transaction, resolve_bet
+from .util import user_can_place_bet, get_bet, get_placed_bet_for_profile, get_choice, generate_index, \
+    place_bet_transaction, resolve_bet
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
 
@@ -33,17 +36,14 @@ def index_view(request):
         raise PermissionDenied
 
 
+@login_required
 def bet_view(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
         if bet is not None:
             pot_size = bet.account.pot_size()
+            placed_bet = get_placed_bet_for_profile(bet, request.user.profile)
             if isinstance(bet, ChoiceBet):
-                placed_bet = None
-                try:
-                    placed_bet = bet.placedchoicebet_set.get(placed_by=request.user.profile)
-                except PlacedChoiceBet.DoesNotExist:
-                    pass
                 return render(request, 'bets/bets.html', {
                     'choice_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
@@ -51,11 +51,6 @@ def bet_view(request, prim_key):
                     'pot_size': pot_size
                 })
             elif isinstance(bet, DateBet):
-                placed_bet = None
-                try:
-                    placed_bet = bet.placeddatebet_set.get(placed_by=request.user.profile)
-                except PlacedDateBet.DoesNotExist:
-                    pass
                 return render(request, 'bets/bets.html', {
                     'date_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
@@ -80,6 +75,7 @@ def bet_view(request, prim_key):
         raise PermissionDenied
 
 
+@login_required
 def place_bet(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
@@ -134,16 +130,13 @@ def place_bet(request, prim_key):
         raise PermissionDenied
 
 
+@login_required
 def resolve_bet_view(request, prim_key):
     if user_authenticated(request.user):
         bet = get_bet(prim_key)
-        if bet is None:
-            messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
-            raise Http404
-        else:
+        if bet is not None:
             if isinstance(bet, ChoiceBet):
-                winning_choice = request.POST['choice']
-                winning_choice = get_choice(winning_choice)
+                winning_choice = get_choice(request.POST['choice'])
                 if winning_choice is not None:
                     resolve_bet(bet, winning_choice)
                     messages.success(request, "Succesfully resolved " + str(bet) + ".")
@@ -163,6 +156,13 @@ def resolve_bet_view(request, prim_key):
                 else:
                     messages.error(request, "Date does not exist.")
                     raise Http404
+            else:
+                logger.warning("Bets with type " + type(bet).__name__ + " are not handled yet.")
+                messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
+                raise Http404
+        else:
+            messages.error(request, "No bet with primary key " + str(prim_key) + " was found.")
+            raise Http404
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         if not request.user.is_anonymous():
@@ -172,6 +172,7 @@ def resolve_bet_view(request, prim_key):
         raise PermissionDenied
 
 
+@login_required
 def create_choice_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
@@ -197,6 +198,7 @@ def create_choice_bet(request):
         raise PermissionDenied
 
 
+@login_required
 def create_date_bet(request):
     if user_authenticated(request.user):
         if request.method == 'POST':
@@ -215,3 +217,23 @@ def create_date_bet(request):
             logger.warning("Unverified user " + request.user.username + " tried to place create a date bet.")
             return redirect('profiles:profile')
         raise PermissionDenied
+
+
+class ChoiceBetUpdate(UpdateView):
+    model = ChoiceBet
+    fields = ['name', 'description', 'end_bets_date', 'forbidden', 'end_date']
+
+
+class ChoiceBetDelete(DeleteView):
+    model = ChoiceBet
+    success_url = reverse_lazy('index')
+
+
+class DateBetUpdate(UpdateView):
+    model = ChoiceBet
+    fields = ['name', 'description', 'end_bets_date', 'forbidden', 'time_period_start', 'time_period_end']
+
+
+class DateBetDelete(DeleteView):
+    model = ChoiceBet
+    success_url = reverse_lazy('index')

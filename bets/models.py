@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from bets.util import key_gen
 from profiles.models import Profile, ForbiddenUser

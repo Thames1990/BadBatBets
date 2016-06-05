@@ -33,10 +33,38 @@ urlpatterns = [
         name='create_choice_bet'
     ),
 
+    # Edit ChoiceBet
+    url(
+        r'^(?P<pk>[0-9]+)/edit/$',
+        views.ChoiceBetUpdate.as_view(),
+        name="edit_choice_bet"
+    ),
+
+    # Delete ChoiceBet
+    url(
+        r'^(?P<pk>[0-9]+)/delete/$',
+        views.ChoiceBetDelete.as_view(),
+        name="delete_choice_bet"
+    ),
+
     # Create DateBet
     url(
         r'^create/date/$',
         views.create_date_bet,
         name="create_date_bet"
+    ),
+
+    # Edit DateBet
+    url(
+        r'^(?P<pk>[0-9]+)/edit/$',
+        views.DateBetUpdate.as_view(),
+        name="edit_date_bet"
+    ),
+
+    # Delete DateBet
+    url(
+        r'^(?P<pk>[0-9]+)/delete/$',
+        views.DateBetDelete.as_view(),
+        name="delete_date_bet"
     ),
 ]
