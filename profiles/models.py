@@ -36,8 +36,10 @@ class ForbiddenUser(models.Model):
 class Feedback(models.Model):
     # User that provided the feedback
     provided_by = models.ForeignKey(User)
-    # the actual feedback
+    # The actual feedback
     feedback = models.TextField()
+    # Is the feedback already resolved by the administrators?
+    resolved = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)

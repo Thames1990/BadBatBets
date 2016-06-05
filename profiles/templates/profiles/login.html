@@ -4,7 +4,6 @@
     Login | {{ block.super }}
 {% endblock %}
 
-
 {% block content %}
     {% if form %}
         <form action="{% url 'profiles:login' %}" method="POST">

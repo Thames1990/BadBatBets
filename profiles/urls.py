@@ -62,8 +62,15 @@ urlpatterns = [
 
     # Provide feedback
     url(
-        r'feedback/$',
+        r'^feedback/$',
         views.feedback,
         name='feedback'
+    ),
+
+    # Resolve Feedback
+    url(
+        r'^feedback/(?P<id>[0-9]+)/resolve/$',
+        views.resolve_feedback,
+        name='resolve_feedback'
     )
 ]

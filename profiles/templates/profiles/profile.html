@@ -7,6 +7,9 @@
 {% block links %}
     <ul>
         <li>
+            <a href="{% url 'profiles:feedback' %}">Feedback</a>
+        </li>
+        <li>
             <a>Create Bet</a>
             <menu>
                 <menuitem>
@@ -42,6 +45,40 @@
             <td>{{ user.profile.account.balance }}</td>
         </tr>
     </table>
+    <hr>
+
+    {% if user.is_superuser %}
+        <h2>Feedback</h2>
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Message</th>
+                <th>Resolved</th>
+            </tr>
+            {% for feedback in request.user.feedback_set.all %}
+                <tr>
+                    <td>{{ feedback.provided_by }}</td>
+                    <td style="white-space: pre">{{ feedback.feedback }}</td>
+                    {% if feedback.resolved %}
+                        <td>True</td>
+                    {% else %}
+                        <td>
+                            <form action="{% url 'profiles:resolve_feedback' feedback.id %}" method="post">
+                                {% csrf_token %}
+                                <button
+                                    name="{{ feedback.prim_key }}"
+                                    onclick="return confirm('Are you sure? The feedback will be resolved.')"
+                                >
+                                    Resolve
+                                </button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% empty %}
+            {% endfor %}
+        </table>
+    {% endif %}
     <hr>
     <grid>
         <div col="1/2" class="border_right">

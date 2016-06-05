@@ -7,6 +7,9 @@
 {% block links %}
     <ul>
         <li>
+            <a href="{% url 'profiles:feedback' %}">Feedback</a>
+        </li>
+        <li>
             <a>Create Bet</a>
             <menu>
                 <menuitem>
@@ -38,6 +41,6 @@
             {{ form.as_table }}
         </table>
 
-        <input type="submit" value="Submit">
+        <button m-full>Send Feedback</button>
     </form>
 {% endblock %}

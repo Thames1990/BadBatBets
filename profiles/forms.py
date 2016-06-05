@@ -109,7 +109,7 @@ class PaymentForm(forms.Form):
 
 
 class FeedbackForm(forms.Form):
-    feedback = forms.CharField(required=True)
+    feedback = forms.CharField(required=True, widget=forms.Textarea)
 
     def save(self, user, commit=True):
         assert isinstance(user, User)
