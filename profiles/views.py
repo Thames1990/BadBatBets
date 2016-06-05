@@ -81,11 +81,17 @@ def change_password(request):
 
 
 def general_terms_and_conditions_view(request):
-    return render(request, 'profiles/general_terms_and_conditions.html')
+    if user_authenticated(request.user) or request.user.is_authenticated():
+        return render(request, 'profiles/general_terms_and_conditions.html')
+    else:
+        return render(request, 'profiles/general_terms_and_conditions_anonymous.html')
 
 
 def privacy_policy_view(request):
-    return render(request, 'profiles/privacy_policy.html')
+    if user_authenticated(request.user) or request.user.is_authenticated():
+        return render(request, 'profiles/privacy_policy.html')
+    else:
+        return render(request, 'profiles/privacy_policy_anonymous.html')
 
 
 @login_required
