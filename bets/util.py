@@ -357,6 +357,47 @@ def perform_no_winner_payout(bet, placed_bets):
     return transaction
 
 
+def revert_transaction(transaction):
+    """
+    Reverts a transaction by creating a new one that transfers all the money back
+    :param transaction: The transaction that is to be reverted
+    :return: Transaction object of the new transaction
+    """
+    from ledger.models import Transaction, Credit, Debit
+
+    assert isinstance(transaction, Transaction)
+
+    inversion = Transaction(description="Reverted transaction " + str(transaction.id))
+    inversion.save()
+
+    cre = transaction.credit_set.all()
+    for credit in cre:
+        Debit(transaction=transaction, account=credit.account, amount=credit.amount).save()
+
+    deb = transaction.debit_set.all()
+    for debit in deb:
+        Credit(transaction=transaction, account=debit.account, amount=debit.amount).save()
+
+    return transaction
+
+
+def end_bet(bet):
+    """
+    Ends a bet without any winners
+    :param bet: A choicebet whise time has run out
+    """
+    from .models import ChoiceBet
+
+    assert isinstance(bet, ChoiceBet)
+
+    placed_bets = bet.placedchoicebet_set.all()
+    for placed_bet in placed_bets:
+        revert_transaction(placed_bet.transaction)
+
+    bet.resolved = True
+    bet.save()
+
+
 def resolve_bet(bet, winning_option):
     """
     Resolves a bet and performs the payout
@@ -365,9 +406,9 @@ def resolve_bet(bet, winning_option):
     :return: transaction detailing the payout
     """
     from .models import DateBet, ChoiceBet, Choice
+    from .exceptions import NoPlacedBets
     from ledger.exceptions import InsufficientFunds
     from datetime import date
-    from .exceptions import NoPlacedBets
 
     assert isinstance(bet, DateBet) or isinstance(bet, ChoiceBet)
 
