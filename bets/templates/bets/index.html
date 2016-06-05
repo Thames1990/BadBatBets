@@ -39,15 +39,21 @@
                     <card>
                         <h5>{{ choice_bet.name }}</h5>
                         <hr>
-                        <p>{{ choice_bet.description }}</p>
-                        <p style="display: inline">Available choices</p>
-                        <ul>
-                            {% for choice in choice_bet.choice_set.all %}
-                                <li>{{ choice.description }}</li>
-                            {% empty %}
-                                <li>No choices are available</li>
-                            {% endfor %}
-                        </ul>
+                        <grid>
+                            <div col="1/2" class="border_right">
+                                <p>{{ choice_bet.description }}</p>
+                            </div>
+                            <div col="1/2" class="border_left">
+                                <p style="display: inline">Available choices</p>
+                                <ul>
+                                    {% for choice in choice_bet.choice_set.all %}
+                                        <li>{{ choice.description }}</li>
+                                    {% empty %}
+                                        <li>No choices are available</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </grid>
                     </card>
                 </a>
             {% empty %}
@@ -62,13 +68,23 @@
                     <card>
                         <h5>{{ date_bet.name }}</h5>
                         <hr>
-                        <p>{{ date_bet.description }}</p>
-                        {% if date_bet.time_period_start %}
-                            <p>Time period start: {{ date_bet.time_period_start }}</p>
-                        {% endif %}
-                        {% if date_bet.time_period_end %}
-                            <p>Time period end: {{ date_bet.time_period_end }}</p>
-                        {% endif %}
+                        <grid>
+                            <div col="1/2" class="border_right">
+                                <p>{{ date_bet.description }}</p>
+                            </div>
+                            <div col="1/2" class="border_left">
+                                {% if date_bet.time_period_start and time_period_end %}
+                                    <p>Time period start: {{ date_bet.time_period_start }}</p>
+                                    <p>Time period end: {{ date_bet.time_period_end }}</p>
+                                {% elif date_bet.time_period_start and not time_period_end %}
+                                    <p>Time period start: {{ date_bet.time_period_start }}</p>
+                                {% elif not date_bet.time_period_start and time_period_end %}
+                                    <p>Time period end: {{ date_bet.time_period_end }}</p>
+                                {% else %}
+                                    <p>No time period was specified.</p>
+                                {% endif %}
+                            </div>
+                        </grid>
                     </card>
                 </a>
             {% empty %}
