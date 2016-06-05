@@ -4,34 +4,34 @@
     General Terms And Conditions | {{ block.super }}
 {% endblock %}
 
-{% if user.is_authenticated %}
-    {% block links %}
-        <ul>
-            <li>
-                <a>Create Bet</a>
-                <menu>
-                    <menuitem>
-                        <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
-                    </menuitem>
-                    <menuitem>
-                        <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
-                    </menuitem>
-                </menu>
-            </li>
-            <li>
-                <a>{{ user.profile }}</a>
-                <menu>
-                    <menuitem>
-                        <a href="{% url 'profiles:profile' %}">Profile</a>
-                    </menuitem>
-                    <menuitem>
-                        <a href="{% url 'profiles:logout' %}">Logout</a>
-                    </menuitem>
-                </menu>
-            </li>
-        </ul>
-    {% endblock %}
-{% endif %}
+{# TODO Only show when user is logged in #}
+{% block links %}
+    <ul>
+        <li>
+            <a>Create Bet</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
+                </menuitem>
+            </menu>
+        </li>
+        <li>
+            <a>{{ user.profile }}</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}">Profile</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'profiles:logout' %}">Logout</a>
+                </menuitem>
+            </menu>
+        </li>
+    </ul>
+{% endblock %}
+
 
 {% block content %}
     <h1>Nutzungsbedingungen und Allgemeine Geschäftsbedingungen</h1>
@@ -310,13 +310,4 @@
         <li><a name="y">y definieren</a></li>
         <li><a name="dokumente">Weitere Dokumente hinzufügen</a></li>
     </ol>
-
-    {% if not user.profile.accepted_general_terms_and_conditions %}
-        <form action="{% url 'index' %}" method="post">
-            {% csrf_token %}
-            <div style="text-align: center">
-                <input type="submit" name="agb" value="agree to agb">
-            </div>
-        </form>
-    {% endif %}
 {% endblock %}

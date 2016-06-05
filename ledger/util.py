@@ -16,23 +16,6 @@ def sum_credit_debit(credit, debit):
     return credit_sum - debit_sum
 
 
-def create_table(credit, debit):
-    """
-    Brings the transactions in a form which can be displayed as a table.
-    :param credit: Credits
-    :param debit: Debits
-    :return:
-    """
-    table = []
-
-    for entry in credit:
-        table.append((entry.transaction.timestamp, entry.amount, "-"))
-    for entry in debit:
-        table.append((entry.transaction.timestamp, "-", entry.amount))
-
-    return sorted(table, key=lambda x: x[0])
-
-
 def one_to_one_transaction(origin, destination, description, amount):
     """
     Creates a transaction with a single origin and destination

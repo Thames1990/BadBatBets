@@ -4,34 +4,33 @@
     Privacy Policy | {{ block.super }}
 {% endblock %}
 
-{% if user.is_authenticated %}
-    {% block links %}
-        <ul>
-            <li>
-                <a>Create Bet</a>
-                <menu>
-                    <menuitem>
-                        <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
-                    </menuitem>
-                    <menuitem>
-                        <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
-                    </menuitem>
-                </menu>
-            </li>
-            <li>
-                <a>{{ user.profile }}</a>
-                <menu>
-                    <menuitem>
-                        <a href="{% url 'profiles:profile' %}">Profile</a>
-                    </menuitem>
-                    <menuitem>
-                        <a href="{% url 'profiles:logout' %}">Logout</a>
-                    </menuitem>
-                </menu>
-            </li>
-        </ul>
-    {% endblock %}
-{% endif %}
+{# TODO Only show when user is logged in #}
+{% block links %}
+    <ul>
+        <li>
+            <a>Create Bet</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
+                </menuitem>
+            </menu>
+        </li>
+        <li>
+            <a>{{ user.profile }}</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}">Profile</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'profiles:logout' %}">Logout</a>
+                </menuitem>
+            </menu>
+        </li>
+    </ul>
+{% endblock %}
 
 {% block content %}
     <h1>Datenschutzerklärung</h1>
@@ -131,13 +130,4 @@
     <ol>
         <li><a name="zeitraum">Maximalen Zeitraum für Cookies definieren</a></li>
     </ol>
-
-    {% if not user.profile.accepted_privacy_policy %}
-        <form action="{% url 'index' %}" method="post">
-            {% csrf_token %}
-            <div style="text-align: center">
-                <input type="submit" name="privacy_policy" value="agree to privacy policy">
-            </div>
-        </form>
-    {% endif %}
 {% endblock %}

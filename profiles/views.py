@@ -8,20 +8,10 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 
 from .forms import SignupForm, LoginForm, PaymentForm, FeedbackForm
-from ledger.util import create_table
 from bets.util import generate_profile_resolved_bet
+from profiles.util import user_authenticated
 
 logger = logging.getLogger(__name__)
-
-
-def landing(request):
-    if request.user.is_authenticated():
-        return redirect('index')
-    else:
-        if not request.user.is_anonymous():
-            logger.info("Unverified user " + request.user.username + " tried to view index page.")
-        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        return redirect('index')
 
 
 @login_required
@@ -34,7 +24,7 @@ def profile(request):
 
 
 def login_user(request):
-    if request.user.is_authenticated():
+    if user_authenticated(request.user):
         return redirect('index')
     else:
         if request.method == 'POST':
@@ -52,11 +42,11 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, "Logout successful")
-    return render(request, 'profiles/login.html')
+    return redirect('profiles:login')
 
 
 def signup(request):
-    if request.user.is_authenticated():
+    if user_authenticated(request.user):
         return redirect('index')
     else:
         if request.method == 'POST':
@@ -87,21 +77,9 @@ def change_password(request):
     return render(request, 'profiles/change_password.html', {'form': form})
 
 
-def transactions(request):
-    if request.user.is_authenticated():
-        credit = request.user.profile.account.credit_set.all()
-        debit = request.user.profile.account.debit_set.all()
-
-        return render(request, 'profiles/transactions.html', {
-            'table': create_table(credit, debit)
-        })
-    else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
-        raise PermissionDenied
-
-
+@login_required
 def payment(request):
-    if request.user.is_superuser:
+    if user_authenticated(request.user) and request.user.is_superuser:
         if request.method == 'POST':
             form = PaymentForm(request.POST)
             if form.is_valid():
@@ -111,7 +89,10 @@ def payment(request):
 
         return render(request, 'profiles/payment.html', {'form': form})
     else:
-        messages.error(request, "You're not authenticated. Please get in contact with an administrator.")
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning("Unverified user " + request.user.username + " tried to view payment page.")
+            return redirect('profiles:profile')
         raise PermissionDenied
 
 

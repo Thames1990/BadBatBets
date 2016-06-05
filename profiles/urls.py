@@ -39,13 +39,6 @@ urlpatterns = [
         name='change_password'
     ),
 
-    # View transactions
-    url(
-        r'^transactions/$',
-        views.transactions,
-        name='transactions'
-    ),
-
     # Deposit funds in account
     url(
         r'^payment/$',
