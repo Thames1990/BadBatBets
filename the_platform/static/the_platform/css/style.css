@@ -14,7 +14,6 @@ select {
     height: 100% !important;
 }
 
-/* TODO check mobile min-width value */
 @media only screen and (min-width: 760px) {
     menu {
         margin-top: 0.6em !important;
@@ -31,6 +30,16 @@ select {
     .border_left {
         border-left: 1px solid gray;
         margin-left: -1px;
+    }
+}
+
+@media only screen and (max-width: 760px) {
+    h1 {
+        text-align: center;
+    }
+
+    #agreements {
+        text-align: left;
     }
 }
 

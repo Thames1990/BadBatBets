@@ -37,10 +37,7 @@
 {% block content %}
     <form action="{% url 'profiles:feedback' %}" method="POST">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-
+        {{ form.feedback }}
         <button m-full>Send Feedback</button>
     </form>
 {% endblock %}
