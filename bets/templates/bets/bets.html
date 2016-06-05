@@ -56,15 +56,21 @@
                     <td>{{ placed_bet.chosen }}</td>
                 </tr>
                 <tr>
+                    <th>Points placed</th>
+                    <td>{{ placed_bet.placed }}</td>
+                </tr>
+                <tr>
                     <th>Choice picks</th>
                     <td>{{ placed_bet.chosen.picks }}</td>
                 </tr>
             {% endif %}
             {% if not choice_bet.resolved %}
-                <tr>
-                    <th>Ends on</th>
-                    <td>{{ choice_bet.end_date }}</td>
-                </tr>
+                {% if choice_bet.ends_date %}
+                    <tr>
+                        <th>Ends on</th>
+                        <td>{{ choice_bet.end_date }}</td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
                     <th>Winning choice</th>
@@ -221,6 +227,10 @@
                 <tr>
                     <th>Your Choice</th>
                     <td>{{ placed_bet.placed_date }}</td>
+                </tr>
+                <tr>
+                    <th>Points placed</th>
+                    <td>{{ placed_bet.placed }}</td>
                 </tr>
             {% endif %}
             {% if not date_bet.resolved %}

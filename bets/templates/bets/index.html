@@ -83,8 +83,14 @@
                     <card>
                         <h5>{{ placed_choice_bet.placed_on.name }}</h5>
                         <hr>
-                        <p>Placed amount: {{ placed_choice_bet.placed }}</p>
-                        <p>Choice: {{ placed_choice_bet.chosen.description }}</p>
+                        <grid>
+                            <div col="1/2" class="border_right">
+                                <p>Placed points: {{ placed_choice_bet.placed }}</p>
+                            </div>
+                            <div col="1/2" class="border_left">
+                                <p>Placed Choice: {{ placed_choice_bet.chosen.description }}</p>
+                            </div>
+                        </grid>
                     </card>
                 </a>
             {% empty %}
@@ -99,8 +105,14 @@
                     <card>
                         <h5>{{ placed_date_bet.placed_on.name }}</h5>
                         <hr>
-                        <p>Placed amount: {{ placed_date_bet.placed }}</p>
-                        <p>Placed date: {{ placed_date_bet.placed_date }}</p>
+                        <grid>
+                            <div col="1/2" class="border_right">
+                                <p>Placed points: {{ placed_date_bet.placed }}</p>
+                            </div>
+                            <div col="1/2" class="border_left">
+                                <p>Placed date: {{ placed_date_bet.placed_date }}</p>
+                            </div>
+                        </grid>
                     </card>
                 </a>
             {% empty %}

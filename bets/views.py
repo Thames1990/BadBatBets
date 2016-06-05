@@ -123,7 +123,8 @@ def place_bet(request, prim_key):
                 messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
                 raise Http404
 
-            return HttpResponseRedirect(reverse('index'))
+            messages.success(request, "Succesfully placed " + str(placed) + " points on" + str(bet) + ".")
+            return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         if not request.user.is_anonymous():
@@ -145,6 +146,7 @@ def resolve_bet_view(request, prim_key):
                 winning_choice = get_choice(winning_choice)
                 if winning_choice is not None:
                     resolve_bet(bet, winning_choice)
+                    messages.success(request, "Succesfully resolved " + str(bet) + ".")
                     return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(
@@ -156,6 +158,7 @@ def resolve_bet_view(request, prim_key):
                 winning_date = datetime.strptime(request.POST['date'], '%Y-%m-%d').date()
                 if winning_date is not None:
                     resolve_bet(bet, winning_date)
+                    messages.success(request, "Succesfully resolved " + str(bet) + ".")
                     return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(request, "Date does not exist.")
@@ -180,6 +183,7 @@ def create_choice_bet(request):
                     messages.error(request, "Invalid choice descriptions. Use distinct and non empty descriptions.")
                     return redirect('bets:create_choice_bet')
 
+                messages.success(request, "Succesfully created " + str(bet) + ".")
                 return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
         else:
             form = ChoiceBetCreationForm()
@@ -199,6 +203,7 @@ def create_date_bet(request):
             form = DateBetCreationForm(data=request.POST)
             if form.is_valid():
                 bet = form.save(request.user.profile)
+                messages.success(request, "Succesfully created " + str(bet) + ".")
                 return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
         else:
             form = DateBetCreationForm()
