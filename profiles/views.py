@@ -81,25 +81,6 @@ def change_password(request):
     return render(request, 'profiles/change_password.html', {'form': form})
 
 
-@login_required
-def payment(request):
-    if user_authenticated(request.user) and request.user.is_superuser:
-        if request.method == 'POST':
-            form = PaymentForm(request.POST)
-            if form.is_valid():
-                form.save(authorised=request.user)
-        else:
-            form = PaymentForm()
-
-        return render(request, 'profiles/payment.html', {'form': form})
-    else:
-        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
-            logger.warning("Unverified user " + request.user.username + " tried to view payment page.")
-            return redirect('profiles:profile')
-        raise PermissionDenied
-
-
 def general_terms_and_conditions_view(request):
     return render(request, 'profiles/general_terms_and_conditions.html')
 

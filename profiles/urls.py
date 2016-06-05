@@ -39,13 +39,6 @@ urlpatterns = [
         name='change_password'
     ),
 
-    # Deposit funds in account
-    url(
-        r'^payment/$',
-        views.payment,
-        name='payment'
-    ),
-
     # General terms and conditions
     url(
         r'^general_terms_and_conditions/$',
