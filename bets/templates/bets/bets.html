@@ -46,13 +46,13 @@
                     <h1>{{ choice_bet.name }}</h1>
                 </div>
                 <div col="1/6">
-                    <form action="{% url 'bets:edit_choice_bet' choice_bet.prim_key %}" method="post">
+                    <form action="{% url 'bets:edit_choice_bet' choice_bet.prim_key %}">
                         {% csrf_token %}
-                        <button m-full disabled>Edit Bet</button>
+                        <button m-full>Edit Bet</button>
                     </form>
                 </div>
                 <div col="1/6">
-                    <form action="{% url 'bets:delete_choice_bet' choice_bet.prim_key %}">
+                    <form action="{% url 'bets:delete_choice_bet' choice_bet.prim_key %}" method="post">
                         {% csrf_token %}
                         <button m-full onclick="return confirm('Are you sure? The bet will get deleted.')">
                             Delete Bet
@@ -241,15 +241,15 @@
                     <h1>{{ date_bet.name }}</h1>
                 </div>
                 <div col="1/6">
-                    <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}" method="post">
+                    <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}">
                         {% csrf_token %}
-                        <button disabled>Edit Bet</button>
+                        <button m-full>Edit Bet</button>
                     </form>
                 </div>
                 <div col="1/6">
-                    <form action="{% url 'bets:delete_date_bet' date_bet.prim_key %}">
+                    <form action="{% url 'bets:delete_date_bet' date_bet.prim_key %}" method="post">
                         {% csrf_token %}
-                        <button onclick="return confirm('Are you sure? The bet will get deleted.')">
+                        <button m-full onclick="return confirm('Are you sure? The bet will get deleted.')">
                             Delete Bet
                         </button>
                     </form>

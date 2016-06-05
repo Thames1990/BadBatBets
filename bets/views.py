@@ -189,7 +189,7 @@ def create_choice_bet(request):
         else:
             form = ChoiceBetCreationForm()
 
-        return render(request, 'bets/create_choice_bet.html', {'form': form})
+        return render(request, 'bets/choicebet_create_form.html', {'form': form})
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         if not request.user.is_anonymous():
@@ -210,7 +210,7 @@ def create_date_bet(request):
         else:
             form = DateBetCreationForm()
 
-        return render(request, 'bets/create_date_bet.html', {'form': form})
+        return render(request, 'bets/datebet_create_form.html', {'form': form})
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
         if not request.user.is_anonymous():
@@ -222,6 +222,7 @@ def create_date_bet(request):
 class ChoiceBetUpdate(UpdateView):
     model = ChoiceBet
     fields = ['name', 'description', 'end_bets_date', 'forbidden', 'end_date']
+    template_name_suffix = '_update_form'
 
 
 class ChoiceBetDelete(DeleteView):
@@ -230,10 +231,11 @@ class ChoiceBetDelete(DeleteView):
 
 
 class DateBetUpdate(UpdateView):
-    model = ChoiceBet
+    model = DateBet
     fields = ['name', 'description', 'end_bets_date', 'forbidden', 'time_period_start', 'time_period_end']
+    template_name_suffix = '_update_form'
 
 
 class DateBetDelete(DeleteView):
-    model = ChoiceBet
+    model = DateBet
     success_url = reverse_lazy('index')

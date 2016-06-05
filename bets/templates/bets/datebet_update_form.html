@@ -1,0 +1,46 @@
+{% extends 'the_platform/base.html' %}
+
+{% block title %}
+    Edit Date Bet | {{ block.super }}
+{% endblock %}
+
+{% block links %}
+    <ul>
+        <li>
+            <a href="{% url 'profiles:feedback' %}">Feedback</a>
+        </li>
+        <li>
+            <a>Create Bet</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'bets:create_choice_bet' %}">Choice Bet</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'bets:create_date_bet' %}">Date Bet</a>
+                </menuitem>
+            </menu>
+        </li>
+        <li>
+            <a>{{ user.profile }}</a>
+            <menu>
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}">Profile</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'profiles:logout' %}">Logout</a>
+                </menuitem>
+            </menu>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+
+        <button m-full>Edit Bet</button>
+    </form>
+{% endblock %}

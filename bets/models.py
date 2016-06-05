@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.core.urlresolvers import reverse
 
 from bets.util import key_gen
 from profiles.models import Profile, ForbiddenUser
@@ -35,6 +36,9 @@ class Bet(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('bets:bet', kwargs={'prim_key': self.prim_key})
 
     def open_to_bets(self):
         if self.end_bets_date is None:
