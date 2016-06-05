@@ -371,28 +371,31 @@ def resolve_bet(bet, winning_option):
 
     assert isinstance(bet, DateBet) or isinstance(bet, ChoiceBet)
 
-    bet.resolved = True
-    bet.save()
-
     if isinstance(bet, DateBet):
         assert isinstance(winning_option, date)
         bet.winning_date = winning_option
         placed_bets = bet.placeddatebet_set.all()
-        if len(placed_bets) == 0:
+        if placed_bets:
+            winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
+        else:
             raise NoPlacedBets("Nobody placed any bets yet...")
-        winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
     elif isinstance(bet, ChoiceBet):
-        assert isinstance(winning_option, Choice)
-        bet.winning_choice = winning_option
         placed_bets = bet.placedchoicebet_set.all()
-        if len(placed_bets) == 0:
-            raise NoPlacedBets("Nobody placed any bets yet...")
-        winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
-        if len(winning_bets) == 0:
+        if winning_option is not None:
+            assert isinstance(winning_option, Choice)
+            bet.winning_choice = winning_option
+            if placed_bets:
+                winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
+            else:
+                raise NoPlacedBets("Nobody placed any bets yet...")
+        else:
             try:
                 transaction = perform_no_winner_payout(bet=bet, placed_bets=placed_bets)
             except InsufficientFunds:
                 raise
+
+            bet.resolved = True
+            bet.save()
 
             return transaction
     else:
@@ -403,6 +406,9 @@ def resolve_bet(bet, winning_option):
         transaction = perform_winner_payout(bet=bet, winning_bets=winning_bets)
     except InsufficientFunds:
         raise
+
+    bet.resolved = True
+    bet.save()
 
     return transaction
 
@@ -454,6 +460,9 @@ def find_winning_choices(placed_bets, winning_choice):
     assert isinstance(winning_choice, Choice)
 
     winning_bets = []
+
+    if winning_choice is None:
+        return winning_bets
 
     for placed_bet in placed_bets:
         assert isinstance(placed_bet, PlacedChoiceBet)

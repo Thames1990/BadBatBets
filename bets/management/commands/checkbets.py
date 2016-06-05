@@ -16,7 +16,7 @@ class Command(BaseCommand):
         for choice_bet in ChoiceBet.objects.all():
             if choice_bet.end_date:
                 if choice_bet.end_date >= timezone.now().date():
-                    # TODO Distribute pot
+                    resolve_bet(choice_bet, None)
                     logging.info(choice_bet.name + " is now resolved")
 
         for date_bet in DateBet.objects.all():
