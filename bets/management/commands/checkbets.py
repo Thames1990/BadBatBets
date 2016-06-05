@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from ...models import ChoiceBet, DateBet
+from ...util import resolve_bet
 
 
 class Command(BaseCommand):
@@ -15,15 +16,11 @@ class Command(BaseCommand):
         for choice_bet in ChoiceBet.objects.all():
             if choice_bet.end_date:
                 if choice_bet.end_date >= timezone.now().date():
-                    choice_bet.resolved = True
-                    choice_bet.save()
-                    logging.info(choice_bet.name + " is now resolved")
                     # TODO Distribute pot
+                    logging.info(choice_bet.name + " is now resolved")
 
         for date_bet in DateBet.objects.all():
             if date_bet.time_period_end:
                 if date_bet.time_period_end >= timezone.now().date():
-                    date_bet.resolved = True
-                    date_bet.save()
+                    resolve_bet(date_bet, date_bet.time_period_end)
                     logging.info(date_bet.name + " is now resolved")
-                    # TODO Distribute pot

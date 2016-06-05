@@ -280,7 +280,7 @@ def place_bet_transaction(profile, bet, amount):
         raise
 
 
-def perform_payout(bet, winning_bets):
+def perform_winner_payout(bet, winning_bets):
     """
     Pays out the pot of a bet to the winning users
     :param bet: A subtype of Bet
@@ -309,12 +309,47 @@ def perform_payout(bet, winning_bets):
         }
     )
 
-    description = "Payout\nBet: " + str(bet.prim_key)
+    description = "Winner payout\nBet: " + str(bet.prim_key)
     for winner in winners:
         description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
 
     try:
         transaction = one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
+    except InsufficientFunds:
+        logger.error("The pot division fucked up...")
+        raise InsufficientFunds("The pot division fucked up...", code='pot_division_error')
+
+    return transaction
+
+
+def perform_no_winner_payout(bet, placed_bets):
+    """
+    Pays out the pot of a bet to the all users.
+    This happens when a ChoiceBet was automatically resolved but didn't have a winning choice.
+    :param bet: A subtype of Bet
+    :param placed_bets: list of all placed bets
+    :return: transaction detailing the payout (already saved)
+    """
+    from ledger.util import one_to_many_transaction
+    from ledger.exceptions import InsufficientFunds
+
+    payout = int(bet.account.balance / len(placed_bets))
+
+    participants = []
+    for placed_bet in placed_bets:
+        participants.append(
+            {
+                'account': placed_bet.placed_by.account,
+                'amount': payout
+            }
+        )
+
+    description = "No winner payout\nBet: " + str(bet.prim_key)
+    for participant in participants:
+        description += "\nAccount: " + participant['account'].name + ", Amount: " + str(participant['amount'])
+
+    try:
+        transaction = one_to_many_transaction(origin=bet.account, destinations=participants, description=description)
     except InsufficientFunds:
         logger.error("The pot division fucked up...")
         raise InsufficientFunds("The pot division fucked up...", code='pot_division_error')
@@ -336,35 +371,38 @@ def resolve_bet(bet, winning_option):
 
     assert isinstance(bet, DateBet) or isinstance(bet, ChoiceBet)
 
+    bet.resolved = True
+    bet.save()
+
     if isinstance(bet, DateBet):
         assert isinstance(winning_option, date)
         bet.winning_date = winning_option
         placed_bets = bet.placeddatebet_set.all()
         if len(placed_bets) == 0:
-            raise NoPlacedBets(
-                "Nobody placed any bets yet..."
-            )
+            raise NoPlacedBets("Nobody placed any bets yet...")
         winning_bets = find_winning_dates(placed_bets=placed_bets, winning_date=winning_option)
     elif isinstance(bet, ChoiceBet):
         assert isinstance(winning_option, Choice)
         bet.winning_choice = winning_option
         placed_bets = bet.placedchoicebet_set.all()
         if len(placed_bets) == 0:
-            raise NoPlacedBets(
-                "Nobody placed any bets yet..."
-            )
+            raise NoPlacedBets("Nobody placed any bets yet...")
         winning_bets = find_winning_choices(placed_bets=placed_bets, winning_choice=winning_option)
+        if len(winning_bets) == 0:
+            try:
+                transaction = perform_no_winner_payout(bet=bet, placed_bets=placed_bets)
+            except InsufficientFunds:
+                raise
+
+            return transaction
     else:
-        logger.warning("Tried to resolve bet (" + bet + ")with unknown bet type.")
+        logger.warning("Tried to resolve bet (" + bet + ") with unknown bet type.")
         return None
 
     try:
-        transaction = perform_payout(bet=bet, winning_bets=winning_bets)
+        transaction = perform_winner_payout(bet=bet, winning_bets=winning_bets)
     except InsufficientFunds:
         raise
-
-    bet.resolved = True
-    bet.save()
 
     return transaction
 
