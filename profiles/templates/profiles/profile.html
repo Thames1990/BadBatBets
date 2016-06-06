@@ -58,7 +58,7 @@
             {% for entry in feedback %}
                 <tr>
                     <td>{{ entry.provided_by }}</td>
-                    <td style="white-space: pre">{{ entry.feedback }}</td>
+                    <td style="white-space: pre-wrap; word-wrap: break-word">{{ entry.feedback }}</td>
                     {% if entry.resolved %}
                         <td>True</td>
                     {% else %}
