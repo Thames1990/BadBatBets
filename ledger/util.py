@@ -23,6 +23,7 @@ def one_to_one_transaction(origin, destination, description, amount):
     :param destination: Account to which the money will be credited
     :param description: Description of the transaction
     :param amount: Amount to be transferred
+    :return: Transaction-object of the transaction
     """
     from .models import Account, Transaction, Debit, Credit
     from .exceptions import InsufficientFunds
@@ -53,6 +54,8 @@ def one_to_one_transaction(origin, destination, description, amount):
     origin.compute_balance()
     destination.compute_balance()
 
+    return transaction
+
 
 def one_to_many_transaction(origin, destinations, description):
     """
@@ -60,6 +63,7 @@ def one_to_many_transaction(origin, destinations, description):
     :param origin: Account from which the money will be deducted
     :param destinations: Dictionary of the account and amount for each destination
     :param description: Description of the transaction
+    :return: Transaction-object of the transaction
     """
     from .models import Account, Transaction, Debit, Credit
     from .exceptions import InsufficientFunds
@@ -94,3 +98,5 @@ def one_to_many_transaction(origin, destinations, description):
             amount=destination['amount']
         ).save()
         destination['account'].compute_balance()
+
+    return transaction
