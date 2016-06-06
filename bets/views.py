@@ -212,7 +212,7 @@ def create_date_bet(request):
             if form.is_valid():
                 bet = form.save(request.user.profile)
                 messages.success(request, "Succesfully created " + str(bet) + ".")
-                return render(request, 'bets/datebet_create_form.html', {'form': form})
+                return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
         else:
             form = DateBetCreationForm()
 
