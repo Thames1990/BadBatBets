@@ -92,7 +92,7 @@ def place_bet(request, prim_key):
             placed = int(request.POST['placed'])
 
             try:
-                place_bet_transaction(profile=placed_by, bet=bet, amount=placed)
+                transaction = place_bet_transaction(profile=placed_by, bet=bet, amount=placed)
             except InsufficientFunds:
                 messages.info(request, "Insufficient funds. Your accounts balance is " +
                               str(request.user.profile.account.balance) + " points and you wanted to bet " +
@@ -107,15 +107,18 @@ def place_bet(request, prim_key):
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
-                    chosen=choice
-                )
+                    chosen=choice,
+                    transaction=transaction
+                ).save()
             elif isinstance(bet, DateBet):
                 PlacedDateBet.objects.create(
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
                     placed_date=request.POST['date'],
-                )
+                    transaction=transaction
+                ).save()
+
             else:
                 logger.warning("Bets with type " + type(bet).__name__ + " are not handled yet.")
                 messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")

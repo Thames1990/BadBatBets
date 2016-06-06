@@ -270,7 +270,7 @@ def place_bet_transaction(profile, bet, amount):
     description = "Placed Bet\nBet: " + str(bet.prim_key) + "\nUser: " + username + "\nAmount: " + str(amount)
 
     try:
-        one_to_one_transaction(
+        transaction = one_to_one_transaction(
             origin=profile,
             destination=bet.account,
             description=description,
@@ -278,6 +278,8 @@ def place_bet_transaction(profile, bet, amount):
         )
     except InsufficientFunds:
         raise
+
+    return transaction
 
 
 def perform_payout(bet, winning_bets):
