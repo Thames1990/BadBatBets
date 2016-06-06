@@ -232,7 +232,8 @@ class ChoiceBetUpdate(ModelFormWidgetMixin, UpdateView):
     template_name_suffix = '_update_form'
     widgets = {
         'end_bets_date': SelectDateWidget,
-        'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
+        # TODO fix django.db.utils.OperationalError: no such table: profiles_forbiddenuser
+        # 'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
         'end_date': SelectDateWidget
     }
     # TODO Form validation
@@ -251,7 +252,8 @@ class DateBetUpdate(ModelFormWidgetMixin, UpdateView):
     template_name_suffix = '_update_form'
     widgets = {
         'end_bets_date': SelectDateWidget,
-        'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
+        # TODO fix django.db.utils.OperationalError: no such table: profiles_forbiddenuser
+        # 'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
         'time_period_start': SelectDateWidget,
         'time_period_end': SelectDateWidget
     }

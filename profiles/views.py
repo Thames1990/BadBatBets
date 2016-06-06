@@ -22,7 +22,7 @@ def profile(request):
     return render(request, 'profiles/profile.html', {
         'resolved_placed_choice_bets': resolved_bets['resolved_placed_choice_bets'],
         'resolved_placed_date_bets': resolved_bets['resolved_placed_date_bets'],
-        'feedback': Feedback.objects.all()
+        'feedback': Feedback.objects.all().order_by('resolved')
     })
 
 
