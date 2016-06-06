@@ -58,14 +58,14 @@ def get_placed_bet_for_profile(bet, profile):
         logger.warning("Tried to get placed bets for unknown bet type with bet (" + bet + ").")
         return None
 
-    if len(bets) == 1:
-        return bets[0]
-    elif len(bets) > 1:
-        logger.error("User had multiple (" + str(len(bets)) + ") placed bets for the same bet. \nUser: " + str(
+    if bets.count() == 1:
+        return bets.first()
+    elif bets.count() > 1:
+        logger.error("User had multiple (" + str(bets.count()) + ") placed bets for the same bet. \nUser: " + str(
             profile.username) + "\nBet: " + str(bet.prim_key))
 
         # Still return the first element of the list, so that we have something to work with
-        return bets[0]
+        return bets.first()
     else:
         return None
 
@@ -337,11 +337,11 @@ def revert_transaction(transaction):
 
     cre = transaction.credit_set.all()
     for credit in cre:
-        Debit(transaction=transaction, account=credit.account, amount=credit.amount).save()
+        Debit.objects.create(transaction=transaction, account=credit.account, amount=credit.amount)
 
     deb = transaction.debit_set.all()
     for debit in deb:
-        Credit(transaction=transaction, account=debit.account, amount=debit.amount).save()
+        Credit.objects.create(transaction=transaction, account=debit.account, amount=debit.amount)
 
     return transaction
 
@@ -479,7 +479,6 @@ def create_choices(request, bet):
 
     last_choice = False
     choice_number = 1
-    choices = []
     choice_descriptions = []
 
     while not last_choice:
@@ -487,17 +486,12 @@ def create_choices(request, bet):
         if description is not None:
             if description != "" and description not in choice_descriptions:
                 choice_descriptions.append(description)
-                choices.append(
-                    Choice(
-                        belongs_to=bet,
-                        description=description
-                    )
+                Choice.objects.create(
+                    belongs_to=bet,
+                    description=description
                 )
                 choice_number += 1
             else:
                 raise ValidationError("Invalid choice descriptions", code='invalid_choice_descriptions')
         else:
             last_choice = True
-
-    for choice in choices:
-        choice.save()

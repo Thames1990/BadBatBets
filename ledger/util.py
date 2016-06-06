@@ -35,20 +35,19 @@ def one_to_one_transaction(origin, destination, description, amount):
     if origin.balance < amount:
         raise InsufficientFunds()
 
-    transaction = Transaction(description=description)
-    transaction.save()
+    transaction = Transaction.objects.create(description=description)
 
-    Debit(
+    Debit.objects.create(
         transaction=transaction,
         account=origin,
         amount=amount
-    ).save()
+    )
 
-    Credit(
+    Credit.objects.create(
         transaction=transaction,
         account=destination,
         amount=amount
-    ).save()
+    )
 
     origin.compute_balance()
     destination.compute_balance()
@@ -77,20 +76,20 @@ def one_to_many_transaction(origin, destinations, description):
     if origin.balance < total_amount:
         raise InsufficientFunds()
 
-    transaction = Transaction(description=description)
-    transaction.save()
+    transaction = Transaction.objects.create(description=description)
 
-    Debit(
+    # TODO Specify all parameters for all functions everywhere? (convention)
+    Debit.objects.create(
         transaction=transaction,
         account=origin,
         amount=total_amount
-    ).save()
+    )
     origin.compute_balance()
 
     for destination in destinations:
-        Credit(
+        Credit.objects.create(
             transaction=transaction,
             account=destination['account'],
             amount=destination['amount']
-        ).save()
+        )
         destination['account'].compute_balance()

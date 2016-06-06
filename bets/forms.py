@@ -21,7 +21,7 @@ class ChoiceBetCreationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ChoiceBetCreationForm, self).__init__(*args, **kwargs)
-        self.fields['forbidden'].widget.attrs["size"] = len(ForbiddenUser.objects.all())
+        self.fields['forbidden'].widget.attrs["size"] = ForbiddenUser.objects.all().count()
 
     def clean_pub_date(self):
         pub_date = self.cleaned_data.get('pub_date')
@@ -201,7 +201,7 @@ class DateBetCreationForm(forms.ModelForm):
         account = Account(name=name, type='b')
         account.save()
 
-        new_bet = DateBet(
+        new_bet = DateBet.objects.create(
             owner=user,
             name=name,
             description=description,
@@ -210,10 +210,10 @@ class DateBetCreationForm(forms.ModelForm):
             time_period_end=time_period_end,
             account=account
         )
-        new_bet.save()
 
         for forbidden_user in forbidden:
             new_bet.forbidden.add(forbidden_user)
+            # TODO Do we need to save here?
 
         if pub_date is not None:
             new_bet.pub_date = pub_date

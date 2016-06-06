@@ -103,19 +103,19 @@ def place_bet(request, prim_key):
                 choice = bet.choice_set.get(description=request.POST['choice'])
                 choice.picks += 1
                 choice.save()
-                PlacedChoiceBet(
+                PlacedChoiceBet.objects.create(
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
                     chosen=choice
-                ).save()
+                )
             elif isinstance(bet, DateBet):
-                PlacedDateBet(
+                PlacedDateBet.objects.create(
                     placed_by=placed_by,
                     placed_on=bet,
                     placed=placed,
                     placed_date=request.POST['date'],
-                ).save()
+                )
             else:
                 logger.warning("Bets with type " + type(bet).__name__ + " are not handled yet.")
                 messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
@@ -232,11 +232,12 @@ class ChoiceBetUpdate(ModelFormWidgetMixin, UpdateView):
     template_name_suffix = '_update_form'
     widgets = {
         'end_bets_date': SelectDateWidget,
-        'forbidden': SelectMultiple(attrs={'size': len(ForbiddenUser.objects.all())}),
+        'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
         'end_date': SelectDateWidget
     }
-    # TODO form validation
-    # TODO edit Choice
+    # TODO Form validation
+    # TODO Edit choices
+    # TODO Remove own user from forbidden?
 
 
 class ChoiceBetDelete(DeleteView):
@@ -250,11 +251,11 @@ class DateBetUpdate(ModelFormWidgetMixin, UpdateView):
     template_name_suffix = '_update_form'
     widgets = {
         'end_bets_date': SelectDateWidget,
-        'forbidden': SelectMultiple(attrs={'size': len(ForbiddenUser.objects.all())}),
+        'forbidden': SelectMultiple(attrs={'size': ForbiddenUser.objects.all().count()}),
         'time_period_start': SelectDateWidget,
         'time_period_end': SelectDateWidget
     }
-    # TODO form validation
+    # TODO Form validation
 
 
 class DateBetDelete(DeleteView):
