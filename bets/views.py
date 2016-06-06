@@ -5,14 +5,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.forms import SelectDateWidget, SelectMultiple
+from django.forms import SelectDateWidget
 from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView, DeleteView
 
 from .forms import ChoiceBetCreationForm, DateBetCreationForm
-from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet, ForbiddenUser
+from .models import PlacedChoiceBet, PlacedDateBet, ChoiceBet, DateBet
 from .util import user_can_place_bet, get_bet, get_placed_bet_for_profile, get_choice, generate_index, \
     place_bet_transaction, resolve_bet
 from ledger.exceptions import InsufficientFunds
