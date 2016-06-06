@@ -40,37 +40,10 @@
 
 {% block content %}
     {% if choice_bet %}
-        {% if choice_bet.owner == user.profile and not choice_bet.placedchoicebet_set.all %}
-            <grid>
-                <div col="4/6">
-                    <h1>{{ choice_bet.name }}</h1>
-                </div>
-                <div col="1/6">
-                    <form action="{% url 'bets:edit_choice_bet' choice_bet.prim_key %}">
-                        {% csrf_token %}
-                        {% if debug %}
-                            <button m-full>Edit Bet</button>
-                        {% else %}
-                            <button m-full disabled>Edit Bet</button>
-                        {% endif %}
-                    </form>
-                </div>
-                <div col="1/6">
-                    <form action="{% url 'bets:delete_choice_bet' choice_bet.prim_key %}" method="post">
-                        {% csrf_token %}
-                        <button m-full onclick="return confirm('Are you sure? The bet will get deleted.')">
-                            Delete Bet
-                        </button>
-                    </form>
-                </div>
-            </grid>
-        {% else %}
-            <h1>{{ choice_bet.name }}</h1>
-        {% endif %}
         <table>
             <tr>
-                <th>Owner</th>
-                <td>{{ choice_bet.owner }}</td>
+                <th>Name</th>
+                <td>{{ choice_bet.name }}</td>
             </tr>
             <tr>
                 <th>Description</th>
@@ -108,7 +81,29 @@
                 </tr>
             {% endif %}
         </table>
-        <hr>
+
+        {% if choice_bet.owner == user.profile and not choice_bet.placedchoicebet_set.all %}
+            <grid>
+                <div col="1/2">
+                    <form action="{% url 'bets:edit_choice_bet' choice_bet.prim_key %}">
+                        {% csrf_token %}
+                        {% if debug %}
+                            <button full>Edit Bet</button>
+                        {% else %}
+                            <button full disabled>Edit Bet</button>
+                        {% endif %}
+                    </form>
+                </div>
+                <div col="1/2">
+                    <form action="{% url 'bets:delete_choice_bet' choice_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <button full onclick="return confirm('Are you sure? The bet will get deleted.')">
+                            Delete Bet
+                        </button>
+                    </form>
+                </div>
+            </grid>
+        {% endif %}
 
         {% if user_can_place_bet and choice_bet.owner == user.profile and not choice_bet.winning_choice %}
             <grid>
@@ -239,37 +234,10 @@
             </form>
         {% endif %}
     {% elif date_bet %}
-        {% if date_bet.owner == user.profile and not date_bet.placeddatebet_set.all %}
-            <grid>
-                <div col="4/6">
-                    <h1>{{ date_bet.name }}</h1>
-                </div>
-                <div col="1/6">
-                    <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}">
-                        {% csrf_token %}
-                        {% if debug %}
-                            <button m-full>Edit Bet</button>
-                        {% else %}
-                            <button m-full disabled>Edit Bet</button>
-                        {% endif %}
-                    </form>
-                </div>
-                <div col="1/6">
-                    <form action="{% url 'bets:delete_date_bet' date_bet.prim_key %}" method="post">
-                        {% csrf_token %}
-                        <button m-full onclick="return confirm('Are you sure? The bet will get deleted.')">
-                            Delete Bet
-                        </button>
-                    </form>
-                </div>
-            </grid>
-        {% else %}
-            <h1>{{ date_bet.name }}</h1>
-        {% endif %}
         <table>
             <tr>
-                <th>Owner</th>
-                <td>{{ date_bet.owner }}</td>
+                <th>Name</th>
+                <td>{{ date_bet.name }}</td>
             </tr>
             <tr>
                 <th>Description</th>
@@ -309,7 +277,30 @@
                 </tr>
             {% endif %}
         </table>
-        <hr>
+
+        {% if date_bet.owner == user.profile and not date_bet.placeddatebet_set.all %}
+            <grid>
+                <div col="1/2">
+                    <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}">
+                        {% csrf_token %}
+                        {% if debug %}
+                            <button full>Edit Bet</button>
+                        {% else %}
+                            <button full disabled>Edit Bet</button>
+                        {% endif %}
+                    </form>
+                </div>
+                <div col="1/2">
+                    <form action="{% url 'bets:delete_date_bet' date_bet.prim_key %}" method="post">
+                        {% csrf_token %}
+                        <button full onclick="return confirm('Are you sure? The bet will get deleted.')">
+                            Delete Bet
+                        </button>
+                    </form>
+                </div>
+            </grid>
+        {% endif %}
+
         {% if user_can_place_bet and date_bet.owner == user.profile and not date_bet.winning_date %}
             <grid>
                 <div col="1/2" class="border_right">
