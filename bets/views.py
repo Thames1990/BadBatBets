@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.forms import SelectDateWidget
+from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic.edit import UpdateView, DeleteView
@@ -219,10 +221,21 @@ def create_date_bet(request):
         raise PermissionDenied
 
 
-class ChoiceBetUpdate(UpdateView):
+class ModelFormWidgetMixin(object):
+    def get_form_class(self):
+        return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
+
+
+class ChoiceBetUpdate(ModelFormWidgetMixin, UpdateView):
     model = ChoiceBet
     fields = ['name', 'description', 'end_bets_date', 'forbidden', 'end_date']
     template_name_suffix = '_update_form'
+    widgets = {
+        'end_bets_date': SelectDateWidget,
+        'end_date': SelectDateWidget
+    }
+    # TODO form validation
+    # TODO edit Choice
 
 
 class ChoiceBetDelete(DeleteView):
@@ -230,10 +243,16 @@ class ChoiceBetDelete(DeleteView):
     success_url = reverse_lazy('index')
 
 
-class DateBetUpdate(UpdateView):
+class DateBetUpdate(ModelFormWidgetMixin, UpdateView):
     model = DateBet
     fields = ['name', 'description', 'end_bets_date', 'forbidden', 'time_period_start', 'time_period_end']
     template_name_suffix = '_update_form'
+    widgets = {
+        'end_bets_date': SelectDateWidget,
+        'time_period_start': SelectDateWidget,
+        'time_period_end': SelectDateWidget
+    }
+    # TODO form validation
 
 
 class DateBetDelete(DeleteView):

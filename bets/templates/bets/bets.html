@@ -48,7 +48,11 @@
                 <div col="1/6">
                     <form action="{% url 'bets:edit_choice_bet' choice_bet.prim_key %}">
                         {% csrf_token %}
-                        <button m-full>Edit Bet</button>
+                        {% if debug %}
+                            <button m-full>Edit Bet</button>
+                        {% else %}
+                            <button m-full disabled>Edit Bet</button>
+                        {% endif %}
                     </form>
                 </div>
                 <div col="1/6">
@@ -243,7 +247,11 @@
                 <div col="1/6">
                     <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}">
                         {% csrf_token %}
-                        <button m-full>Edit Bet</button>
+                        {% if debug %}
+                            <button m-full>Edit Bet</button>
+                        {% else %}
+                            <button m-full disabled>Edit Bet</button>
+                        {% endif %}
                     </form>
                 </div>
                 <div col="1/6">
