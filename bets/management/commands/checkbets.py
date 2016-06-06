@@ -17,7 +17,8 @@ class Command(BaseCommand):
             if choice_bet.end_date:
                 if choice_bet.end_date >= timezone.now().date():
                     resolve_bet(choice_bet, None)
-                    logging.info(choice_bet.name + " is now resolved")
+                    logging.info(
+                        choice_bet.name + " was automatically resolved. All participants regained their placed points.")
 
         for date_bet in DateBet.objects.all():
             if date_bet.time_period_end:
