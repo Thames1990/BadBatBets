@@ -108,6 +108,7 @@ def feedback(request):
     return render(request, 'profiles/feedback.html', {'form': form})
 
 
+@login_required
 def resolve_feedback(request, id):
     try:
         feedback = Feedback.objects.get(id=id)
