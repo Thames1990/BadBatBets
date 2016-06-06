@@ -17,10 +17,7 @@ class ChoiceBetCreationForm(forms.ModelForm):
     pub_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_bets_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
-    forbidden = forms.ModelMultipleChoiceField(
-        queryset=ForbiddenUser.objects.all(),
-        required=False
-    )
+    forbidden = forms.ModelMultipleChoiceField(queryset=ForbiddenUser.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs):
         super(ChoiceBetCreationForm, self).__init__(*args, **kwargs)
