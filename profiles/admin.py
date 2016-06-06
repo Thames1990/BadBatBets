@@ -4,6 +4,7 @@ from .models import Profile, ForbiddenUser, Feedback
 
 class ProfileAdmin(admin.ModelAdmin):
     fields = ['user', 'account', 'verified', 'accepted_general_terms_and_conditions', 'accepted_privacy_policy']
+    list_display = ['user', 'verified']
 
 
 class ForbiddenUserAdmin(admin.ModelAdmin):
