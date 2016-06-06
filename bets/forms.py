@@ -91,11 +91,13 @@ class ChoiceBetCreationForm(forms.ModelForm):
             account=account
         )
         try:
-            create_choices(request, new_bet)
+            choices = create_choices(request, new_bet)
         except ValidationError:
             raise
 
         new_bet.save()
+        for choice in choices:
+            choice.save()
 
         for forbidden_user in forbidden:
             new_bet.forbidden.add(forbidden_user)

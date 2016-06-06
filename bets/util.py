@@ -482,18 +482,21 @@ def create_choices(request, bet):
     last_choice = False
     choice_number = 1
     choice_descriptions = []
+    choices = []
 
     while not last_choice:
         description = request.POST.get("choice_" + str(choice_number))
         if description is not None:
             if description != "" and description not in choice_descriptions:
                 choice_descriptions.append(description)
-                Choice.objects.create(
+                choices.append(Choice(
                     belongs_to=bet,
                     description=description
-                )
+                ))
                 choice_number += 1
             else:
                 raise ValidationError("Invalid choice descriptions", code='invalid_choice_descriptions')
         else:
             last_choice = True
+
+    return choices
