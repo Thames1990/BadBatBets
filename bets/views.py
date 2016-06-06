@@ -187,6 +187,7 @@ def create_choice_bet(request):
                     bet = form.save(request)
                 except ValidationError:
                     messages.error(request, "Invalid choice descriptions. Use distinct and non empty descriptions.")
+                    # TODO Preserve Choice on form.is_invalid
                     return render(request, 'bets/choicebet_create_form.html', {'form': form})
 
                 messages.success(request, "Succesfully created " + str(bet) + ".")

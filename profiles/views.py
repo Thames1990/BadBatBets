@@ -4,11 +4,12 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
-from .forms import SignupForm, LoginForm, FeedbackForm
+from .forms import SignupForm, LoginForm, PaymentForm, FeedbackForm
 from .models import Feedback
 from bets.util import generate_profile_resolved_bet
 from profiles.util import user_authenticated
@@ -78,6 +79,26 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
 
     return render(request, 'profiles/change_password.html', {'form': form})
+
+
+@login_required
+def payment(request):
+    if user_authenticated(request.user) and request.user.is_superuser:
+        if request.method == 'POST':
+            form = PaymentForm(request.POST)
+            if form.is_valid():
+                transaction = form.save(authorised=request.user)
+                messages.success(request, transaction.description)
+                return render(request, 'profiles/payment.html', {'form': PaymentForm()})
+        else:
+            form = PaymentForm()
+            return render(request, 'profiles/payment.html', {'form': form})
+    else:
+        messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
+        if not request.user.is_anonymous():
+            logger.warning("Unverified user " + request.user.username + " tried to view payment page.")
+            return redirect('profiles:profile')
+        raise PermissionDenied
 
 
 def general_terms_and_conditions_view(request):

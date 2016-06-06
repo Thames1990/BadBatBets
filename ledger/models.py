@@ -21,6 +21,7 @@ class Account(models.Model):
         debit = self.debit_set.all()
         self.balance = sum_credit_debit(credit, debit)
         self.save()
+        return self.balance
 
     def pot_size(self):
         total = 0

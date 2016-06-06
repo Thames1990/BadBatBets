@@ -82,21 +82,29 @@ class PaymentForm(forms.Form):
 
     def save(self, authorised, commit=True):
         user_account = self.cleaned_data['account']
+        amount = self.cleaned_data['amount']
 
         if self.cleaned_data['type'] == 'w':
             system_account = Account.objects.get(name='withdrawal', type='o')
-            description = "Withdrawal authorised by: " + str(authorised)
+            if amount > 1:
+                # TODO Find a transaction description convention
+                description = "Wihtdrawal for " + str(amount) + " points authorised by: " + str(authorised)
+            else:
+                description = "Wihtdrawal for " + str(amount) + " point authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)
-            credit = Credit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
-            debit = Debit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
+            credit = Credit(transaction=transaction, account=system_account, amount=amount)
+            debit = Debit(transaction=transaction, account=user_account, amount=amount)
         else:
             system_account = Account.objects.get(name='deposit', type='o')
-            description = "Deposit authorised by: " + str(authorised)
+            if amount > 1:
+                description = "Deposit for " + str(amount) + " points authorised by: " + str(authorised)
+            else:
+                description = "Deposit for " + str(amount) + " point authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)
-            credit = Credit(transaction=transaction, account=user_account, amount=self.cleaned_data['amount'])
-            debit = Debit(transaction=transaction, account=system_account, amount=self.cleaned_data['amount'])
+            credit = Credit(transaction=transaction, account=user_account, amount=amount)
+            debit = Debit(transaction=transaction, account=system_account, amount=amount)
 
         transaction.save(commit)
         credit.save(commit)

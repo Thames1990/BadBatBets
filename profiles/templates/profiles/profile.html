@@ -4,6 +4,8 @@
     {{ user.profile }} | {{ block.super }}
 {% endblock %}
 
+{# TODO Add change password #}
+
 {% block links %}
     <ul>
         <li>
@@ -91,7 +93,9 @@
                     </tr>
                     {% for credit in user.profile.account.credit_set.all %}
                         <tr>
-                            <td style="white-space: pre">{{ credit.transaction.description }}</td>
+                            <td style="white-space: pre-wrap; word-wrap: break-word">
+                                {{ credit.transaction.description }}
+                            </td>
                             <td>{{ credit.amount }}</td>
                         </tr>
                     {% endfor %}
@@ -110,7 +114,9 @@
                     </tr>
                     {% for debit in user.profile.account.debit_set.all %}
                         <tr>
-                            <td style="white-space: pre">{{ debit.transaction.description }}</td>
+                            <td style="white-space: pre-wrap; word-wrap: break-word">
+                                {{ debit.transaction.description }}
+                            </td>
                             <td>{{ debit.amount }}</td>
                         </tr>
                     {% endfor %}

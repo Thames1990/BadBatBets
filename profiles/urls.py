@@ -65,5 +65,12 @@ urlpatterns = [
         r'^feedback/(?P<id>[0-9]+)/resolve/$',
         views.resolve_feedback,
         name='resolve_feedback'
-    )
+    ),
+
+    # Deposit funds in account
+    url(
+        r'^payment/$',
+        views.payment,
+        name='payment'
+    ),
 ]
