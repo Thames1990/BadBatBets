@@ -3,6 +3,14 @@
 html, body {
     background: #f4f5f6;
     overflow-x: hidden;
+    margin-bottom: 3em;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 h2 {
@@ -20,7 +28,7 @@ select {
     }
 
     section {
-        margin-top: 2em !important;
+        margin-top: 3em !important;
     }
 
     .border_right {

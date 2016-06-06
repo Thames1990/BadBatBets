@@ -17,5 +17,4 @@ def user_authenticated(user):
     elif isinstance(user, AnonymousUser):
         return False
     else:
-        # TODO
         pass
