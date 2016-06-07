@@ -71,32 +71,30 @@
             <table>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>User</th>
                     <th>Message</th>
-                    <th>Resolved</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for entry in feedback %}
                     <tr>
-                        <td width="10%">{{ entry.provided_by }}</td>
-                        <td class="formatted_wrap" width="80%">{{ entry.feedback }}</td>
-                        {% if entry.resolved %}
-                            <td width="10%">True</td>
-                        {% else %}
-                            <td width="10%">
-                                <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button
-                                        primary
-                                        full
-                                        name="{{ entry.prim_key }}"
-                                        onclick="return confirm('Are you sure? The feedback will be resolved.')"
-                                    >
-                                        Resolve
-                                    </button>
-                                </form>
-                            </td>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.provided_by }}</td>
+                        <td class="formatted_wrap">{{ entry.feedback }}</td>
+                        {% if not entry.resolved %}
+                            <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
+                                {% csrf_token %}
+                                <button
+                                    primary
+                                    full
+                                    name="{{ entry.prim_key }}"
+                                    onclick="return confirm('Are you sure? Feedback (ID ' + {{ entry.id }} +
+                                        ') will be resolved.')"
+                                >
+                                    Resolve {{ entry.id }}
+                                </button>
+                            </form>
                         {% endif %}
                     </tr>
                 {% endfor %}
