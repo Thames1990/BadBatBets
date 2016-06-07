@@ -61,8 +61,14 @@
                 </tr>
             {% endfor %}
         </table>
-        <button m-full type="button" onclick="addChoice()">Add another choice</button>
 
-        <button m-full>Create Bet</button>
+        <grid>
+            <div col="1/2">
+                <button full type="button" onclick="addChoice()">Add another choice</button>
+            </div>
+            <div col="1/2">
+                <button primary full>Create Bet</button>
+            </div>
+        </grid>
     </form>
 {% endblock %}

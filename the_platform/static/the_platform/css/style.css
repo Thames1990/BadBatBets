@@ -1,34 +1,24 @@
 @import url('bare.min.css');
 
-html, body {
-    background: #f4f5f6;
-    overflow-x: hidden;
-    margin-bottom: 3em;
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-h2 {
-    display: flex !important;
-    justify-content: center !important;
-}
-
-select {
-    height: 100% !important;
-}
-
 @media only screen and (min-width: 760px) {
+    main {
+        margin-bottom: 4em;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
     menu {
         margin-top: 0.6em !important;
     }
 
     section {
-        margin-top: 3em !important;
+        /* TODO Fix overhead for <a> links */
+        margin-top: 2em !important;
     }
 
     .border_right {
@@ -39,11 +29,24 @@ select {
         border-left: 1px solid gray;
         margin-left: -1px;
     }
+
+    grid {
+        display: flex;
+    }
+
+    grid > div {
+        flex: 1;
+    }
+
+    /* TODO Form fill height in grid > div */
 }
 
 @media only screen and (max-width: 760px) {
-    h1 {
-        text-align: center;
+    td {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     #agreements {
@@ -58,6 +61,11 @@ select {
     margin: 1em;
 }
 
+.centered {
+    display: flex !important;
+    justify-content: center !important;
+}
+
 .errorlist {
     background: red;
     text-align: center;
@@ -65,8 +73,21 @@ select {
     padding: 0.5em;
 }
 
+.formatted_wrap {
+    white-space: pre-wrap;
+    word-wrap: break-word
+}
+
 .helptext, .nonfield {
     display: none;
+}
+
+.inline {
+    display: inline;
+}
+
+.unformatted_wrap {
+    word-wrap: break-word;
 }
 
 #debug, #info, #success, #warning, #error {

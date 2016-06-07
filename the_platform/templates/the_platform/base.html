@@ -33,10 +33,10 @@
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
                     <card id="debug" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                            <div col="1/6" class="border_right unformatted_wrap">
                                 <strong>DEBUG</strong>
                             </div>
-                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                            <div col="5/6" class="border_left unformatted_wrap">
                                 <strong>{{ message }}</strong>
                             </div>
                         </grid>
@@ -44,10 +44,10 @@
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
                     <card id="info" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                            <div col="1/6" class="border_right unformatted_wrap">
                                 <strong>INFO</strong>
                             </div>
-                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                            <div col="5/6" class="border_left unformatted_wrap">
                                 <strong>{{ message }}</strong>
                             </div>
                         </grid>
@@ -55,10 +55,10 @@
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                     <card id="success" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                            <div col="1/6" class="border_right unformatted_wrap">
                                 <strong>SUCCESS</strong>
                             </div>
-                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                            <div col="5/6" class="border_left unformatted_wrap">
                                 <strong>{{ message }}</strong>
                             </div>
                         </grid>
@@ -66,10 +66,10 @@
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
                     <card id="warning" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                            <div col="1/6" class="border_right unformatted_wrap">
                                 <strong>WARNING</strong>
                             </div>
-                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                            <div col="5/6" class="border_left unformatted_wrap">
                                 <strong>{{ message }}</strong>
                             </div>
                         </grid>
@@ -77,10 +77,10 @@
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                     <card id="error" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" style="word-wrap: break-word" class="border_right">
+                            <div col="1/6" class="border_right unformatted_wrap">
                                 <strong>ERROR</strong>
                             </div>
-                            <div col="5/6" style="word-wrap: break-word" class="border_left">
+                            <div col="5/6" class="border_left unformatted_wrap">
                                 <strong>{{ message }}</strong>
                             </div>
                         </grid>

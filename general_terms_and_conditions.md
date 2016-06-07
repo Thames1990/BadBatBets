@@ -1,6 +1,6 @@
-# Nutzungsbedingungen und Allgemeine Geschäftsbedingungen
+## Nutzungsbedingungen und Allgemeine Geschäftsbedingungen
 
-## Inhaltsverzeichnis
+##### Inhaltsverzeichnis
 
 0. [Präambel](#präambel)
 1. [Geltungsbereich](#geltungsbereich)
@@ -14,14 +14,14 @@
 9. [Kontoverifikation](#kontoverifikation)
 10. [Sonstige Vereinbarungen](#sonstige)
 
-### <a name="präambel">Präambel</a>
+##### <a name="präambel">Präambel</a>
 
 1. Bad Bat Bets (Betreiber<sup>[1](#synonym)</sup>) ist Betreiber der Internetplattform
 dev.splork.de<sup>[2](#web)</sup> (Internetplattform) und der dort angebotenen
 Glücksspiele<sup>[3](#glücksspiele)</sup>.
 2. Die Bahnhofstraße 33a, 35037 Marburg<sup>[4](#adresse)</sup> (Hauptzentrale) ist der feste Sitz des Betreibers.
 
-### <a name="geltungsbereich">Geltungsbereich</a>
+##### <a name="geltungsbereich">Geltungsbereich</a>
 
 1. Die vorliegenden Allgemeinen Geschäftsbedingungen (AGB) des Betreibers gelten für alle zwischen dem Betreiber und
 dem Nutzer dieser Internetplattform und der dort angebotenen Inhalte und Dienstleistungen (Spieler) abgeschlossenen
@@ -34,14 +34,14 @@ gültigen Fassung zum Zeitpunkt der Nutzung.
 3. Entgegenstehende oder von diesen AGB abweichende Bedingungen des Nutzers erkennt der Betreiber nicht an, soweit er
 ihrer Geltung nicht ausdrücklich schriftlich zugestimmt hat.
 
-### <a name="rechtswahl">Rechtswahl, Erfüllungsort und Gerichtsstand</a>
+##### <a name="rechtswahl">Rechtswahl, Erfüllungsort und Gerichtsstand</a>
 
 1. Die Rechte und Pflichten der Vertragsparteien regeln sich ausschließlich nach dem in der Bundesrepublik Deutschland
 geltendem Recht.
 2. Spieler dürfen ausschließlich natürliche Personen sein ([BGB §1](https://dejure.org/gesetze/BGB/1.html)).
 3. Für sämtliche Streitigkeiten ist die Hauptzentrale als Gerichtsstand und Erfüllungsort vereinbart.
 
-### <a name="teilnahme">Teilnahmebedingung und Vertragsschluss</a>
+##### <a name="teilnahme">Teilnahmebedingung und Vertragsschluss</a>
 
 1. Ein Vertrag kommt zwischen den Parteien dadurch zustande, dass der Spieler sich auf der Internetplattform anmeldet
 und die angebotenen Inhalte und Dienstleistungen nutzt.
@@ -75,7 +75,7 @@ auszuschließen.
 beliebige Services einzustellen, zu modifizieren, zu entfernen und/oder hinzuzufügen. Der Betreiber ist für derartige
 Aktionen nicht haftbar zu machen.<sup>[9](#haftbarkeitsausschlüsse)</sup>
 
-### <a name="leistungsumfang">Leistungsumfang</a>
+##### <a name="leistungsumfang">Leistungsumfang</a>
 
 1. Der Umfang der vom Betreiber im Einzelnen geschuldeten Leistungen ergibt sich aus dem jeweiligen Angebot und
 diesen Vertragsbedingungen.
@@ -87,7 +87,7 @@ technische Einrichtungen des Internets unabhängig von der Internetplattform des
 4. Der Spieler trägt die alleinige Verantwortung für sein genutztes technisches Gerät für den Zugang zum Internet
 und für die Verwendung der Internetplattform des Betreibers.
 
-### <a name="nutzungsbeschränkung">Nutzungsbeschränkung</a>
+##### <a name="nutzungsbeschränkung">Nutzungsbeschränkung</a>
 
 1. Es ist untersagt, für die Teilnahme an Spielen Computerprogramme (sog. Robots oder Bots) zu verwenden, die
 erforderlichen Handlungen des Spielers ersetzen, Profile von den Spielen oder anderen Spielern der Internetplattform
@@ -102,14 +102,14 @@ Quellcode umzuwandeln (dekompilieren) oder nachzukonstruieren (Reverse Engineeri
 5. Durch den Spieler dürfen keine Fehlfunktionen oder Störungen der Internetplattform verursacht und der gewöhnliche
 Ablauf eines Spiels nicht regelwidrig beeinflusst werden.
 
-### <a name="kündigung">Kündigung</a>
+##### <a name="kündigung">Kündigung</a>
 
 1. Beide Vertragspartner können den Vertrag jederzeit mit sofortiger Wirkung und ohne Angabe von
 Gründen kündigen.<sup>[10](#sofortige_kündigung)</sup>
 2. Unabhängig von einer Kündigung hat der Betreiber das Recht, einen Spieler von der weiteren Teilnahme an
 Spielen auszuschließen.
 
-### <a name="punktetransfers">Punktetransfers</a>
+##### <a name="punktetransfers">Punktetransfers</a>
 
 1. Die Zahlungsabwicklung mit Zahlungssystemen die keine ausweisbasierende Identifizierung und Authentifizierung
 der Spielerinnen und Spieler ermöglichen, ist nicht zulässig.<sup>[11](#zulässige_zahlungsformen)</sup>
@@ -138,7 +138,7 @@ vereinbart. Sofern ein höherer Betrag zur Auszahlung angefordert wird, unterlie
 des Vorliegens aller zur Auszahlung erforderlichen Dokumente und Informationen vor.
 11. Eine Einzahlung kann vom Spieler widerrufen werden, sofern keine Einsätze nach der Einzahlung getätigt wurden.
 
-### <a name="gewinnbedingungen">Gewinnbedingungen und Einsätze</a>
+##### <a name="gewinnbedingungen">Gewinnbedingungen und Einsätze</a>
 
 1. Alle Einsätze, Gewinne sowie das aktuelles Guthaben eines Spielers werden in Punkten angezeigt.
 2. Die vom Spieler bei einem Spiel getätigten Einsätze werden vom verfügbaren Guthaben des Spielerkontos abgezogen.
@@ -147,7 +147,7 @@ gutgeschrieben.
 4. Der Betreiber behält sich vor, Gewinne und Bonuszahlungen zu widerrufen, falls der eingezahlte Betrag storniert
 bzw. zurückgebucht wurde.
 
-### <a name="kontoverifikation">Kontoverifikation</a>
+##### <a name="kontoverifikation">Kontoverifikation</a>
 
 Der Betreiber behält sich vor, jederzeit und aus verschiedenen Gründen
 (z.B. Zahlungsdienste, Jugendschutz, Betrugsprävention) die Identität des Spielers zu überprüfen. Der Spieler wird
@@ -158,7 +158,7 @@ nachzuweisen. Lediglich ergänzend zur Kopie einer der eben genannten Ausweisdok
 1. Führerschein
 2. [...]<sup>[16](#dokumente)</sup>
 
-### <a name="sonstige">Sonstige Vereinbarungen</a>
+##### <a name="sonstige">Sonstige Vereinbarungen</a>
 
 1. Die vorliegenden Vertragsbedingungen bleiben auch bei Unwirksamkeit einzelner oder mehrerer Bestimmungen in ihren
 übrigen Teilen verbindlich. Unwirksame Bestimmungen sind durch Regelungen zu ersetzen, die dem Sinn und Zweck der
@@ -172,7 +172,7 @@ weitere Nutzung der Dienstleistungen auf der Internetplattform die neuen AGB an.
 AGB nicht akzeptiert, ist eine weitere Nutzung der Dienstleistungen auf der Internetplattform ausgeschlossen und der
 Betreiber kann das Vertragsverhältnis fristlos kündigen.
 
-### TODO
+##### TODO
 
 1. <a name="synonym">Synonyme durch ''im Folgenden SYNONYM'' ersetzen?</a>
 2. <a name="web">Seite ändern</a>

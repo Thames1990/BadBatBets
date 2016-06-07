@@ -90,7 +90,7 @@
                         {% if debug %}
                             <button full>Edit Bet</button>
                         {% else %}
-                            <button full disabled>Edit Bet</button>
+                            <button full disabled dtt="Available Soon&trade;>Edit Bet</button>
                         {% endif %}
                     </form>
                 </div>
@@ -108,7 +108,7 @@
         {% if user_can_place_bet and choice_bet.owner == user.profile and not choice_bet.winning_choice %}
             <grid>
                 <div col="1/2" class="border_right">
-                    <h2>Place Bet</h2>
+                    <h2 xx class="centered">Place Bet</h2>
                     <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                         {% csrf_token %}
                         <label for="number"><h5>Amount</h5></label>
@@ -132,16 +132,16 @@
                             <label for="{{ forloop.counter }}">{{ choice.description }}</label>
                             <br>
                         {% empty %}
-                            <p style="display: inline">
+                            <p class="inline">
                                 No choices available. Please contact the administrator. This shouldn't happen.
                             </p>
                         {% endfor %}
                         <hr>
-                        <button m-full type="submit">Bet</button>
+                        <button primary full>Bet</button>
                     </form>
                 </div>
                 <div col="1/2" class="border_left">
-                    <h2>Resolve Bet</h2>
+                    <h2 xx class="centered">Resolve Bet</h2>
                     <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
                         {% csrf_token %}
                         <h5>Available Choices</h5>
@@ -155,13 +155,14 @@
                             <label for="{{ forloop.counter }}">{{ choice }}</label>
                             <br>
                         {% empty %}
-                            <p style="display: inline">
+                            <p class="inline">
                                 No choices available. Please contact the administrator. This shouldn't happen.
                             </p>
                         {% endfor %}
                         <hr>
                         <button
-                            m-full
+                            primary
+                            full
                             name="resolve"
                             value="resolve"
                             onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
@@ -172,7 +173,7 @@
                 </div>
             </grid>
         {% elif user_can_place_bet and choice_bet.owner != user.profile and not choice_bet.winning_choice %}
-            <h2>Place Bet</h2>
+            <h2 xx class="centered">Place Bet</h2>
             <form action="{% url 'bets:place_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
@@ -196,15 +197,15 @@
                     <label for="{{ forloop.counter }}">{{ choice.description }}</label>
                     <br>
                 {% empty %}
-                    <p style="display: inline">
+                    <p class="inline">
                         No choices available. Please contact the administrator. This shouldn't happen.
                     </p>
                 {% endfor %}
                 <hr>
-                <button m-full type="submit">Bet</button>
+                <button primary full>Bet</button>
             </form>
         {% elif not user_can_place_bet and choice_bet.owner == user.profile and choice_bet.winning_choice == None %}
-            <h2>Resolve Bet</h2>
+            <h2 xx class="centered">Resolve Bet</h2>
             <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <h5>Available Choices</h5>
@@ -218,13 +219,14 @@
                     <label for="{{ forloop.counter }}">{{ choice }}</label>
                     <br>
                 {% empty %}
-                    <p style="display: inline">
+                    <p class="inline">
                         No choices available. Please contact the administrator. This shouldn't happen.
                     </p>
                 {% endfor %}
                 <hr>
                 <button
-                    m-full
+                    primary
+                    full
                     name="resolve"
                     value="resolve"
                     onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
@@ -284,9 +286,9 @@
                     <form action="{% url 'bets:edit_date_bet' date_bet.prim_key %}">
                         {% csrf_token %}
                         {% if debug %}
-                            <button full>Edit Bet</button>
+                            <button full">Edit Bet</button>
                         {% else %}
-                            <button full disabled>Edit Bet</button>
+                            <button full disabled dtt="Available Soon&trade;">Edit Bet</button>
                         {% endif %}
                     </form>
                 </div>
@@ -304,7 +306,7 @@
         {% if user_can_place_bet and date_bet.owner == user.profile and not date_bet.winning_date %}
             <grid>
                 <div col="1/2" class="border_right">
-                    <h2>Place Bet</h2>
+                    <h2 xx class="centered">Place Bet</h2>
                     <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
                         {% csrf_token %}
                         <label for="number"><h5>Amount</h5></label>
@@ -326,11 +328,11 @@
                             placeholder="Date"
                             required
                         >
-                        <button m-full type="submit">Bet</button>
+                        <button primary full>Bet</button>
                     </form>
                 </div>
                 <div col="1/2" class="border_left">
-                    <h2>Resolve Bet</h2>
+                    <h2 xx class="centered">Resolve Bet</h2>
                     <h5>Winning Date</h5>
                     <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
                         {% csrf_token %}
@@ -344,7 +346,8 @@
                         >
                         <label for="{{ forloop.counter }}">{{ date }}</label>
                         <button
-                            m-full
+                            primary
+                            full
                             name="resolve"
                             value="resolve"
                             onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
@@ -355,7 +358,7 @@
                 </div>
             </grid>
         {% elif user_can_place_bet and not date_bet.owner == user.profile and not date_bet.winning_date %}
-            <h2>Place Bet</h2>
+            <h2 xx class="centered">Place Bet</h2>
             <form action="{% url 'bets:place_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
                 <label for="number"><h5>Amount</h5></label>
@@ -377,10 +380,10 @@
                     placeholder="Date"
                     required
                 >
-                <button m-full type="submit">Bet</button>
+                <button primary full>Bet</button>
             </form>
         {% elif not user_can_place_bet and date_bet.owner == user.profile and not date_bet.winning_date %}
-            <h2>Resolve Bet</h2>
+            <h2 xx class="centered">Resolve Bet</h2>
             <h5>Winning Date</h5>
             <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
                 {% csrf_token %}
@@ -394,7 +397,8 @@
                 >
                 <label for="{{ forloop.counter }}">{{ date }}</label>
                 <button
-                    m-full
+                    primary
+                    full
                     name="resolve"
                     value="resolve"
                     onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
