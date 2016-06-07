@@ -46,6 +46,7 @@
 
 body, html {
     background: #f4f5f6;
+    overflow-x: hidden;
 }
 
 .card_link {
