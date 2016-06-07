@@ -24,11 +24,14 @@
                 {% endfor %}
             {% endif %}
 
-            <table>
-                {{ form.as_table }}
-            </table>
+            <card>
+                <h2 xx class="centered">Login</h2>
+                <table>
+                    {{ form.as_table }}
+                </table>
+            </card>
 
-            <button m-full>Login</button>
+            <button primary full>Login</button>
         </form>
     {% endif %}
 {% endblock %}

@@ -5,6 +5,7 @@
         margin-bottom: 4em;
     }
 
+    /* TODO Fix weird anchor render (e.g. AGB) */
     footer {
         position: fixed;
         bottom: 0;
