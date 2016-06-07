@@ -40,47 +40,49 @@
 
 {% block content %}
     {% if choice_bet %}
-        <table>
-            <tr>
-                <th>Name</th>
-                <td>{{ choice_bet.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ choice_bet.description }}</td>
-            </tr>
-            {% if placed_bet %}
+        <card>
+            <table>
                 <tr>
-                    <th>Your Choice</th>
-                    <td>{{ placed_bet.chosen }}</td>
+                    <th>Name</th>
+                    <td>{{ choice_bet.name }}</td>
                 </tr>
                 <tr>
-                    <th>Points placed</th>
-                    <td>{{ placed_bet.placed }}</td>
+                    <th>Description</th>
+                    <td>{{ choice_bet.description }}</td>
                 </tr>
-                <tr>
-                    <th>Choice picks</th>
-                    <td>{{ placed_bet.chosen.picks }}</td>
-                </tr>
-            {% endif %}
-            {% if not choice_bet.resolved %}
-                {% if choice_bet.ends_date %}
+                {% if placed_bet %}
                     <tr>
-                        <th>Ends on</th>
-                        <td>{{ choice_bet.end_date }}</td>
+                        <th>Your Choice</th>
+                        <td>{{ placed_bet.chosen }}</td>
+                    </tr>
+                    <tr>
+                        <th>Points placed</th>
+                        <td>{{ placed_bet.placed }}</td>
+                    </tr>
+                    <tr>
+                        <th>Choice picks</th>
+                        <td>{{ placed_bet.chosen.picks }}</td>
                     </tr>
                 {% endif %}
-            {% else %}
-                <tr>
-                    <th>Winning choice</th>
-                    <td>{{ choice_bet.winning_choice }}</td>
-                </tr>
-                <tr>
-                    <th>Pot</th>
-                    <td>{{ pot_size }}</td>
-                </tr>
-            {% endif %}
-        </table>
+                {% if not choice_bet.resolved %}
+                    {% if choice_bet.ends_date %}
+                        <tr>
+                            <th>Ends on</th>
+                            <td>{{ choice_bet.end_date }}</td>
+                        </tr>
+                    {% endif %}
+                {% else %}
+                    <tr>
+                        <th>Winning choice</th>
+                        <td>{{ choice_bet.winning_choice }}</td>
+                    </tr>
+                    <tr>
+                        <th>Pot</th>
+                        <td>{{ pot_size }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </card>
 
         {% if choice_bet.owner == user.profile and not choice_bet.placedchoicebet_set.all %}
             <grid>
@@ -243,49 +245,51 @@
             </card>
         {% endif %}
     {% elif date_bet %}
-        <table>
-            <tr>
-                <th>Name</th>
-                <td>{{ date_bet.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ date_bet.description }}</td>
-            </tr>
-            {% if placed_bet %}
+        <card>
+            <table>
                 <tr>
-                    <th>Your Choice</th>
-                    <td>{{ placed_bet.placed_date }}</td>
+                    <th>Name</th>
+                    <td>{{ date_bet.name }}</td>
                 </tr>
                 <tr>
-                    <th>Points placed</th>
-                    <td>{{ placed_bet.placed }}</td>
+                    <th>Description</th>
+                    <td>{{ date_bet.description }}</td>
                 </tr>
-            {% endif %}
-            {% if not date_bet.resolved %}
-                {% if date_bet.time_period_start %}
+                {% if placed_bet %}
                     <tr>
-                        <th>Period starts on</th>
-                        <td>{{ date_bet.time_period_start }}</td>
+                        <th>Your Choice</th>
+                        <td>{{ placed_bet.placed_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Points placed</th>
+                        <td>{{ placed_bet.placed }}</td>
                     </tr>
                 {% endif %}
-                {% if date_bet.time_period_end %}
+                {% if not date_bet.resolved %}
+                    {% if date_bet.time_period_start %}
+                        <tr>
+                            <th>Period starts on</th>
+                            <td>{{ date_bet.time_period_start }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if date_bet.time_period_end %}
+                        <tr>
+                            <th>Period ends on</th>
+                            <td>{{ date_bet.time_period_end }}</td>
+                        </tr>
+                    {% endif %}
+                {% else %}
                     <tr>
-                        <th>Period ends on</th>
-                        <td>{{ date_bet.time_period_end }}</td>
+                        <th>Winning Date</th>
+                        <td>{{ date_bet.winning_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Pot</th>
+                        <td>{{ pot_size }}</td>
                     </tr>
                 {% endif %}
-            {% else %}
-                <tr>
-                    <th>Winning Date</th>
-                    <td>{{ date_bet.winning_date }}</td>
-                </tr>
-                <tr>
-                    <th>Pot</th>
-                    <td>{{ pot_size }}</td>
-                </tr>
-            {% endif %}
-        </table>
+            </table>
+        </card>
 
         {% if date_bet.owner == user.profile and not date_bet.placeddatebet_set.all %}
             <grid>
