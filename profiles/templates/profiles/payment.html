@@ -34,9 +34,12 @@
 {% block content %}
     <form action="{% url 'profiles:payment' %}" method="POST">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
+        <card>
+            <h2 xx class="centered">Execute transaction</h2>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </card>
         <button m-full>Submit</button>
     </form>
 {% endblock %}
