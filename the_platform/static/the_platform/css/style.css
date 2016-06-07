@@ -22,11 +22,11 @@
     }
 
     .border_right {
-        border-right: 1px solid gray;
+        border-right: 1px solid #e3e6e8;
     }
 
     .border_left {
-        border-left: 1px solid gray;
+        border-left: 1px solid #e3e6e8;
         margin-left: -1px;
     }
 }
@@ -112,6 +112,6 @@ body, html {
     background: red;
 }
 
-#id_feedback {
-    border: 1px solid gray;
+textarea {
+    border: 1px solid #e3e6e8 !important;
 }
