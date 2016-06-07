@@ -38,14 +38,14 @@
     <card>
         <form action="{% url 'profiles:feedback' %}" method="POST">
             {% csrf_token %}
-            <h2>Feedback</h2>
+            <h2 xx class="centered">Feedback</h2>
             {{ form.feedback }}
-            <button m-full>Send Feedback</button>
+            <button primary full>Send Feedback</button>
         </form>
     </card>
 
     <card>
-        <h2>Sent Feedback</h2>
+        <h2 xx class="centered">Sent Feedback</h2>
         <table>
             <thead>
             <tr>

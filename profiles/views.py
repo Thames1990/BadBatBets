@@ -125,7 +125,7 @@ def feedback(request):
         if form.is_valid():
             form.save(user=request.user)
             messages.success(request, "Thank you for your valuable feedback. We will use it to make BBB even better.")
-            return redirect('profiles:profile')
+            return render(request, 'profiles/feedback.html', {'form': FeedbackForm()})
     else:
         form = FeedbackForm()
 
