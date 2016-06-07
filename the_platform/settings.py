@@ -156,7 +156,7 @@ LOGGING = {
             'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'bbb.log',
+            'filename': 'the_platform/templates/the_platform/bbb.log',
             'formatter': 'verbose',
             'maxBytes': 1024 * 1024 * 5,
             'backupCount': 1,

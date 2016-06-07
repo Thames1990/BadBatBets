@@ -37,136 +37,159 @@
 {% endblock %}
 
 {% block content %}
-    <table>
-        <tr>
-            <th>Username</th>
-            <td>{{ user.username }}</td>
-        </tr>
-        <tr>
-            <th>Account Balance</th>
-            <td>{{ user.profile.account.balance }}</td>
-        </tr>
-    </table>
-    <hr>
+    <card>
+        <table>
+            <tr>
+                <th>Username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Account Balance</th>
+                <td>{{ user.profile.account.balance }}</td>
+            </tr>
+        </table>
+    </card>
 
     {% if user.is_superuser %}
-        <h2 xx class="centered">Feedback</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>User</th>
-                <th>Message</th>
-                <th>Resolved</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for entry in feedback %}
+        <grid>
+            <div col="1/2">
+                <form action="{% url 'log' %}">
+                    {% csrf_token %}
+                    <button full>View log</button>
+                </form>
+            </div>
+            <div col="1/2">
+                <form action="{% url 'profiles:payment' %}">
+                    {% csrf_token %}
+                    <button full>Payment</button>
+                </form>
+            </div>
+        </grid>
+
+        <card>
+            <h2 xx class="centered">Feedback</h2>
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ entry.provided_by }}</td>
-                    <td class="formatted_wrap">{{ entry.feedback }}</td>
-                    {% if entry.resolved %}
-                        <td>True</td>
-                    {% else %}
-                        <td>
-                            <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
-                                {% csrf_token %}
-                                <button
-                                    name="{{ entry.prim_key }}"
-                                    onclick="return confirm('Are you sure? The feedback will be resolved.')"
-                                >
-                                    Resolve
-                                </button>
-                            </form>
-                        </td>
-                    {% endif %}
+                    <th>User</th>
+                    <th>Message</th>
+                    <th>Resolved</th>
                 </tr>
-            {% empty %}
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for entry in feedback %}
+                    <tr>
+                        <td width="10%">{{ entry.provided_by }}</td>
+                        <td class="formatted_wrap" width="80%">{{ entry.feedback }}</td>
+                        {% if entry.resolved %}
+                            <td width="10%">True</td>
+                        {% else %}
+                            <td width="10%">
+                                <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button
+                                        primary
+                                        full
+                                        name="{{ entry.prim_key }}"
+                                        onclick="return confirm('Are you sure? The feedback will be resolved.')"
+                                    >
+                                        Resolve
+                                    </button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </card>
     {% endif %}
-    <hr>
-    <grid>
-        <div col="1/2" class="border_right">
-            <h2 xx class="centered">Credit</h2>
-            {% if user.profile.account.credit_set.all %}
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Transaction</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for credit in user.profile.account.credit_set.all %}
+
+    <card>
+        <grid>
+            <div col="1/2" class="border_right">
+                <h2 xx class="centered">Credit</h2>
+                {% if user.profile.account.credit_set.all %}
+                    <table>
+                        <thead>
                         <tr>
-                            <td class="unformatted_wrap">
-                                {{ credit.transaction.description }}
-                            </td>
-                            <td>{{ credit.amount }}</td>
+                            <th>Transaction</th>
+                            <th>Amount</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <h5 class="centered">There are no credits yet.</h5>
-            {% endif %}
-        </div>
-        <div col="1/2" class="border_left">
-            <h2 xx class="centered">Debit</h2>
-            {% if user.profile.account.debit_set.all %}
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Transaction</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for debit in user.profile.account.debit_set.all %}
+                        </thead>
+                        <tbody>
+                        {% for credit in user.profile.account.credit_set.all %}
+                            <tr>
+                                <td class="unformatted_wrap">
+                                    {{ credit.transaction.description }}
+                                </td>
+                                <td>{{ credit.amount }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h5 xx class="centered">There are no credits yet.</h5>
+                {% endif %}
+            </div>
+            <div col="1/2" class="border_left">
+                <h2 xx class="centered">Debit</h2>
+                {% if user.profile.account.debit_set.all %}
+                    <table>
+                        <thead>
                         <tr>
-                            <td class="unformatted_wrap">
-                                {{ debit.transaction.description }}
-                            </td>
-                            <td>{{ debit.amount }}</td>
+                            <th>Transaction</th>
+                            <th>Amount</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <h5 xx class="centered">There are no debits yet.</h5>
-            {% endif %}
-        </div>
-    </grid>
-    <hr>
-    <grid>
-        <div col="1/2" class="border_right">
-            <h2 xx class="centered">Resolved Choice Bets</h2>
-            {% for resolved_bet in resolved_placed_choice_bets %}
-                <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
-                    <card>
-                        <h5>{{ resolved_bet.placed_on.name }}</h5>
-                        <hr>
-                        <p>{{ resolved_bet.placed_on.description }}</p>
-                    </card>
-                </a>
-            {% empty %}
-                <h5 xx class="centered">There are not resolved choice bets yet.</h5>
-            {% endfor %}
-        </div>
-        <div col="1/2" class="border_left">
-            <h2 xx class="centered">Resolved Date Bets</h2>
-            {% for resolved_bet in resolved_placed_date_bets %}
-                <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
-                    <card>
-                        <h5>{{ resolved_bet.placed_on.name }}</h5>
-                        <hr>
-                        <p>{{ resolved_bet.placed_on.description }}</p>
-                    </card>
-                </a>
-            {% empty %}
-                <h5 xx class="centered">There are no resolved date bets yet.</h5>
-            {% endfor %}
-        </div>
-    </grid>
+                        </thead>
+                        <tbody>
+                        {% for debit in user.profile.account.debit_set.all %}
+                            <tr>
+                                <td class="unformatted_wrap">
+                                    {{ debit.transaction.description }}
+                                </td>
+                                <td>{{ debit.amount }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h5 xx class="centered">There are no debits yet.</h5>
+                {% endif %}
+            </div>
+        </grid>
+    </card>
+
+    <card>
+        <grid>
+            <div col="1/2" class="border_right">
+                <h2 xx class="centered">Resolved Choice Bets</h2>
+                {% for resolved_bet in resolved_placed_choice_bets %}
+                    <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
+                        <card>
+                            <h5>{{ resolved_bet.placed_on.name }}</h5>
+                            <hr>
+                            <p>{{ resolved_bet.placed_on.description }}</p>
+                        </card>
+                    </a>
+                {% empty %}
+                    <h5 xx class="centered">There are not resolved choice bets yet.</h5>
+                {% endfor %}
+            </div>
+            <div col="1/2" class="border_left">
+                <h2 xx class="centered">Resolved Date Bets</h2>
+                {% for resolved_bet in resolved_placed_date_bets %}
+                    <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
+                        <card>
+                            <h5>{{ resolved_bet.placed_on.name }}</h5>
+                            <hr>
+                            <p>{{ resolved_bet.placed_on.description }}</p>
+                        </card>
+                    </a>
+                {% empty %}
+                    <h5 xx class="centered">There are no resolved date bets yet.</h5>
+                {% endfor %}
+            </div>
+        </grid>
+    </card>
 {% endblock %}

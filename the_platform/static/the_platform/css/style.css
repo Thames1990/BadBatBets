@@ -29,16 +29,6 @@
         border-left: 1px solid gray;
         margin-left: -1px;
     }
-
-    grid {
-        display: flex;
-    }
-
-    grid > div {
-        flex: 1;
-    }
-
-    /* TODO Form fill height in grid > div */
 }
 
 @media only screen and (max-width: 760px) {
@@ -62,8 +52,7 @@
 }
 
 .centered {
-    display: flex !important;
-    justify-content: center !important;
+    text-align: center;
 }
 
 .errorlist {
@@ -75,7 +64,7 @@
 
 .formatted_wrap {
     white-space: pre-wrap;
-    word-wrap: break-word
+    word-wrap: break-word;
 }
 
 .helptext, .nonfield {
@@ -92,7 +81,6 @@
 
 #debug, #info, #success, #warning, #error {
     text-align: center;
-    margin: 1em;
 }
 
 #debug:hover, #info:hover, #success:hover, #warning:hover, #error:hover {

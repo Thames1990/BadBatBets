@@ -37,9 +37,12 @@
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
+        <card>
+            <h2 xx class="centered">Edit Choice Bet<br> {{ form.name.value }}</h2>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </card>
 
         <button primary full>Edit Bet</button>
     </form>

@@ -54,7 +54,7 @@ class LoginForm(AuthenticationForm):
 class PaymentForm(forms.Form):
     type = forms.ChoiceField(choices=[('d', 'Deposit'), ('w', 'Withdrawal')])
     account = forms.ModelChoiceField(queryset=User.objects.all())
-    amount = forms.IntegerField()
+    amount = forms.IntegerField(min_value=0)
 
     def clean_account(self):
         account = self.cleaned_data['account'].profile.account

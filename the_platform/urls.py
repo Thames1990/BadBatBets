@@ -1,5 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.decorators import permission_required
+from django.views.generic import TemplateView
 
 from bets.views import index_view
 from profiles.views import login_user, signup, feedback
@@ -26,6 +28,14 @@ urlpatterns = [
 
     # Bets sub-module
     url(r'^bets/', include('bets.urls')),
+
+    # Log view.
+    url(
+        r'^log/$',
+        permission_required('admin')
+        (TemplateView.as_view(template_name='the_platform/bbb.log', content_type='text/plain')),
+        name='log'
+    )
 ]
 
 handler403 = views.error403

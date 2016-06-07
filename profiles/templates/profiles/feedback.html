@@ -35,9 +35,32 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'profiles:feedback' %}" method="POST">
-        {% csrf_token %}
-        {{ form.feedback }}
-        <button m-full>Send Feedback</button>
-    </form>
+    <card>
+        <form action="{% url 'profiles:feedback' %}" method="POST">
+            {% csrf_token %}
+            <h2>Feedback</h2>
+            {{ form.feedback }}
+            <button m-full>Send Feedback</button>
+        </form>
+    </card>
+
+    <card>
+        <h2>Sent Feedback</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Feedback</th>
+                <th>Resolved</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for feedback in user.feedback_set.all %}
+                <tr>
+                    <td class="formatted_wrap" width="90%">{{ feedback.feedback }}</td>
+                    <td width="10%">{{ feedback.resolved }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </card>
 {% endblock %}

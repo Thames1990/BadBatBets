@@ -37,9 +37,12 @@
 {% block content %}
     <form action="{% url 'bets:create_date_bet' %}" method="post">
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
+        <card>
+            <h2 xx class="centered">Create Date Bet</h2>
+            <table>
+                {{ form.as_table }}
+            </table>
+        </card>
 
         <button primary full>Create Bet</button>
     </form>

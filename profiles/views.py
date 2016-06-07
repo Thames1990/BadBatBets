@@ -35,6 +35,7 @@ def login_user(request):
             form = LoginForm(data=request.POST)
             if form.is_valid():
                 login(request, form.get_user())
+                messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
                 return redirect('profiles:profile')
         else:
             form = LoginForm()
@@ -60,6 +61,7 @@ def signup(request):
                 user.profile.accepted_general_terms_and_conditions = True
                 user.profile.accepted_privacy_policy = True
                 user.profile.save()
+                messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
                 return redirect(login_user)
         else:
             form = SignupForm()

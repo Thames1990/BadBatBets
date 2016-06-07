@@ -41,26 +41,30 @@
 
     <form action="{% url 'bets:create_choice_bet' %}" method="post">
         {% csrf_token %}
-        <table id="choice_bet_table">
-            {{ form.as_table }}
-            {% for choice_number in 2|get_range %}
-                <tr>
-                    <th>
-                        <label for="id_choice_{{ choice_number|add:"1" }}">Choice {{ choice_number|add:"1" }}:</label>
-                    </th>
-                    <td>
-                        <input
-                            id="id_choice_{{ choice_number|add:"1" }}"
-                            maxlength="64"
-                            name="choice_{{ choice_number|add:"1" }}"
-                            type="text"
-                            required
-                            placeholder="Use distinct and non empty descriptions."
-                        >
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        <card>
+            <h2 xx class="centered">Create Choice Bet</h2>
+            <table id="choice_bet_table">
+                {{ form.as_table }}
+                {% for choice_number in 2|get_range %}
+                    <tr>
+                        <th>
+                            <label
+                                for="id_choice_{{ choice_number|add:"1" }}">Choice {{ choice_number|add:"1" }}:</label>
+                        </th>
+                        <td>
+                            <input
+                                id="id_choice_{{ choice_number|add:"1" }}"
+                                maxlength="64"
+                                name="choice_{{ choice_number|add:"1" }}"
+                                type="text"
+                                required
+                                placeholder="Use distinct and non empty descriptions."
+                            >
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </card>
 
         <grid>
             <div col="1/2">
