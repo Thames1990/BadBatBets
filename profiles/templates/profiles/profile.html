@@ -97,6 +97,8 @@
                             </form>
                         {% endif %}
                     </tr>
+                {% empty %}
+                    <td colspan="3">No unresolved feedback is available</td>
                 {% endfor %}
                 </tbody>
             </table>
