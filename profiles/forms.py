@@ -88,9 +88,9 @@ class PaymentForm(forms.Form):
             system_account = Account.objects.get(name='withdrawal', type='o')
             if amount > 1:
                 # TODO Find a transaction description convention
-                description = "Wihtdrawal for " + str(amount) + " points authorised by: " + str(authorised)
+                description = "Wihtdrawal for " + str(amount) + " points \n Authorised by: " + str(authorised)
             else:
-                description = "Wihtdrawal for " + str(amount) + " point authorised by: " + str(authorised)
+                description = "Wihtdrawal for " + str(amount) + " point \n Authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)
             credit = Credit(transaction=transaction, account=system_account, amount=amount)
@@ -98,9 +98,9 @@ class PaymentForm(forms.Form):
         else:
             system_account = Account.objects.get(name='deposit', type='o')
             if amount > 1:
-                description = "Deposit for " + str(amount) + " points authorised by: " + str(authorised)
+                description = "Deposit for " + str(amount) + " points \n Authorised by: " + str(authorised)
             else:
-                description = "Deposit for " + str(amount) + " point authorised by: " + str(authorised)
+                description = "Deposit for " + str(amount) + " point \n Authorised by: " + str(authorised)
 
             transaction = Transaction(description=description)
             credit = Credit(transaction=transaction, account=user_account, amount=amount)

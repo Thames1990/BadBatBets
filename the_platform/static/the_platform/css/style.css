@@ -36,6 +36,14 @@
     #agreements {
         text-align: left;
     }
+
+    table {
+        table-layout: fixed;
+    }
+
+    td {
+        word-wrap: break-word;
+    }
 }
 
 body, html {
