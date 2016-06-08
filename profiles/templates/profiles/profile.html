@@ -68,40 +68,42 @@
 
         <card>
             <h2 xx class="centered">Feedback</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User</th>
-                    <th>Message</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for entry in feedback %}
+            {% if feedback %}
+                <table>
+                    <thead>
                     <tr>
-                        <td>{{ entry.id }}</td>
-                        <td>{{ entry.provided_by }}</td>
-                        <td class="formatted_wrap">{{ entry.feedback }}</td>
-                        {% if not entry.resolved %}
-                            <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
-                                {% csrf_token %}
-                                <button
-                                    primary
-                                    full
-                                    name="{{ entry.prim_key }}"
-                                    onclick="return confirm('Are you sure? Feedback (ID ' + {{ entry.id }} +
-                                        ') will be resolved.')"
-                                >
-                                    Resolve {{ entry.id }}
-                                </button>
-                            </form>
-                        {% endif %}
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Message</th>
                     </tr>
-                {% empty %}
-                    <td colspan="3">No unresolved feedback is available</td>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for entry in feedback %}
+                        <tr>
+                            <td>{{ entry.id }}</td>
+                            <td>{{ entry.provided_by }}</td>
+                            <td class="formatted_wrap">{{ entry.feedback }}</td>
+                            {% if not entry.resolved %}
+                                <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button
+                                        primary
+                                        full
+                                        name="{{ entry.prim_key }}"
+                                        onclick="return confirm('Are you sure? Feedback (ID ' + {{ entry.id }} +
+                                            ') will be resolved.')"
+                                    >
+                                        Resolve {{ entry.id }}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h5 xx class="centered">There is no unresolved feedback</h5>
+            {% endif %}
         </card>
     {% endif %}
 
@@ -129,7 +131,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <h5 xx class="centered">There are no credits yet.</h5>
+                    <h5 xx class="centered">There are no credits yet</h5>
                 {% endif %}
             </div>
             <div col="1/2" class="border_left">
@@ -154,7 +156,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <h5 xx class="centered">There are no debits yet.</h5>
+                    <h5 xx class="centered">There are no debits yet</h5>
                 {% endif %}
             </div>
         </grid>
