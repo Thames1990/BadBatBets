@@ -44,23 +44,30 @@
         </form>
     </card>
 
-    <card>
-        <h2 xx class="centered">Sent Feedback</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Feedback</th>
-                <th>Resolved</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for feedback in user.feedback_set.all %}
-                <tr>
-                    <td class="formatted_wrap" width="90%">{{ feedback.feedback }}</td>
-                    <td width="10%">{{ feedback.resolved }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </card>
+    <grid>
+        <div col="1/2" class="border_right">
+            <h2 xx class="centered">Unresolved Feedback</h2>
+            {% if unresolved_feedback %}
+                {% for entry in unresolved_feedback %}
+                    <card>
+                        <p class="formatted_wrap">{{ entry.feedback }}</p>
+                    </card>
+                {% endfor %}
+            {% else %}
+                <h5 xx class="centered">No unresolved feedback is available</h5>
+            {% endif %}
+        </div>
+        <div col="1/2" class="border_left">
+            <h2 xx class="centered">Resolved Feedback</h2>
+            {% if resolved_feedback %}
+                {% for entry in resolved_feedback %}
+                    <card>
+                        <p class="formatted_wrap">{{ entry.feedback }}</p>
+                    </card>
+                {% endfor %}
+            {% else %}
+                <h5 xx class="centered">No resolved feedback is available</h5>
+            {% endif %}
+        </div>
+    </grid>
 {% endblock %}

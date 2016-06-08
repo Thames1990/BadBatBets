@@ -33,13 +33,6 @@
 }
 
 @media only screen and (max-width: 760px) {
-    td {
-        max-width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
     #agreements {
         text-align: left;
     }
@@ -48,6 +41,10 @@
 body, html {
     background: #f4f5f6;
     overflow-x: hidden;
+}
+
+textarea {
+    border: 1px solid #e3e6e8 !important;
 }
 
 .card_link {
@@ -61,15 +58,18 @@ body, html {
     text-align: center;
 }
 
-.errorlist {
-    background: red;
-    text-align: center;
-    list-style-type: none;
-    padding: 0.5em;
+.inline {
+    display: inline;
 }
+
+/* Table */
 
 .formatted_wrap {
     white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.unformatted_wrap {
     word-wrap: break-word;
 }
 
@@ -77,13 +77,14 @@ body, html {
     display: none;
 }
 
-.inline {
-    display: inline;
+.errorlist {
+    background: red;
+    text-align: center;
+    list-style-type: none;
+    padding: 0.5em;
 }
 
-.unformatted_wrap {
-    word-wrap: break-word;
-}
+/* Messages */
 
 #debug, #info, #success, #warning, #error {
     text-align: center;
@@ -111,8 +112,4 @@ body, html {
 
 #error {
     background: red;
-}
-
-textarea {
-    border: 1px solid #e3e6e8 !important;
 }

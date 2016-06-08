@@ -125,11 +125,15 @@ def feedback(request):
         if form.is_valid():
             form.save(user=request.user)
             messages.success(request, "Thank you for your valuable feedback. We will use it to make BBB even better.")
-            return render(request, 'profiles/feedback.html', {'form': FeedbackForm()})
+            return redirect('profiles:profile')
     else:
         form = FeedbackForm()
 
-    return render(request, 'profiles/feedback.html', {'form': form})
+    return render(request, 'profiles/feedback.html', {
+        'form': form,
+        'resolved_feedback': request.user.feedback_set.filter(resolved=True),
+        'unresolved_feedback': request.user.feedback_set.filter(resolved=False),
+    })
 
 
 @login_required
