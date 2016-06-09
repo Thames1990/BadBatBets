@@ -143,10 +143,13 @@
                             <button primary full>Bet</button>
                         </form>
                     </div>
-                    {# TODO Fill div #}
-                    <div col="1/2" class="border_left">
+                    <div col="1/2" class="border_left absolute_fill">
                         <h2 xx class="centered">Resolve Bet</h2>
-                        <form action="{% url 'bets:resolve_bet' choice_bet.prim_key %}" method="post">
+                        <form
+                            action="{% url 'bets:resolve_bet' choice_bet.prim_key %}"
+                            method="post"
+                            id="resolve_form"
+                        >
                             {% csrf_token %}
                             <h5>Available Choices</h5>
                             {% for choice in choice_bet.choice_set.all %}
@@ -164,16 +167,19 @@
                                 </p>
                             {% endfor %}
                             <hr>
-                            <button
-                                primary
-                                full
-                                name="resolve"
-                                value="resolve"
-                                onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
-                            >
-                                Resolve
-                            </button>
                         </form>
+                        <button
+                            xx
+                            class="absolute_bottom"
+                            primary
+                            full
+                            name="resolve"
+                            value="resolve"
+                            form="resolve_form"
+                            onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                        >
+                            Resolve
+                        </button>
                     </div>
                 </grid>
             </card>
@@ -208,7 +214,7 @@
                         placeholder="Amount"
                         required
                     >
-                    <button primary full>Bet</button>
+                    <button primary full style="bottom: 0;">Bet</button>
                 </form>
             </card>
         {% elif not user_can_place_bet and choice_bet.owner == user.profile and choice_bet.winning_choice == None %}
@@ -326,7 +332,7 @@
                                 type="date"
                                 id="placed"
                                 name="date"
-                                min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
+                                min="{{ min_date|date:"Y-m-d" }}"
                                 max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
                                 placeholder="Date"
                                 required

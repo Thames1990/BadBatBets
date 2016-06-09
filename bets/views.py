@@ -17,6 +17,7 @@ from .util import user_can_place_bet, get_bet, get_placed_bet_for_profile, get_c
     place_bet_transaction, resolve_bet
 from ledger.exceptions import InsufficientFunds
 from profiles.util import user_authenticated
+from bets.exceptions import NoPlacedBets
 
 logger = logging.getLogger(__name__)
 
@@ -50,14 +51,19 @@ def bet_view(request, prim_key):
                     'choice_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
                     'placed_bet': placed_bet,
-                    'pot_size': pot_size
+                    'pot_size': pot_size,
                 })
             elif isinstance(bet, DateBet):
+                if bet.time_period_start:
+                    min_date = max(bet.time_period_start, datetime.now().date())
+                else:
+                    min_date = datetime.now().date()
                 return render(request, 'bets/bets.html', {
                     'date_bet': bet,
                     'user_can_place_bet': user_can_place_bet(request.user, bet),
                     'placed_bet': placed_bet,
-                    'pot_size': pot_size
+                    'pot_size': pot_size,
+                    'min_date': min_date
                 })
             else:
                 warning_message = "Bets with type " + type(bet).__name__ + " aren't handled yet."
@@ -124,7 +130,7 @@ def place_bet(request, prim_key):
                 messages.warning(request, "Bets with type " + type(bet).__name__ + " are not handled yet.")
                 raise Http404
 
-            messages.success(request, "Succesfully placed " + str(placed) + " points on" + str(bet) + ".")
+            messages.success(request, "Succesfully placed " + str(placed) + " points on " + str(bet) + ".")
             return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
@@ -143,8 +149,11 @@ def resolve_bet_view(request, prim_key):
             if isinstance(bet, ChoiceBet):
                 winning_choice = get_choice(request.POST['choice'])
                 if winning_choice is not None:
-                    resolve_bet(bet, winning_choice)
-                    messages.success(request, "Succesfully resolved " + str(bet) + ".")
+                    try:
+                        resolve_bet(bet, winning_choice)
+                        messages.success(request, "Succesfully resolved " + str(bet) + ".")
+                    except NoPlacedBets:
+                        messages.warning(request, "No bets have been placed yet.")
                     return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(
@@ -155,8 +164,11 @@ def resolve_bet_view(request, prim_key):
             elif isinstance(bet, DateBet):
                 winning_date = datetime.strptime(request.POST['date'], '%Y-%m-%d').date()
                 if winning_date is not None:
-                    resolve_bet(bet, winning_date)
-                    messages.success(request, "Succesfully resolved " + str(bet) + ".")
+                    try:
+                        resolve_bet(bet, winning_date)
+                        messages.success(request, "Succesfully resolved " + str(bet) + ".")
+                    except NoPlacedBets:
+                        messages.warning(request, "No bets have been placed yet.")
                     return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
                 else:
                     messages.error(request, "Date does not exist.")

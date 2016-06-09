@@ -30,19 +30,32 @@
         border-left: 1px solid #e3e6e8;
         margin-left: -1px;
     }
+
+    .absolute_bottom {
+        position: absolute;
+        bottom: 6.5%;
+        left: 2.5%;
+        width: 95%;
+    }
+
+    .absolute_fill {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+    }
 }
 
 @media only screen and (max-width: 760px) {
-    #agreements {
-        text-align: left;
-    }
-
     table {
         table-layout: fixed;
     }
 
     td {
         word-wrap: break-word;
+    }
+
+    #agreements {
+        text-align: left;
     }
 }
 
@@ -53,6 +66,7 @@ body, html {
 
 textarea {
     border: 1px solid #e3e6e8 !important;
+    resize: none;
 }
 
 .card_link {

@@ -35,11 +35,11 @@
     <form action="{% url 'profiles:payment' %}" method="POST">
         {% csrf_token %}
         <card>
-            <h2 xx class="centered">Execute transaction</h2>
+            <h2 xx class="centered">Execute Transaction</h2>
             <table>
                 {{ form.as_table }}
             </table>
         </card>
-        <button m-full>Submit</button>
+        <button primary full>Submit</button>
     </form>
 {% endblock %}
