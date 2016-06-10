@@ -28,6 +28,17 @@
                 <menuitem>
                     <a href="{% url 'profiles:profile' %}">Profile</a>
                 </menuitem>
+                {% if user.is_superuser %}
+                    <menuitem>
+                        <a href="{% url 'profiles:profile' %}#unresolved_feedback">Unresolved Feedback</a>
+                    </menuitem>
+                {% endif %}
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}#transactions">Transactions</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}#resolved_bets">Resolved Bets</a>
+                </menuitem>
                 <menuitem>
                     <a href="{% url 'profiles:logout' %}">Logout</a>
                 </menuitem>
@@ -66,7 +77,7 @@
             </div>
         </grid>
 
-        <h2 xx class="centered">Unresolved Feedback</h2>
+        <h2 xx class="centered" id="unresolved_feedback">Unresolved Feedback</h2>
         {% if feedback %}
             {% for entry in feedback %}
                 <card>
@@ -92,7 +103,7 @@
         {% endif %}
     {% endif %}
 
-    <card>
+    <card id="transactions">
         <grid>
             <div col="1/2" class="border_right">
                 <h2 xx class="centered">Credit</h2>
@@ -147,38 +158,60 @@
         </grid>
     </card>
 
-    {# TODO Differentiate between lost/won resolved bets #}
-    {# TODO Show more info on resolved bets card #}
-    <grid>
-        <div col="1/2" class="border_right">
-            <h2 xx class="centered">Resolved Choice Bets</h2>
-            {% for resolved_bet in resolved_placed_choice_bets %}
-                <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
-                    <card>
-                        <h5>{{ resolved_bet.placed_on.name }}</h5>
-                        <hr>
-                        <p>{{ resolved_bet.placed_on.description }}</p>
-                    </card>
-                </a>
-            {% empty %}
-                <h5 xx class="centered">There are not resolved choice bets yet</h5>
-            {% endfor %}
-        </div>
-        <div col="1/2" class="border_left">
-            <h2 xx class="centered">Resolved Date Bets</h2>
-            {% for resolved_bet in resolved_placed_date_bets %}
-                <card>
+    <div id="resolved_bets">
+        <grid>
+            <div col="1/2" class="border_right">
+                <h2 xx class="centered">Resolved Choice Bets</h2>
+                {% for resolved_bet in resolved_placed_choice_bets %}
                     <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
                         <card>
                             <h5>{{ resolved_bet.placed_on.name }}</h5>
                             <hr>
-                            <p>{{ resolved_bet.placed_on.description }}</p>
+                            <grid>
+                                <div col="1/2" class="border_right">
+                                    <p>{{ resolved_bet.placed_on.description }}</p>
+                                </div>
+                                <div col="1/2" class="border_left">
+                                    <p>Winning choice:<br> {{ resolved_bet.placed_on.winning_choice }}</p>
+                                    <p>Your choice:<br> {{ resolved_bet.chosen }}</p>
+                                    {% if resolved_bet.chosen == resolved_bet.placed_on.winning_choice %}
+                                        {# TODO "Won x points" #}
+                                        <p>You won.</p>
+                                    {% else %}
+                                        <p>You placed on the wrong choice and lost {{ resolved_bet.placed }} points.</p>
+                                    {% endif %}
+                                </div>
+                            </grid>
                         </card>
                     </a>
-                </card>
-            {% empty %}
-                <h5 xx class="centered">There are no resolved date bets yet</h5>
-            {% endfor %}
-        </div>
-    </grid>
+                {% empty %}
+                    <h5 xx class="centered">There are not resolved choice bets yet</h5>
+                {% endfor %}
+            </div>
+            <div col="1/2" class="border_left">
+                <h2 xx class="centered">Resolved Date Bets</h2>
+                {% for resolved_bet in resolved_placed_date_bets %}
+                    <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
+                        <card>
+                            <h5>{{ resolved_bet.placed_on.name }}</h5>
+                            <hr>
+                            <grid>
+                                <div col="1/2" class="border_right">
+                                    <p>{{ resolved_bet.placed_on.description }}</p>
+                                </div>
+                                <div col="1/2" class="border_left">
+                                    <p>Winning date:<br> {{ resolved_bet.placed_on.winning_date }}</p>
+                                    <p>Your date:<br> {{ resolved_bet.placed_date }}</p>
+                                    <p>Placed: {{ resolved_bet.placed }}</p>
+                                    {# TODO won/lost #}
+                                </div>
+                            </grid>
+                        </card>
+                    </a>
+                {% empty %}
+                    <h5 xx class="centered">There are no resolved date bets yet</h5>
+                {% endfor %}
+            </div>
+        </grid>
+    </div>
 {% endblock %}

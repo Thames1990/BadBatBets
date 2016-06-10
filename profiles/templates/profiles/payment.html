@@ -7,6 +7,9 @@
 {% block links %}
     <ul>
         <li>
+            <a href="{% url 'profiles:feedback' %}">Feedback</a>
+        </li>
+        <li>
             <a>Create Bet</a>
             <menu>
                 <menuitem>
@@ -22,6 +25,17 @@
             <menu>
                 <menuitem>
                     <a href="{% url 'profiles:profile' %}">Profile</a>
+                </menuitem>
+                {% if user.is_superuser %}
+                    <menuitem>
+                        <a href="{% url 'profiles:profile' %}#unresolved_feedback">Unresolved Feedback</a>
+                    </menuitem>
+                {% endif %}
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}#transactions">Transactions</a>
+                </menuitem>
+                <menuitem>
+                    <a href="{% url 'profiles:profile' %}#resolved_bets">Resolved Bets</a>
                 </menuitem>
                 <menuitem>
                     <a href="{% url 'profiles:logout' %}">Logout</a>
