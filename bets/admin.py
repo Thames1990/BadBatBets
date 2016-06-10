@@ -22,6 +22,10 @@ class ChoiceBetAdmin(admin.ModelAdmin):
     list_display = ('name', 'created', 'pub_date', 'end_date', 'resolved')
 
 
+class PlacedChoiceBetAdmin(admin.ModelAdmin):
+    list_display = ('placed_by', 'placed_on', 'chosen', 'placed')
+
+
 class DateBetAdmin(admin.ModelAdmin):
     fieldsets = [
         ('General', {'fields': ['name', 'description']}),
@@ -39,8 +43,12 @@ class DateBetAdmin(admin.ModelAdmin):
     list_display = ('name', 'created', 'pub_date', 'resolved')
 
 
+class PlacedDateBetAdmin(admin.ModelAdmin):
+    list_display = ('placed_by', 'placed_on', 'placed_date', 'placed')
+
+
 admin.site.register(ChoiceBet, ChoiceBetAdmin)
-admin.site.register(PlacedChoiceBet)
+admin.site.register(PlacedChoiceBet, PlacedChoiceBetAdmin)
 admin.site.register(DateBet, DateBetAdmin)
-admin.site.register(PlacedDateBet)
+admin.site.register(PlacedDateBet, PlacedDateBetAdmin)
 admin.site.register(Choice)
