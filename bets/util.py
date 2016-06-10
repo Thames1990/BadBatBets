@@ -313,7 +313,7 @@ def perform_payout(bet, winning_bets):
 
     description = "Winner payout\nBet: " + str(bet.prim_key)
     for winner in winners:
-        description += "\nAccount: " + winner['account'].name + ", Amount: " + str(winner['amount'])
+        description += "\nAccount: " + winner['account'].name + "\nAmount: " + str(winner['amount'])
 
     try:
         transaction = one_to_many_transaction(origin=bet.account, destinations=winners, description=description)
@@ -479,12 +479,11 @@ def create_choices(request, bet):
     """
     from .models import Choice
 
-    last_choice = False
     choice_number = 1
     choice_descriptions = []
     choices = []
 
-    while not last_choice:
+    while True:
         description = request.POST.get("choice_" + str(choice_number))
         if description is not None:
             if description != "" and description not in choice_descriptions:
@@ -497,6 +496,6 @@ def create_choices(request, bet):
             else:
                 raise ValidationError("Invalid choice descriptions", code='invalid_choice_descriptions')
         else:
-            last_choice = True
+            break
 
     return choices

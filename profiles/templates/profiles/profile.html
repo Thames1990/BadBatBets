@@ -120,9 +120,7 @@
                         <tbody>
                         {% for credit in user.profile.account.credit_set.all %}
                             <tr>
-                                <td class="unformatted_wrap">
-                                    {{ credit.transaction.description }}
-                                </td>
+                                <td class="formatted_wrap">{{ credit.transaction.description }}</td>
                                 <td>{{ credit.amount }}</td>
                             </tr>
                         {% endfor %}
@@ -145,9 +143,7 @@
                         <tbody>
                         {% for debit in user.profile.account.debit_set.all %}
                             <tr>
-                                <td class="unformatted_wrap">
-                                    {{ debit.transaction.description }}
-                                </td>
+                                <td class="formatted_wrap">{{ debit.transaction.description }}</td>
                                 <td>{{ debit.amount }}</td>
                             </tr>
                         {% endfor %}

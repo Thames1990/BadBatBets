@@ -13,6 +13,11 @@
         z-index: 999;
     }
 
+    grid {
+        display: flex;
+        flex-direction: row;
+    }
+
     menu {
         margin-top: 0.6em !important;
     }
@@ -45,14 +50,6 @@
 }
 
 @media only screen and (max-width: 760px) {
-    table {
-        table-layout: fixed;
-    }
-
-    td {
-        word-wrap: break-word;
-    }
-
     #agreements {
         text-align: left;
     }
@@ -79,18 +76,15 @@ textarea {
     text-align: center;
 }
 
-.inline {
-    display: inline;
+.errorlist {
+    background: red;
+    text-align: center;
+    list-style-type: none;
+    padding: 0.5em;
 }
-
-/* Table */
 
 .formatted_wrap {
     white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-.unformatted_wrap {
     word-wrap: break-word;
 }
 
@@ -99,11 +93,14 @@ textarea {
     display: none;
 }
 
-.errorlist {
-    background: red;
-    text-align: center;
-    list-style-type: none;
-    padding: 0.5em;
+.inline {
+    display: inline;
+}
+
+.total_center {
+    align-items: center;
+    align-self: center;
+    justify-content: center;
 }
 
 /* Messages */

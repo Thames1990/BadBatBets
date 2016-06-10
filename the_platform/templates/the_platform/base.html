@@ -33,55 +33,55 @@
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
                     <card id="debug" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" class="border_right unformatted_wrap">
+                            <div col="1/6" class="border_right total_center">
                                 <strong>DEBUG</strong>
                             </div>
-                            <div col="5/6" class="border_left unformatted_wrap">
-                                <strong>{{ message }}</strong>
+                            <div col="5/6" class="border_left">
+                                <strong class="formatted_wrap">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
                     <card id="info" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" class="border_right unformatted_wrap">
+                            <div col="1/6" class="border_right total_center">
                                 <strong>INFO</strong>
                             </div>
-                            <div col="5/6" class="border_left unformatted_wrap">
-                                <strong>{{ message }}</strong>
+                            <div col="5/6" class="border_left">
+                                <strong class="formatted_wrap">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
                     <card id="success" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" class="border_right unformatted_wrap">
+                            <div col="1/6" class="border_right total_center">
                                 <strong>SUCCESS</strong>
                             </div>
-                            <div col="5/6" class="border_left unformatted_wrap">
-                                <strong>{{ message }}</strong>
+                            <div col="5/6" class="border_left">
+                                <strong class="formatted_wrap">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
                     <card id="warning" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" class="border_right unformatted_wrap">
+                            <div col="1/6" class="border_right total_center">
                                 <strong>WARNING</strong>
                             </div>
-                            <div col="5/6" class="border_left unformatted_wrap">
-                                <strong>{{ message }}</strong>
+                            <div col="5/6" class="border_left">
+                                <strong class="formatted_wrap">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
                 {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                     <card id="error" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
-                            <div col="1/6" class="border_right unformatted_wrap">
+                            <div col="1/6" class="border_right total_center">
                                 <strong>ERROR</strong>
                             </div>
-                            <div col="5/6" class="border_left unformatted_wrap">
-                                <strong>{{ message }}</strong>
+                            <div col="5/6" class="border_left">
+                                <strong class="formatted_wrap">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
