@@ -47,8 +47,12 @@ class PlacedDateBetAdmin(admin.ModelAdmin):
     list_display = ('placed_by', 'placed_on', 'placed_date', 'placed')
 
 
+class ChoiceAdmin(admin.ModelAdmin):
+    list_display = ('belongs_to', 'description', 'picks')
+
+
 admin.site.register(ChoiceBet, ChoiceBetAdmin)
 admin.site.register(PlacedChoiceBet, PlacedChoiceBetAdmin)
 admin.site.register(DateBet, DateBetAdmin)
 admin.site.register(PlacedDateBet, PlacedDateBetAdmin)
-admin.site.register(Choice)
+admin.site.register(Choice, ChoiceAdmin)
