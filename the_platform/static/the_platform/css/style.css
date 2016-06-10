@@ -35,9 +35,10 @@
         margin-left: -1px;
     }
 
+    /* TODO Fix this shit for real */
     .absolute_bottom {
         position: absolute;
-        bottom: 6.5%;
+        bottom: 4.93%;
         left: 2.5%;
         width: 95%;
     }
@@ -81,6 +82,10 @@ textarea {
     text-align: center;
     list-style-type: none;
     padding: 0.5em;
+}
+
+.fixed_table {
+    table-layout: fixed;
 }
 
 .formatted_wrap {

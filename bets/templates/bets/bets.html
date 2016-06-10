@@ -52,19 +52,19 @@
 {% block content %}
     {% if choice_bet %}
         <card>
-            <table>
+            <table xx class="fixed_table">
                 <tr>
                     <th>Name</th>
-                    <td>{{ choice_bet.name }}</td>
+                    <td class="formatted_wrap">{{ choice_bet.name }}</td>
                 </tr>
                 <tr>
                     <th>Description</th>
-                    <td>{{ choice_bet.description }}</td>
+                    <td class="formatted_wrap">{{ choice_bet.description }}</td>
                 </tr>
                 {% if placed_bet %}
                     <tr>
                         <th>Your Choice</th>
-                        <td>{{ placed_bet.chosen }}</td>
+                        <td class="formatted_wrap">{{ placed_bet.chosen }}</td>
                     </tr>
                     <tr>
                         <th>Points placed</th>
@@ -85,7 +85,7 @@
                 {% else %}
                     <tr>
                         <th>Winning choice</th>
-                        <td>{{ choice_bet.winning_choice }}</td>
+                        <td class="formatted_wrap">{{ choice_bet.winning_choice }}</td>
                     </tr>
                     <tr>
                         <th>Pot</th>
@@ -134,7 +134,7 @@
                                     value="{{ choice.description }}"
                                     required
                                 >
-                                <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                                <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice.description }}</label>
                                 <br>
                             {% empty %}
                                 <p class="inline">
@@ -170,7 +170,7 @@
                                     name="choice"
                                     value="{{ choice }}"
                                 >
-                                <label for="{{ forloop.counter }}">{{ choice }}</label>
+                                <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice }}</label>
                                 <br>
                             {% empty %}
                                 <p class="inline">
@@ -208,7 +208,7 @@
                             value="{{ choice.description }}"
                             required
                         >
-                        <label for="{{ forloop.counter }}">{{ choice.description }}</label>
+                        <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice.description }}</label>
                         <br>
                     {% empty %}
                         <p class="inline">
@@ -241,7 +241,7 @@
                             name="choice"
                             value="{{ choice }}"
                         >
-                        <label for="{{ forloop.counter }}">{{ choice }}</label>
+                        <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice }}</label>
                         <br>
                     {% empty %}
                         <p class="inline">
@@ -263,14 +263,14 @@
         {% endif %}
     {% elif date_bet %}
         <card>
-            <table>
+            <table xx class="fixed_table">
                 <tr>
                     <th>Name</th>
-                    <td>{{ date_bet.name }}</td>
+                    <td class="formatted_wrap">{{ date_bet.name }}</td>
                 </tr>
                 <tr>
                     <th>Description</th>
-                    <td>{{ date_bet.description }}</td>
+                    <td class="formatted_wrap">{{ date_bet.description }}</td>
                 </tr>
                 {% if placed_bet %}
                     <tr>
