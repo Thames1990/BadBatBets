@@ -18,8 +18,6 @@ function addChoice() {
         "name='choice_" + choice_count + "' " +
         "type='text' " +
         "required " +
-        "pattern='[a-zA-Z0-9]+' " +
-        "oninvalid='setCustomValidity(\"Required. Please only use letters and/or numbers.\")' " +
-        "onchange='try{setCustomValidity(\"\")}catch(e){}'" +
+        "placeholder='Use distinct and non empty descriptions.'" +
         ">";
 }
