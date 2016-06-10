@@ -134,7 +134,8 @@
                                     value="{{ choice.description }}"
                                     required
                                 >
-                                <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice.description }}</label>
+                                <label for="{{ forloop.counter }}"
+                                       class="formatted_wrap">{{ choice.description }}</label>
                                 <br>
                             {% empty %}
                                 <p class="inline">
@@ -360,9 +361,13 @@
                             <button primary full>Bet</button>
                         </form>
                     </div>
-                    <div col="1/2" class="border_left">
+                    <div col="1/2" class="border_left absolute_fill">
                         <h2 xx class="centered">Resolve Bet</h2>
-                        <form action="{% url 'bets:resolve_bet' date_bet.prim_key %}" method="post">
+                        <form
+                            action="{% url 'bets:resolve_bet' date_bet.prim_key %}"
+                            method="post"
+                            id="resolve_form"
+                        >
                             {% csrf_token %}
                             <label for="date"><h5>Winning Date</h5></label>
                             <input
@@ -373,16 +378,19 @@
                                 min="{{ date_bet.time_period_start|date:"Y-m-d" }}"
                                 max="{{ date_bet.time_period_end|date:"Y-m-d" }}"
                             >
-                            <button
-                                primary
-                                full
-                                name="resolve"
-                                value="resolve"
-                                onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
-                            >
-                                Resolve
-                            </button>
                         </form>
+                        <button
+                            xx
+                            class="absolute_bottom"
+                            primary
+                            full
+                            name="resolve"
+                            value="resolve"
+                            form="resolve_form"
+                            onclick="return confirm('Are you sure? The bet will be closed and the pot will be distributed.')"
+                        >
+                            Resolve
+                        </button>
                     </div>
                 </grid>
             </card>
