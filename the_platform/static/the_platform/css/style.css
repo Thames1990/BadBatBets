@@ -5,12 +5,12 @@
         margin-bottom: 4em;
     }
 
-    /* TODO Fix weird anchor render (e.g. AGB) */
     footer {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
+        z-index: 999;
     }
 
     menu {
@@ -95,6 +95,7 @@ textarea {
     word-wrap: break-word;
 }
 
+/* TODO update style */
 .helptext, .nonfield {
     display: none;
 }

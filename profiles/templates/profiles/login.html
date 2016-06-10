@@ -11,7 +11,7 @@
 
             {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
-                    <div id="error" onclick='this.parentNode.removeChild(this); return false;'>
+                    <card id="error" onclick='this.parentNode.removeChild(this); return false;'>
                         <grid>
                             <div col="1/6" class="border_right">
                                 <strong>ERROR</strong>
@@ -20,7 +20,7 @@
                                 <strong>{{ error }}</strong>
                             </div>
                         </grid>
-                    </div>
+                    </card>
                 {% endfor %}
             {% endif %}
 

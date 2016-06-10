@@ -76,8 +76,8 @@ def change_password(request):
         form = PasswordChangeForm(request.user, data=request.POST)
         if form.is_valid():
             form.save()
+            # TODO add this "(update_session_auth_hash(request, form.user))"? It's mentioned in docs.
             return redirect(login_user)
-
     else:
         form = PasswordChangeForm(request.user)
 

@@ -20,6 +20,7 @@ class SignupForm(UserCreationForm):
                 'placeholder': '30 characters or fewer. Letters, digits and @/./+/-/_ only.'
             }),
         }
+        # TODO Update palceholders
 
     def clean_username(self):
         return self.cleaned_data.get('username').lower()

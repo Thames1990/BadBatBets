@@ -59,6 +59,10 @@
                 <td>{{ user.profile.account.balance }}</td>
             </tr>
         </table>
+        <form action="{% url 'profiles:change_password' %}" method="post">
+            {% csrf_token %}
+            <button primary full>Change Password</button>
+        </form>
     </card>
 
     {% if user.is_superuser %}

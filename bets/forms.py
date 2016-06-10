@@ -215,7 +215,6 @@ class DateBetCreationForm(forms.ModelForm):
 
         for forbidden_user in forbidden:
             new_bet.forbidden.add(forbidden_user)
-            # TODO Do we need to save here?
 
         if pub_date is not None:
             new_bet.pub_date = pub_date
