@@ -11,6 +11,10 @@ class ForbiddenUserAdmin(admin.ModelAdmin):
     list_display = ['name', 'has_account']
 
 
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ['provided_by', 'feedback', 'resolved']
+
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(ForbiddenUser, ForbiddenUserAdmin)
-admin.site.register(Feedback)
+admin.site.register(Feedback, FeedbackAdmin)
