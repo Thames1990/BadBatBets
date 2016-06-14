@@ -89,6 +89,8 @@ textarea {
 .formatted_wrap {
     white-space: pre-wrap;
     word-wrap: break-word;
+    /* TODO Fuck browser compability */
+    word-break: break-all;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     -ms-hyphens: auto;
