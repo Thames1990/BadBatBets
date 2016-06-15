@@ -61,7 +61,7 @@
             {% if unresolved_feedback %}
                 {% for entry in unresolved_feedback %}
                     <card>
-                        <p class="formatted_wrap">{{ entry.feedback }}</p>
+                        <p class="formatted hyphenate">{{ entry.feedback }}</p>
                     </card>
                 {% endfor %}
             {% else %}
@@ -73,7 +73,7 @@
             {% if resolved_feedback %}
                 {% for entry in resolved_feedback %}
                     <card>
-                        <p class="formatted_wrap">{{ entry.feedback }}</p>
+                        <p class="formatted hyphenate">{{ entry.feedback }}</p>
                     </card>
                 {% endfor %}
             {% else %}

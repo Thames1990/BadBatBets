@@ -1,14 +1,16 @@
 {% load staticfiles %}
-<html>
+<html lang="de">
 <head>
-    <meta charset=utf-8>
+    <title>{% block title %}Bad Bat Bets{% endblock %}</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <meta name="theme-color" content="#679">
 
-    <title>{% block title %}Bad Bat Bets{% endblock %}</title>
-
     <link rel="stylesheet" href="{% static 'the_platform/css/style.css' %}">
     <link rel="icon" href="{% static 'the_platform/icons/favicon.ico' %}">
+
+    <script src="{% static 'the_platform/js/hyphenator.js' %}"></script>
 </head>
 <body>
 <main>
@@ -37,7 +39,7 @@
                                 <strong>DEBUG</strong>
                             </div>
                             <div col="5/6" class="border_left">
-                                <strong class="formatted_wrap">{{ message }}</strong>
+                                <strong class="formatted hyphenate">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
@@ -48,7 +50,7 @@
                                 <strong>INFO</strong>
                             </div>
                             <div col="5/6" class="border_left">
-                                <strong class="formatted_wrap">{{ message }}</strong>
+                                <strong class="formatted hyphenate">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
@@ -59,7 +61,7 @@
                                 <strong>SUCCESS</strong>
                             </div>
                             <div col="5/6" class="border_left">
-                                <strong class="formatted_wrap">{{ message }}</strong>
+                                <strong class="formatted hyphenate">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
@@ -70,7 +72,7 @@
                                 <strong>WARNING</strong>
                             </div>
                             <div col="5/6" class="border_left">
-                                <strong class="formatted_wrap">{{ message }}</strong>
+                                <strong class="formatted hyphenate">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>
@@ -81,7 +83,7 @@
                                 <strong>ERROR</strong>
                             </div>
                             <div col="5/6" class="border_left">
-                                <strong class="formatted_wrap">{{ message }}</strong>
+                                <strong class="formatted hyphenate">{{ message }}</strong>
                             </div>
                         </grid>
                     </card>

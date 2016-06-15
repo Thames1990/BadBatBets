@@ -48,17 +48,17 @@
             {% for choice_bet in choice_bets %}
                 <a class="card_link" href="{% url 'bets:bet' choice_bet.prim_key %}">
                     <card>
-                        <h5 xx class="formatted_wrap">{{ choice_bet.name }}</h5>
+                        <h5 xx class="formatted hyphenate">{{ choice_bet.name }}</h5>
                         <hr>
                         <grid>
                             <div col="1/2" class="border_right">
-                                <p xx class="formatted_wrap">{{ choice_bet.description }}</p>
+                                <p xx class="formatted hyphenate">{{ choice_bet.description }}</p>
                             </div>
                             <div col="1/2" class="border_left">
                                 <p class="inline">Available choices</p>
                                 <ul>
                                     {% for choice in choice_bet.choice_set.all %}
-                                        <li class="formatted_wrap">{{ choice.description }}</li>
+                                        <li class="formatted hyphenate">{{ choice.description }}</li>
                                     {% empty %}
                                         <li>No choices are available</li>
                                     {% endfor %}
@@ -77,11 +77,11 @@
             {% for date_bet in date_bets %}
                 <a class="card_link" href="{% url 'bets:bet' date_bet.prim_key %}">
                     <card>
-                        <h5 xx class="formatted_wrap">{{ date_bet.name }}</h5>
+                        <h5 xx class="formatted hyphenate">{{ date_bet.name }}</h5>
                         <hr>
                         <grid>
                             <div col="1/2" class="border_right">
-                                <p xx class="formatted_wrap">{{ date_bet.description }}</p>
+                                <p xx class="formatted hyphenate">{{ date_bet.description }}</p>
                             </div>
                             <div col="1/2" class="border_left">
                                 {% if date_bet.time_period_start and time_period_end %}
@@ -108,14 +108,14 @@
             {% for placed_choice_bet in placed_choice_bets %}
                 <a class="card_link" href="{% url 'bets:bet' placed_choice_bet.placed_on.prim_key %}">
                     <card>
-                        <h5 xx class="formatted_wrap">{{ placed_choice_bet.placed_on.name }}</h5>
+                        <h5 xx class="formatted hyphenate">{{ placed_choice_bet.placed_on.name }}</h5>
                         <hr>
                         <grid>
                             <div col="1/2" class="border_right">
                                 <p>Placed points: {{ placed_choice_bet.placed }}</p>
                             </div>
                             <div col="1/2" class="border_left">
-                                <p xx class="formatted_wrap">Placed Choice: {{ placed_choice_bet.chosen.description }}</p>
+                                <p xx class="formatted hyphenate">Placed Choice: {{ placed_choice_bet.chosen.description }}</p>
                             </div>
                         </grid>
                     </card>
@@ -130,7 +130,7 @@
             {% for placed_date_bet in placed_date_bets %}
                 <a class="card_link" href="{% url 'bets:bet' placed_date_bet.placed_on.prim_key %}">
                     <card>
-                        <h5 xx class="formatted_wrap">{{ placed_date_bet.placed_on.name }}</h5>
+                        <h5 xx class="formatted hyphenate">{{ placed_date_bet.placed_on.name }}</h5>
                         <hr>
                         <grid>
                             <div col="1/2" class="border_right">

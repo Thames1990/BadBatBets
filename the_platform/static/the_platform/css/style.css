@@ -86,15 +86,8 @@ textarea {
     padding: 0.5em;
 }
 
-.formatted_wrap {
+.formatted {
     white-space: pre-wrap;
-    word-wrap: break-word;
-    /* TODO Fuck browser compability */
-    word-break: break-all;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
 }
 
 /* TODO update style */

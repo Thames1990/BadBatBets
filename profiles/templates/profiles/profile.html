@@ -85,7 +85,7 @@
                 <card>
                     <p>Feedback from {{ entry.provided_by }}</p>
                     <hr>
-                    <p class="formatted_wrap">{{ entry.feedback }}</p>
+                    <p class="formatted hyphenate">{{ entry.feedback }}</p>
                     <form action="{% url 'profiles:resolve_feedback' entry.id %}" method="post">
                         {% csrf_token %}
                         <button
@@ -120,7 +120,7 @@
                         <tbody>
                         {% for credit in user.profile.account.credit_set.all %}
                             <tr>
-                                <td class="formatted_wrap">{{ credit.transaction.description }}</td>
+                                <td class="formatted hyphenate">{{ credit.transaction.description }}</td>
                                 <td>{{ credit.amount }}</td>
                             </tr>
                         {% endfor %}
@@ -143,7 +143,7 @@
                         <tbody>
                         {% for debit in user.profile.account.debit_set.all %}
                             <tr>
-                                <td class="formatted_wrap">{{ debit.transaction.description }}</td>
+                                <td class="formatted hyphenate">{{ debit.transaction.description }}</td>
                                 <td>{{ debit.amount }}</td>
                             </tr>
                         {% endfor %}
@@ -163,17 +163,17 @@
                 {% for resolved_bet in resolved_placed_choice_bets %}
                     <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
                         <card>
-                            <h5 xx class="formatted_wrap">{{ resolved_bet.placed_on.name }}</h5>
+                            <h5 xx class="formatted hyphenate">{{ resolved_bet.placed_on.name }}</h5>
                             <hr>
                             <grid>
                                 <div col="1/2" class="border_right">
-                                    <p xx class="formatted_wrap">{{ resolved_bet.placed_on.description }}</p>
+                                    <p xx class="formatted hyphenate">{{ resolved_bet.placed_on.description }}</p>
                                 </div>
                                 <div col="1/2" class="border_left">
                                     <p class="inline">Winning choice:</p>
-                                    <p xx class="formatted_wrap">{{ resolved_bet.placed_on.winning_choice }}</p>
+                                    <p xx class="formatted hyphenate">{{ resolved_bet.placed_on.winning_choice }}</p>
                                     <p class="inline">Your choice:</p>
-                                    <p xx class="formatted_wrap">{{ resolved_bet.chosen }}</p>
+                                    <p xx class="formatted hyphenate">{{ resolved_bet.chosen }}</p>
                                     {% if resolved_bet.chosen == resolved_bet.placed_on.winning_choice %}
                                         {# TODO "Won x points" #}
                                         <p>You won.</p>
@@ -193,11 +193,11 @@
                 {% for resolved_bet in resolved_placed_date_bets %}
                     <a class="card_link" href="{% url 'bets:bet' resolved_bet.placed_on.prim_key %}">
                         <card>
-                            <h5 xx class="formatted_wrap">{{ resolved_bet.placed_on.name }}</h5>
+                            <h5 xx class="formatted hyphenate">{{ resolved_bet.placed_on.name }}</h5>
                             <hr>
                             <grid>
                                 <div col="1/2" class="border_right">
-                                    <p xx class="formatted_wrap">{{ resolved_bet.placed_on.description }}</p>
+                                    <p xx class="formatted hyphenate">{{ resolved_bet.placed_on.description }}</p>
                                 </div>
                                 <div col="1/2" class="border_left">
                                     <p>Winning date:<br> {{ resolved_bet.placed_on.winning_date }}</p>

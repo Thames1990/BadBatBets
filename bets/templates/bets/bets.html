@@ -55,16 +55,16 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <td class="formatted_wrap">{{ choice_bet.name }}</td>
+                    <td class="formatted hyphenate">{{ choice_bet.name }}</td>
                 </tr>
                 <tr>
                     <th>Description</th>
-                    <td class="formatted_wrap">{{ choice_bet.description }}</td>
+                    <td class="formatted hyphenate">{{ choice_bet.description }}</td>
                 </tr>
                 {% if placed_bet %}
                     <tr>
                         <th>Your Choice</th>
-                        <td class="formatted_wrap">{{ placed_bet.chosen }}</td>
+                        <td class="formatted hyphenate">{{ placed_bet.chosen }}</td>
                     </tr>
                     <tr>
                         <th>Points placed</th>
@@ -85,7 +85,7 @@
                 {% else %}
                     <tr>
                         <th>Winning choice</th>
-                        <td class="formatted_wrap">{{ choice_bet.winning_choice }}</td>
+                        <td class="formatted hyphenate">{{ choice_bet.winning_choice }}</td>
                     </tr>
                     <tr>
                         <th>Pot</th>
@@ -135,7 +135,7 @@
                                     required
                                 >
                                 <label for="{{ forloop.counter }}"
-                                       class="formatted_wrap">{{ choice.description }}</label>
+                                       class="formatted hyphenate">{{ choice.description }}</label>
                                 <br>
                             {% empty %}
                                 <p class="inline">
@@ -171,7 +171,7 @@
                                     name="choice"
                                     value="{{ choice }}"
                                 >
-                                <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice }}</label>
+                                <label for="{{ forloop.counter }}" class="formatted hyphenate">{{ choice }}</label>
                                 <br>
                             {% empty %}
                                 <p class="inline">
@@ -209,7 +209,7 @@
                             value="{{ choice.description }}"
                             required
                         >
-                        <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice.description }}</label>
+                        <label for="{{ forloop.counter }}" class="formatted hyphenate">{{ choice.description }}</label>
                         <br>
                     {% empty %}
                         <p class="inline">
@@ -242,7 +242,7 @@
                             name="choice"
                             value="{{ choice }}"
                         >
-                        <label for="{{ forloop.counter }}" class="formatted_wrap">{{ choice }}</label>
+                        <label for="{{ forloop.counter }}" class="formatted hyphenate">{{ choice }}</label>
                         <br>
                     {% empty %}
                         <p class="inline">
@@ -267,11 +267,11 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <td class="formatted_wrap">{{ date_bet.name }}</td>
+                    <td class="formatted hyphenate">{{ date_bet.name }}</td>
                 </tr>
                 <tr>
                     <th>Description</th>
-                    <td class="formatted_wrap">{{ date_bet.description }}</td>
+                    <td class="formatted hyphenate">{{ date_bet.description }}</td>
                 </tr>
                 {% if placed_bet %}
                     <tr>
