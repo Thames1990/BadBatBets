@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from bets.util import key_gen
 from profiles.models import Profile, ForbiddenUser
@@ -14,7 +14,7 @@ class Bet(models.Model):
     # Random key for each bet
     prim_key = models.PositiveIntegerField(primary_key=True, default=key_gen)
     # Each bet has a user who owns it (usually the user that created it)
-    owner = models.ForeignKey(Profile)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     # Name to be shown in the index
     name = models.CharField(max_length=64)
     # Detailed description of the bet
@@ -32,7 +32,7 @@ class Bet(models.Model):
     # Size of the pot
     pot = models.PositiveIntegerField(default=0)
     # Each bet also has an account
-    account = models.OneToOneField(Account)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -54,11 +54,11 @@ class PlacedBet(models.Model):
     # When the user made his bet
     created = models.DateTimeField(auto_now_add=True)
     # User that placed this bet
-    placed_by = models.ForeignKey(Profile)
+    placed_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     # Amount the user placed
     placed = models.PositiveIntegerField()
     # Transaction that accompanied the placement
-    transaction = models.ForeignKey(Transaction)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.placed_on.name + ": " + self.placed_by.user.username
@@ -68,12 +68,12 @@ class ChoiceBet(Bet):
     # Date when the bet will be closed (if it is not resolved before)
     end_date = models.DateField(blank=True, null=True)
     # The choice that won in the end
-    winning_choice = models.ForeignKey('Choice', null=True)
+    winning_choice = models.ForeignKey('Choice', on_delete=models.CASCADE, null=True)
 
 
 class Choice(models.Model):
     # The bet to which this choice belongs
-    belongs_to = models.ForeignKey(ChoiceBet)
+    belongs_to = models.ForeignKey(ChoiceBet, on_delete=models.CASCADE)
     # (Short) description of the choice
     description = models.CharField(max_length=64)
     # Number of people that have picked this choice
@@ -85,9 +85,9 @@ class Choice(models.Model):
 
 class PlacedChoiceBet(PlacedBet):
     # The bet it is placed on
-    placed_on = models.ForeignKey(ChoiceBet)
+    placed_on = models.ForeignKey(ChoiceBet, on_delete=models.CASCADE)
     # Choice that the user selected
-    chosen = models.ForeignKey(Choice)
+    chosen = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
 
 class DateBet(Bet):
@@ -100,6 +100,6 @@ class DateBet(Bet):
 
 class PlacedDateBet(PlacedBet):
     # The bet it is placed on
-    placed_on = models.ForeignKey(DateBet)
+    placed_on = models.ForeignKey(DateBet, on_delete=models.CASCADE)
     # The date that the user bet on
     placed_date = models.DateField()

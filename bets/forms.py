@@ -12,7 +12,7 @@ from profiles.models import ForbiddenUser
 class ChoiceBetCreationForm(forms.ModelForm):
     class Meta:
         model = ChoiceBet
-        fields = ['name', 'description', 'pub_date', 'end_bets_date', 'end_date']
+        fields = ['name', 'description', 'end_bets_date', 'end_date']
 
     pub_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_bets_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
@@ -112,7 +112,7 @@ class ChoiceBetCreationForm(forms.ModelForm):
 class DateBetCreationForm(forms.ModelForm):
     class Meta:
         model = DateBet
-        fields = ['name', 'description', 'pub_date', 'end_bets_date', 'time_period_start', 'time_period_end']
+        fields = ['name', 'description', 'end_bets_date', 'time_period_start', 'time_period_end']
 
     pub_date = forms.DateField(widget=forms.SelectDateWidget, required=False)
     end_bets_date = forms.DateField(widget=forms.SelectDateWidget, required=False)

@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.forms import SelectDateWidget
 from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponseRedirect
@@ -33,7 +33,7 @@ def index_view(request):
         })
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.info("Unverified user " + request.user.username + " tried to view index page.")
             return redirect('profiles:profile')
         raise PermissionDenied
@@ -75,7 +75,7 @@ def bet_view(request, prim_key):
             raise Http404
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning(
                 "Unverified user " + request.user.username + " tried to take a look at bet with primary key " +
                 str(prim_key) + ".")
@@ -134,7 +134,7 @@ def place_bet(request, prim_key):
             return HttpResponseRedirect(reverse('bets:bet', args={bet.prim_key}))
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning("Unverified user " + request.user.username + " tried to place on bet with primary key " +
                            str(prim_key) + ".")
             return redirect('profiles:profile')
@@ -182,7 +182,7 @@ def resolve_bet_view(request, prim_key):
             raise Http404
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning("Unverified user " + request.user.username + " tried to resolve bet with primary key " +
                            str(prim_key) + ".")
             return redirect('profiles:profile')
@@ -210,7 +210,7 @@ def create_choice_bet(request):
         return render(request, 'bets/choicebet_create_form.html', {'form': form})
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning("Unverified user " + request.user.username + " tried to place create a choice bet.")
             return redirect('profiles:profile')
         raise PermissionDenied
@@ -231,7 +231,7 @@ def create_date_bet(request):
         return render(request, 'bets/datebet_create_form.html', {'form': form})
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning("Unverified user " + request.user.username + " tried to place create a date bet.")
             return redirect('profiles:profile')
         raise PermissionDenied

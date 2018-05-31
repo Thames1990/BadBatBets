@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -98,21 +98,21 @@ def payment(request):
             return render(request, 'profiles/payment.html', {'form': form})
     else:
         messages.info(request, "You're not authenticated. Please get in contact with an administrator.")
-        if not request.user.is_anonymous():
+        if not request.user.is_anonymous:
             logger.warning("Unverified user " + request.user.username + " tried to view payment page.")
             return redirect('profiles:profile')
         raise PermissionDenied
 
 
 def general_terms_and_conditions_view(request):
-    if user_authenticated(request.user) or request.user.is_authenticated():
+    if user_authenticated(request.user) or request.user.is_authenticated:
         return render(request, 'profiles/general_terms_and_conditions.html')
     else:
         return render(request, 'profiles/general_terms_and_conditions_anonymous.html')
 
 
 def privacy_policy_view(request):
-    if user_authenticated(request.user) or request.user.is_authenticated():
+    if user_authenticated(request.user) or request.user.is_authenticated:
         return render(request, 'profiles/privacy_policy.html')
     else:
         return render(request, 'profiles/privacy_policy_anonymous.html')

@@ -43,8 +43,8 @@ class Transaction(models.Model):
 
 
 class Credit(models.Model):
-    transaction = models.ForeignKey(Transaction)
-    account = models.ForeignKey(Account)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
 
     def __lt__(self, other):
@@ -55,8 +55,8 @@ class Credit(models.Model):
 
 
 class Debit(models.Model):
-    transaction = models.ForeignKey(Transaction)
-    account = models.ForeignKey(Account)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
 
     def __lt__(self, other):

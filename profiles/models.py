@@ -11,7 +11,7 @@ class Profile(models.Model):
     # Whether or not the users true identity has been verified
     verified = models.BooleanField(default=False)
     # Each user has an account
-    account = models.OneToOneField(Account)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     # Has the user accepted the general terms and conditions?
     accepted_general_terms_and_conditions = models.BooleanField(default=False)
     # Has the user accepted the privacy policy?
@@ -27,7 +27,7 @@ class ForbiddenUser(models.Model):
     # Whether this person actually has an account
     has_account = models.BooleanField()
     # If the person has an account, it will be linked here.
-    account = models.OneToOneField(Profile, blank=True, null=True)
+    account = models.OneToOneField(Profile, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -35,7 +35,7 @@ class ForbiddenUser(models.Model):
 
 class Feedback(models.Model):
     # User that provided the feedback
-    provided_by = models.ForeignKey(User)
+    provided_by = models.ForeignKey(User, on_delete=models.CASCADE)
     # The actual feedback
     feedback = models.TextField()
     # Is the feedback already resolved by the administrators?
